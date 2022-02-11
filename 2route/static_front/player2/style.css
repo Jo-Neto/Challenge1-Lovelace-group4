@@ -1,0 +1,26 @@
+* {
+    margin-bottom: 50px;
+}
+
+body {
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+#state-div {
+    background-color:  red;
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    color: white;
+    font-size: 40px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
