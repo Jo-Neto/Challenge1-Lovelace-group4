@@ -14,39 +14,46 @@ let currSessionID = 0;  //next session ID
 
 //==========GAMESESSION OBJECT saves session data, players data, and server-side data about the session================================================================================================
 
+const handCardNum = 3;
+const deckCardNum = 10;
+
 class GameSession {
     constructor() {
         this.dataPublicPlayer1 = {  //player 1 info, player 1 and server only, this is also the first object sent to player 1
             gameSessionID: Number(currSessionID),
             whichPlayer: 1,
-            param1: "player_1_public_param1",
-            param2: 1,
-            param3: true
+            deckP1: []
         };
         this.dataPublicPlayer2 = {   //player 2 info, player 2 and server only, this is also the first object sent to player 2
             gameSessionID: Number(currSessionID),
             whichPlayer: 2,
-            param1: "player_2_public_param1",
-            param2: 2,
-            param3: false
+            deckP2: []
         };
         this.serverSide = {  //info about the session, server only
             gameSessionID: Number(currSessionID), //just for safety
             player1turn: true,
             tradedObject: { //this object will be sent and received, player-server communication
+                whichCardPlayed: ''
             },
             field: { //game field
-                cards: {},
-                deckP1: {},
-                deckP2: {},
             },
             player1: {  //server side only, data about player 1
-                ip: null,
+                ip: null
             },
             player2: {  //server side only, data about player 2
-                ip: null,
+                ip: null
             }
         };
+    }
+    /*
+    agua
+    fogo
+    terra
+    eter
+    */
+    shuffle() {
+        //shuffle before sending deck, deck = 10 cartas;
+        //GameSession.dataPublicPlayer = shuffled deck, before sending;
     }
 }
 
