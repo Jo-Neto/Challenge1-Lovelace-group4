@@ -71,7 +71,7 @@ expApp.get('/line', (req, res) => { //when there's waiting players, get requests
                                                                                                                             console.log("case 1 inner" + req.ip + "<<<<<<<<<<<<<<<<<<<<<<<<");
                                                                                                                             console.log("PLAYER 1 FOUND, NEW GAME SESSION DONE, DATA BELOW:");
                                                                                                                             console.log("================================================================================================");
-                                                                                                                            console.log(GameSessionArray[currSessionID]);
+                                                                                                                            console.log(GameSessionArray[(currSessionID-1)]);
                                                                                                                             console.log("================================================================================================");
         } else {
             res.send("erro no servidor");
@@ -109,12 +109,11 @@ expApp.get('/line', (req, res) => { //when there's waiting players, get requests
 
 //==========GAME DATA EXCHANGE AND SESSION CONTROL=========================================================================================================================================
 
-let index = req.query.gameSessionID; //performance????, readability nonetheless
-
 expApp.post('/', (req, res) => {  //todo: in case of gameSession undefined, or gameSessionID undefined/NaN/String... etc
-    if (((req.ip !== GameSessionArray[index].serverSide.player1.ip) || (req.ip !== GameSessionArray[index].serverSide.player2.ip))
-    && !((req.ip !== GameSessionArray[index].serverSide.player1.ip) && (req.ip !== GameSessionArray[index].serverSide.player2.ip))) {  
-        //this is a XOR / exclusive OR
+    
+    let index = req.body.gameSessionID;  //performance????, readability nonetheless
+
+    if (!((req.ip === GameSessionArray[index].serverSide.player1.ip) || (req.ip === GameSessionArray[index].serverSide.player2.ip))) {  
         //wrong session, player IP does not belong to received gameSessionID
         res.send("wrong session");                                                                                                                    
                                                                                                                             console.log("post request ip-session unmatch");
@@ -165,8 +164,7 @@ expApp.get('/waiting', (req, res) => { //is my turn, what's the other player pla
                                                                                                                             console.log("get 'waiting' ip="+req.ip);
     let index = Number(req.query.gameSessionID);  //performance improvement, only one cast instead of several
     
-    if (((req.ip !== GameSessionArray[req.body.gameSessionID].serverSide.player1.ip) || (req.ip !== GameSessionArray[req.body.gameSessionID].serverSide.player2.ip))
-    && !((req.ip !== GameSessionArray[req.body.gameSessionID].serverSide.player1.ip) && (req.ip !== GameSessionArray[req.body.gameSessionID].serverSide.player2.ip))) {
+    if (!((req.ip === GameSessionArray[index].serverSide.player1.ip) || (req.ip === GameSessionArray[index].serverSide.player2.ip))) {
         //sessao errada, IP não faz parte dessa partida
         res.send("wrong session");
                                                                                                                             console.log("get request ip-session unmatch");

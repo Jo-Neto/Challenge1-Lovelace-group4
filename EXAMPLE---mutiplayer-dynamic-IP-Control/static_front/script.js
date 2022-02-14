@@ -17,7 +17,7 @@ function waitingLineState() {
                 console.log("FOUND PAIR");
                 console.log(GameSessionObject);
                 console.log("=============================================================");
-                if(GameSessionObject.myPos === 1) {
+                if(GameSessionObject.whichPlayer === 1) {
                     $('#state-div').css('background-color', 'green');
                     $('#state-div').text('my turn');
                 } else {
