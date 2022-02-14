@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <div id="state-div"> Searching Other Player
+    </div>
+    <div id="battlefield">
+        <div id="req-div" class="battlefieldInner">
+            <div id="req-div-inner">
+                <h2> last sent object(me) </h2>
+                <div id="req-field">
+                    <label>param 1(string): <input type="text"></label>
+                    <label>param 2(number): <input type="number"></label>
+                    <label>param 3(boolean): <input type="checkbox"></label>
+                    <button>send object</button>
+                </div>
+            </div>
+        </div>
+        <div id="res-div" class="battlefieldInner">
+            <h2> last received object(enemy) </h2>
+            <div id="res-field">
+                <div class="res-line">
+                    <p>param 1(string): </p>
+                </div>
+                <div class="res-line">
+                    <p>param 2(number):</p>
+                </div>
+                <div class="res-line">
+                    <p>param 3(boolean): </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
