@@ -14,26 +14,31 @@ let currSessionID = 0;  //next session ID
 
 //==========GAMESESSION OBJECT saves session data, players data, and server-side data about the session================================================================================================
 
-const handCardNum = 3;
-const deckCardNum = 10;
+const handCardNum = 3; //currently unused
+const deckCardNum = 14;
 
 class GameSession {
     constructor() {
         this.dataPublicPlayer1 = {  //player 1 info, player 1 and server only, this is also the first object sent to player 1
             gameSessionID: Number(currSessionID),
             whichPlayer: 1,
-            deckP1: []
+            firstToPlay: null,
+            initialDeck: []
         };
         this.dataPublicPlayer2 = {   //player 2 info, player 2 and server only, this is also the first object sent to player 2
             gameSessionID: Number(currSessionID),
             whichPlayer: 2,
-            deckP2: []
+            firstToPlay: null,
+            initialDeck: []
         };
         this.serverSide = {  //info about the session, server only
             gameSessionID: Number(currSessionID), //just for safety
-            player1turn: true,
+            player1turn: null,
+            passTurn = null,
             tradedObject: { //this object will be sent and received, player-server communication
-                whichCardPlayed: ''
+                whichCardPlayed: '',
+                enemyQuit = false,
+                enemyGaveUp = false
             },
             field: { //game field
             },
@@ -46,14 +51,22 @@ class GameSession {
         };
     }
     /*
-    agua
-    fogo
-    terra
-    eter
+    agua = a, 4un
+    fogo = f, 4un
+    planta = p, 4un
+    eter = e 2un
     */
     shuffle() {
         //shuffle before sending deck, deck = 10 cartas;
         //GameSession.dataPublicPlayer = shuffled deck, before sending;
+        this.dataPublicPlayer1.initialDeck = [];
+        this.dataPublicPlayer2.initialDeck = [];
+        deckCardNum;
+    }
+    randFirstToPlay(){
+        //randomize which player plays first, 
+        this.dataPublicPlayer1.firstToPlay = null;
+        this.dataPublicPlayer2.firstToPlay = null;
     }
 }
 
