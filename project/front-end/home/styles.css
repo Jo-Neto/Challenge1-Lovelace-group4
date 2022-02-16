@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+}
+
+main {
+    margin: 0 auto;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+}
+
+#section-logo {
+    height: 100%;
+}
+
+#game-rules h2 {
+    text-align: center;
+}
+
+#logo {
+
+}
