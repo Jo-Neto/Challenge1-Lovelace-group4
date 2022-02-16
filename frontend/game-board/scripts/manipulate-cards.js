@@ -6,8 +6,6 @@ function randomArray(arr) {
     let num = Math.floor(Math.random() * (arr.length));
     let elem = arr.splice(num,1)[0];
 
-    hand.push(elem);
-
     return elem;
 }
 
@@ -29,15 +27,59 @@ function getCardImage(card) {
     return nameOfImageArchive
 }
 
-function takeCardFromCheap() {
+function cleanTheCardField(tagCardId) {
 
+    if ( tagCardId === "card1" ) {
+        $("#container-first-hand-card").html("")
+        hand[0] = "empty"
+    }
+
+    else if (tagCardId === "card2") {
+        $("#container-second-hand-card").html("")
+        hand[1] = "empty"
+    }
+    
+    else if (tagCardId === "card3") {
+        $("#container-third-hand-card").html("")
+        hand[2] = "empty"
+    }
+}
+
+function takeCardFromCheap(tagCardId) {
+
+    hand.forEach( (card, index) => {
+        if ( card === "empty" ) {
+            hand[index] = randomArray(cards)
+
+            let containerEmpty
+
+            switch (index) {
+                case 0: containerEmpty = "first";
+                break;
+
+                case 1: containerEmpty = "second";
+                break;
+
+                case 2: containerEmpty = "third";
+                break;
+            }
+
+            $(`#container-${containerEmpty}-hand-card`).html(`<img id=${tagCardId} value=${hand[index]} class="cards-in-hand" src="./assets/${getCardImage(hand[index])}.png" alt="">`)
+
+            $(".cards-in-hand").draggable({
+                revert: "invalid",
+            })
+        }
+    })
+
+    console.log(hand)
 }
 
 $(document).ready( () => {
     //Soretia 3 cartas para a mão inicial do jogador
-    randomArray(cards)
-    randomArray(cards)
-    randomArray(cards)
+    hand[0] = randomArray(cards)
+    hand[1] = randomArray(cards)
+    hand[2] = randomArray(cards)
 
     //Da linha 40 até 44, adiciona cada imagem de cada carta na mão conforme o array "hand", o atributo value diz qual carta que é
     $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./assets/${getCardImage(hand[0])}.png" alt="">`)
@@ -52,8 +94,10 @@ $(document).ready( () => {
 
     $("#playing-card-field").droppable({
         drop: function(event, ui) {
-            console.log( ui.draggable.attr("value") )
-            $("#playing-card-field").droppable({disabled: true})
+            console.log( ui.draggable.attr("value") ) //identifica qual é a carta
+            cleanTheCardField(ui.draggable.attr("id"))
+            takeCardFromCheap(ui.draggable.attr("id"))
+            // $("#playing-card-field").droppable({disabled: true})
         }
     })
 })
