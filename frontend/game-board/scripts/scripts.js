@@ -4,6 +4,11 @@ function openModal(modalId) {
 }
 
 function closeModal(modalId) {
-    let modal = document.getElementById(modalId);
+    const modal = document.getElementById(modalId);
     modal.style.visibility = "hidden";
+}
+
+function flipCard() {
+    const card = document.querySelector(".flip-card .flip-card-inner");
+    card.style.transform = "rotateY(180deg)";
 }
