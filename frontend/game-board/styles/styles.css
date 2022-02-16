@@ -1,0 +1,190 @@
+* {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/background.svg");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+#first-cheap {
+    width: 8%;
+    margin-left: 15%;
+}
+
+#playing-card-field {
+    width: 15%;
+    align-self: center;
+    margin-top: -2%;
+}
+
+#second-cheap {
+    width: 8%;
+    align-self: flex-end;
+    margin-right: 15%;
+}
+
+/* Menu */
+
+#menu {
+    width: 20vw;
+    height: 100vh;
+    padding: 5vh 3vw;
+    z-index: 1000;
+    position: fixed;
+
+    visibility: visible;
+
+    background: linear-gradient(270.42deg, rgba(219, 28, 28, 0.97) -0.07%, rgba(0, 0, 0, 0.91) 144.33%);
+    border-radius: 0px 40px 40px 0px;
+}
+
+#btn-menu-out {
+    float: right;
+}
+
+#menu ul {
+    height: 60%;
+    margin-top: 20%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#menu ul li {
+    cursor: pointer;
+}
+
+/* FINAL Menu */
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#btn-menu-in {
+    margin-top: 5vh;
+    margin-left: 3vw;
+}
+
+#game-score {
+    width: 40%;
+    min-width: 250px;
+    height: 63px;
+    float: right;
+    color: #f5f5f5;
+    align-self: flex-end;
+    font-size: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 20px;
+
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28, 0.8) 0%, rgba(233, 21, 21, 0.8) 100%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 0px 30px;
+}
+
+/* Modais */
+
+.modal {
+    /* Sizing */
+    width: 30vw;
+    height: 40vh;
+    margin: 30vh 30vw 25vh 30vw;
+    z-index: 1000;
+    position: fixed;
+    
+    background-color: #DB1C1C; /* Só para visualizar melhor */
+    border-radius: 20px;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    /* Typography */
+    font-size: 36px;
+    line-height: 56px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #E5E5E5;
+}
+
+.btn-modal {
+    width: 8vw;
+}
+
+#modal-logoff {
+    visibility: hidden;
+}
+
+#btn-modal-logoff {
+    /* background-color: #DB1C1C; */
+    margin-right: 2vw;
+}
+
+#btn-modal-logoff {
+    background-color: #1AE316;
+    margin-left: 2vw;
+}
+
+#modal-rules {
+    width: 80vw;
+    height: 90vh;
+    margin: 5vh 10vw 5vh 10vw;
+    padding: 5vh 5vw 5vh 5vw;
+    z-index: 1000;
+    position: fixed;
+
+    visibility: visible;
+    
+    background-color: #313030;
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.329);
+    border-radius: 20px;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    /* Typography */
+    font-size: 16px;
+    color: #E5E5E5;
+}
+
+#modal-rules h2 {
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#modal-rules p {
+    text-indent: 30px;
+    text-align: justify;
+}
+
+#modal-rules img:nth-child(1) {
+    position: absolute;
+    top: 5%;
+    left: 95%;
+}
+
+#img-rules {
+    width: 50%;
+}
+
+/* FINAL Modais */
