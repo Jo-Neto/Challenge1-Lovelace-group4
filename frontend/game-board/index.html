@@ -17,14 +17,16 @@
     </head>
 
     <body>
-        <!-- <nav id="menu">
+
+        <nav id="menu">
             <img src="./assets/menu_open_white_24dp.svg" alt="" onclick="closeModal('menu')" id="btn-menu-out">
             <ul>
                 <li>Teste</li>
                 <li onclick="openModal('modal-rules')">Consultar regras</li>
                 <li onclick="openModal('modal-logoff')">Sair</li>
             </ul>
-        </nav> -->
+        </nav>
+
         <header>
             <img src="./assets/menu_white_24dp.svg" alt="" onclick="openModal('menu')" id="btn-menu-in">
             <div id="game-score">
@@ -36,19 +38,32 @@
 
         <img id="first-cheap" src="./assets/cheap.svg" alt="">
         <img id="playing-card-field" src="./assets/playing-card-field.svg" alt="">
+        <div id="container-hand-cards-and-second-cheap">
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <img id="pickable-verso" src="assets/verso.png" alt="" onclick="flipCard()">
-                </div>
+            <div class="container-cards-from-hand" id="container-first-hand-card"> </div>
+            <div class="container-cards-from-hand" id="container-second-hand-card"> </div>
+            <div class="container-cards-from-hand" id="container-third-hand-card"> </div>
 
-                <!-- Arrastar esse lado -->
-                <div class="flip-card-back">
-                    <img id="pickable-card" src="assets/card-Eter.png" alt="">
-                </div>
+            <div id="second-cheap">
+                <img id="img-second-cheap" src="./assets/cheap.svg" alt="">
+                
+                <!-- <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img id="pickable-verso" src="assets/verso.png" alt="" onclick="flipCard()">
+                        </div>
+                        <div class="flip-card-back">
+                            <img id="pickable-card" src="assets/card-Eter.png" alt="">
+                        </div>
+                    </div>
+                </div> -->
             </div>
+            
+            
         </div>
+
+
+        
 
         <div id="modal-logoff" class="modal">
             <h3>Deseja mesmo sair?</h3>

@@ -1,14 +1,23 @@
 * {
     font-family: 'Times New Roman', Times, serif;
+    box-sizing: border-box;
 }
 
 body {
     width: 100vw;
-    height: 100vh;
+    max-height: 100vh;
+    /* overflow: hidden; */
     background-image: url("../assets/background.svg");
     background-size: cover;
     display: flex;
     flex-direction: column;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #first-cheap {
@@ -45,13 +54,57 @@ body {
 
 #second-cheap {
     width: 8%;
-    align-self: flex-end;
-    z-index: -1;
     margin-right: 15%;
+    
+    position: relative;
 }
 
-/* Menu */
+#img-second-cheap {
+    margin-right: 0;
+    width: 100%;
+    z-index: -1;
+    position: relative;
+}
 
+/* -------------------Flip da carta------------------- */
+
+#pickable-verso, #pickable-card {
+    width: 100%;
+}
+
+.flip-card {
+    position: absolute;
+
+    width: 90%;
+    height: 92%;
+    z-index: 1;
+    background-color: red;
+    perspective: 1000px;
+    
+}
+
+.flip-card-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+/* -------------------FINAL Flip da carta------------------- */
+
+
+/* -------------------Menu------------------- */
 #menu {
     width: 20vw;
     height: 100vh;
@@ -82,15 +135,6 @@ body {
     cursor: pointer;
 }
 
-/* FINAL Menu */
-
-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-
 #btn-menu-in {
     margin-top: 5vh;
     margin-left: 3vw;
@@ -116,8 +160,10 @@ header {
     border-radius: 0px 0px 0px 30px;
 }
 
-/* Modais */
+/* -------------------FINAL Menu------------------- */
 
+
+/* Modais */
 .modal {
     /* Sizing */
     width: 30vw;
@@ -208,52 +254,4 @@ header {
 #img-rules {
     width: 50%;
 }
-
 /* FINAL Modais */
-
-/* Flip da carta */
-
-#pickable-verso, #pickable-card {
-    width: 100%;
-}
-
-.flip-card {
-    background-color: red;
-    float: right;
-    width: 8%;
-    height: fit-content;
-    border: 1px solid #f1f1f1;
-    perspective: 1000px;
-}
-
-/* This container is needed to position the front and back side */
-.flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-}
-
-/* Position the front and back side */
-.flip-card-front, .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;
-}
-
-/* Style the front side (fallback if image is missing) */
-.flip-card-front {
-    color: black;
-}
-
-/* Style the back side */
-.flip-card-back {
-    color: white;
-    transform: rotateY(180deg);
-}
-
-/* FINAL Flip da carta */
