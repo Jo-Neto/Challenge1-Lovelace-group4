@@ -1,24 +1,20 @@
-<svg width="288" height="281" viewBox="0 0 288 281" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect y="35.877" width="128" height="200" rx="20" transform="rotate(-16.2774 0 35.877)" fill="#1AE316"/>
-<rect x="10.8743" y="43.3734" width="111.816" height="180" rx="20" transform="rotate(-16.2774 10.8743 43.3734)" fill="#F8F0F0"/>
-<rect x="30.4943" y="83.2278" width="95.1418" height="91.7073" transform="rotate(-16.2774 30.4943 83.2278)" fill="url(#pattern0)"/>
-<rect x="14.2457" y="44.4217" width="25.9923" height="29.7561" transform="rotate(-16.2774 14.2457 44.4217)" fill="url(#pattern1)"/>
-<rect x="130.039" y="161.031" width="25.9923" height="29.7561" transform="rotate(-16.2774 130.039 161.031)" fill="url(#pattern2)"/>
-<rect x="166.492" y="8" width="128" height="200" rx="20" transform="rotate(19.1148 166.492 8)" fill="#EEE61D"/>
-<rect x="171.016" y="20.4093" width="111.816" height="180" rx="20" transform="rotate(19.1148 171.016 20.4093)" fill="#F8F0F0"/>
-<rect x="177.548" y="89.0912" width="57" height="55" transform="rotate(19.1148 177.548 89.0912)" fill="url(#pattern3)"/>
-<rect x="176.661" y="30.5744" width="16" height="17" transform="rotate(19.1148 176.661 30.5744)" fill="url(#pattern4)"/>
-<rect x="203.786" y="196.611" width="16" height="17" transform="rotate(19.1148 203.786 196.611)" fill="url(#pattern5)"/>
-<rect x="37" y="94.5703" width="128" height="200" rx="20" transform="rotate(-38.4362 37 94.5703)" fill="#E36016"/>
-<rect x="49.8986" y="97.4117" width="111.816" height="180" rx="20" transform="rotate(-38.4362 49.8986 97.4117)" fill="#F8F0F0"/>
-<rect x="101.552" y="121.216" width="60.3218" height="77.0732" transform="rotate(-38.4362 101.552 121.216)" fill="url(#pattern6)"/>
-<rect x="53.942" y="98.562" width="23.0498" height="25.3659" transform="rotate(-38.4362 53.942 98.562)" fill="url(#pattern7)"/>
-<rect x="211.21" y="161.823" width="23.0498" height="25.3659" transform="rotate(-38.4362 211.21 161.823)" fill="url(#pattern8)"/>
-<rect x="121.778" y="46" width="128" height="200" rx="20" transform="rotate(23.1968 121.778 46)" fill="#16BEE3"/>
-<rect x="125.406" y="58.6997" width="111.816" height="180" rx="20" transform="rotate(23.1968 125.406 58.6997)" fill="#F8F0F0"/>
-<rect x="109.832" y="117.037" width="92.1992" height="59.0244" transform="rotate(23.1968 109.832 117.037)" fill="url(#pattern9)"/>
-<rect x="126.833" y="64.0872" width="29.4253" height="17.0732" transform="rotate(23.1968 126.833 64.0872)" fill="url(#pattern10)"/>
-<rect x="136.437" y="235.907" width="29.4253" height="17.0732" transform="rotate(23.1968 136.437 235.907)" fill="url(#pattern11)"/>
+<svg width="288" height="283" viewBox="0 0 288 283" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect x="3.10059" y="37.5814" width="123" height="195" rx="17.5" transform="rotate(-16.28 3.10059 37.5814)" fill="#F8F0F0" stroke="#1AE316" stroke-width="5"/>
+<rect x="30.4963" y="83.2319" width="95.1418" height="91.7073" transform="rotate(-16.28 30.4963 83.2319)" fill="url(#pattern0)"/>
+<rect x="14.2461" y="44.4265" width="25.9923" height="29.7561" transform="rotate(-16.28 14.2461 44.4265)" fill="url(#pattern1)"/>
+<rect x="130.044" y="161.03" width="25.9923" height="29.7561" transform="rotate(-16.28 130.044 161.03)" fill="url(#pattern2)"/>
+<rect x="168.02" y="11.1807" width="123" height="195" rx="17.5" transform="rotate(19.11 168.02 11.1807)" fill="#F8F0F0" stroke="#EEE61D" stroke-width="5"/>
+<rect x="177.539" y="89.0903" width="57" height="55" transform="rotate(19.11 177.539 89.0903)" fill="url(#pattern3)"/>
+<rect x="176.647" y="30.5736" width="16" height="17" transform="rotate(19.11 176.647 30.5736)" fill="url(#pattern4)"/>
+<rect x="203.786" y="196.608" width="16" height="17" transform="rotate(19.11 203.786 196.608)" fill="url(#pattern5)"/>
+<rect x="41.5124" y="94.9809" width="123" height="195" rx="17.5" transform="rotate(-38.44 41.5124 94.9809)" fill="#F8F0F0" stroke="#E36016" stroke-width="5"/>
+<rect x="102.554" y="121.218" width="60.3218" height="77.0732" transform="rotate(-38.44 102.554 121.218)" fill="url(#pattern6)"/>
+<rect x="54.9423" y="98.5675" width="23.0498" height="25.3659" transform="rotate(-38.44 54.9423 98.5675)" fill="url(#pattern7)"/>
+<rect x="212.214" y="161.818" width="23.0498" height="25.3659" transform="rotate(-38.44 212.214 161.818)" fill="url(#pattern8)"/>
+<rect x="123.101" y="51.2828" width="123" height="195" rx="17.5" transform="rotate(23.2 123.101 51.2828)" fill="#F8F0F0" stroke="#16BEE3" stroke-width="5"/>
+<rect x="109.838" y="119.037" width="92.1992" height="59.0244" transform="rotate(23.2 109.838 119.037)" fill="url(#pattern9)"/>
+<rect x="126.842" y="66.0876" width="29.4253" height="17.0732" transform="rotate(23.2 126.842 66.0876)" fill="url(#pattern10)"/>
+<rect x="136.436" y="237.908" width="29.4253" height="17.0732" transform="rotate(23.2 136.436 237.908)" fill="url(#pattern11)"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_109_161" transform="translate(0 -0.0187251) scale(0.000833333)"/>
