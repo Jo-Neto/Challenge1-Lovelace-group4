@@ -17,14 +17,14 @@
     </head>
 
     <body>
-        <nav id="menu">
+        <!-- <nav id="menu">
             <img src="./assets/menu_open_white_24dp.svg" alt="" onclick="closeModal('menu')" id="btn-menu-out">
             <ul>
                 <li>Teste</li>
                 <li onclick="openModal('modal-rules')">Consultar regras</li>
                 <li onclick="openModal('modal-logoff')">Sair</li>
             </ul>
-        </nav>
+        </nav> -->
         <header>
             <img src="./assets/menu_white_24dp.svg" alt="" onclick="openModal('menu')" id="btn-menu-in">
             <div id="game-score">
@@ -36,7 +36,6 @@
 
         <img id="first-cheap" src="./assets/cheap.svg" alt="">
         <img id="playing-card-field" src="./assets/playing-card-field.svg" alt="">
-        <img id="second-cheap" src="./assets/cheap.svg" alt="">
 
         <div class="flip-card">
             <div class="flip-card-inner">
@@ -71,6 +70,8 @@
                 Divirta-se!!!</p>
         </div>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
         <script src="./scripts/scripts.js"></script>
+        <script src="./scripts/manipulate-cards.js"></script>
     </body>
 </html>
