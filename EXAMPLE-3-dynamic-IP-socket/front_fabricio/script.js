@@ -1,11 +1,10 @@
-url = window.location.href.slice(7);
+url = window.location.href.slice(7,-1);
 
 const reducer = (total,element)=>{
    total += `<p>${element}</p>`;
    return total;
 }
 $(document).ready(()=>{
-   const socket = new WebSocket(`ws://${url}`);
    let id;
    $("#enviar").on('click', ()=>{
       if ($("#nome").val() !== ""){
@@ -17,26 +16,43 @@ $(document).ready(()=>{
             text: "Entrou",
             date: Date.now()
          };
-         socket.send(JSON.stringify(msg));
          $("#login").remove();
          $("main").append('<div class= "chatBox" id="chatBox"></div>');
          $("main").append('<input type="text" id="texto" />');
          $("main").append('<input type="button" value="enviar" id="msg" />');
-         $("#msg").on("click", ()=>{
-            const msg = {
-               id  : id,
-               type: "message",
-               text: $("#texto").val(),
-               date: Date.now()
-            }
-            socket.send(JSON.stringify(msg));
-         });
-         socket.onmessage = (event)=>{
-            const msg = JSON.parse(event.data);
-            const texto = msg.reduce(reducer);
-            console.log(texto);
-            $("#chatBox").html(texto);
-         };
       }
    });
 });
+
+const socket = new WebSocket(`ws://${url}:80/line`);
+
+socket.onopen = (event)=>{
+   console.log("socket open");
+};
+
+socket.onmessage = (event)=>{
+   console.log(event.data);
+};
+
+socket.onclose = (event)=>{
+   console.log("socket closed");
+};
+
+function printMsg() {
+   console.log("on open fired on front")
+}
+
+/*
+
+setInterval(() => {
+   chat();
+}, 10000)
+
+function chat() {
+   socketChat.send('chat message sent');
+}
+
+socketChat.onmessage = (event)=>{
+   console.log("message received from chat");
+   console.log(event.data);
+};*/
