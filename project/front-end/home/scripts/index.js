@@ -13,14 +13,14 @@ const url = window.location.href.slice(7,-1);
 document.getElementById('play-now-button').addEventListener('click', ()=>{
    const socket = new WebSocket(`ws://${url}:80/line`);
 
-   socket.onclose((event)=>{
-      const message = JSON.parse(event);
+    socket.addEventListener('close', (event)=>{
 
-      if(message.data === 1000){
+      if(event.code === 1000){
         //Pedir a página game-board
-        console.log("A outra página foi chamada")
-        //const socket = new WebSocket(`ws://${url}:80/gamestream`);
+        console.log("A outra página foi chamada");
         closeModal('modal-loading');
+        console.log(`${url}:80/game`)
+        location.replace(`/game`);
       }
    })
 })
