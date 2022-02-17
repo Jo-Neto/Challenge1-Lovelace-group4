@@ -17,8 +17,14 @@
 ## JavaScript
     Solicitar visibility dos modais
 
-## Coisas a fazer ainda
+## Coisas a fazer ainda no front
     Tratar o caso do baralho que estiver acabando
     modal de vitória e derrota, devem ter botões de voltar pra home e pra procurar outra partida
     Colocar sons
     Tratar o caso quando as cartas acabam
+
+## Coisas a fazer para juntar back e front
+    Conexão entre dois players
+    Fazer o primeiro recebimento de informações no front
+    Fazer o socket.send
+    Fazer o socket.onmessage

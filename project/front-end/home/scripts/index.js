@@ -18,6 +18,7 @@ document.getElementById('play-now-button').addEventListener('click', ()=>{
 
       if(message.data === 1000){
         //Pedir a página game-board
+        console.log("A outra página foi chamada")
         //const socket = new WebSocket(`ws://${url}:80/gamestream`);
         closeModal('modal-loading');
       }
