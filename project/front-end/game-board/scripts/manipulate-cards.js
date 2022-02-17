@@ -127,47 +127,49 @@ function showWhosTurn(turn) {
 
 function gameLogic(){
 
+    if(turn == 1){
+        document.getElementById("container-card-player2").style.zIndex = 4;
+    }
+    if(turn == 2){
+        console.log(document.getElementById("container-card-player2").style.zIndex = 2);
+    }
+
+
     if(howManyCardsInThePlayingField == 2){
 
         if(board[0] == 'e' && board[1] != 'e'){
-            score1 ++;
             turn = 1;
-            $("#playing-card-field").droppable({disabled: false})
         }
         if(board[1] == 'e' && board[0] != 'e'){
-            score2 ++;
-            turn = 2;
-            $("#playing-card-field").droppable({disabled: true})
+            turn = 2;            
         }
         if(board[0] == 'w' && board[1] == 'f'){
-            score1 ++;
             turn = 1;
-            $("#playing-card-field").droppable({disabled: false})
         }
         if(board[0] == 'w' && board[1] == 'p'){
-            score2 ++;
             turn = 2;
-            $("#playing-card-field").droppable({disabled: true})
         }
         if(board[0] == 'f' && board[1] == 'w'){
-            score2 ++;
             turn = 2;
-            $("#playing-card-field").droppable({disabled: true})
         }
         if(board[0] == 'f' && board[1] == 'p'){
-            score1 ++;
             turn = 1;
-            $("#playing-card-field").droppable({disabled: false})
         }
         if(board[0] == 'p' && board[1] == 'w'){
-            score1 ++;
             turn = 1;
-            $("#playing-card-field").droppable({disabled: false})
         }
-        if(board[0] == 'p' && board[1] == 'f'){
-            score2 ++;
+        if(board[0] == 'p' && board[1] == 'f'){            
             turn = 2;
-            $("#playing-card-field").droppable({disabled: true})
+        }
+
+        if(turn == 2){
+            score2 ++;
+            $("#playing-card-field").droppable({disabled: true});
+        }
+        if(turn == 1){
+            score1 ++;
+            $("#playing-card-field").droppable({disabled: false});
+            //$("#container-card-player2").css('z-index','0');
         }
 
         howManyCardsInThePlayingField = 0;
