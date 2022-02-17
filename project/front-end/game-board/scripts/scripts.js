@@ -12,3 +12,4 @@ function flipCard() {
     const card = document.querySelector(".flip-card .flip-card-inner");
     card.style.transform = "rotateY(180deg)";
 }
+

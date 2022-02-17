@@ -57,6 +57,7 @@ body {
 #second-cheap {
     left: 35vw;
 
+
     display: flex;
     flex-direction: row;
     justify-content: right;
@@ -67,8 +68,4 @@ body {
 #img-second-cheap {
     z-index: -1;
 }
-
-
-
-
 
