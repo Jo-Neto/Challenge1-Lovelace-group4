@@ -22,6 +22,7 @@
     modal de vitória e derrota, devem ter botões de voltar pra home e pra procurar outra partida
     Colocar sons
     Tratar o caso quando as cartas acabam
+    Adicionar no tutorial a explicação de clicar e arrastar a carta para jogar
 
 ## Coisas a fazer para juntar back e front
     Conexão entre dois players

@@ -7,7 +7,7 @@ let howManyCardsInThePlayingField = 0;
 let score1 = 0;
 let score2 = 0;
 
-//Receber objeto do server com informções iniciais da partida
+//Receber objeto do server com informações iniciais da partida
 
 $(document).ready( () => {
     //Soretia 3 cartas para a mão inicial do jogador
@@ -40,6 +40,8 @@ $(document).ready( () => {
                 $("#playing-card-field").droppable({disabled: true})
                 howManyCardsInThePlayingField++;
 
+                //Checar a conexão do socket
+                //Se socket tá conectado, faz o send, se não, reconecta
                 //Socket send que informa ao server a carta jogada
 
                 gameLogic();
