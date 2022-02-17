@@ -1,0 +1,153 @@
+* {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Direction Settings */
+
+.row-direction {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* FINAL Direction Settings */
+
+html {
+    /* Align */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    /* Sizing */
+    width: 95vw;
+    min-height: 90vh;
+
+    background-color: #0F0F0F;
+    color: #F8F0F0;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    /* Sizing */
+    width: 100%;
+    height: 90vh;
+    margin-top: 5vh;
+    min-height: 235px;
+
+    background: #DB1C1C;
+    border-radius: 40px;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#play-now-button {
+    background: #232323;
+    color: #f5f5f5;
+    border: none;
+    font-size: 20px;
+    border-radius: 20px;
+    width: 130px;
+    height: 40px;
+
+    margin-top: 60px;
+    cursor: pointer;
+}
+
+#image-logo {
+    /* Sizing */
+    width: 90%;
+    height: 37%;
+}
+
+#info-section {
+    /* Sizing */
+    width: 85%;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#info-section h2 {
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 75px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+#info-section p {
+    /* Sizing */
+    width: 85%;
+
+    font-size: 21px;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-indent: 30px;
+    text-align: justify;
+}
+
+#img-rules {
+    width: 80%;
+    height: 40%;
+}
+
+/* Modais */
+
+.modal {
+    /* Sizing */
+    width: 30vw;
+    height: 40vh;
+    margin: 30vh 30vw 25vh 30vw;
+    padding: 5vh 5vw;
+    z-index: 1000;
+    position: fixed;
+    
+    background-color: #313030;
+    border-radius: 20px;
+
+    /* Align */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    /* Typography */
+    font-size: 36px;
+    line-height: 56px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #E5E5E5;
+}
+
+.btn-modal {
+    width: 8vw;
+}
+
+#modal-loading {
+    visibility: hidden;
+}
+
+#modal-loading img {
+    width: 80%;
+}
+
+/* FINAL Modais */
