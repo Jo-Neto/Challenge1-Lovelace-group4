@@ -1,6 +1,7 @@
 const cards = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e']
 let hand = []
 const board = ["", ""];
+let cardImageTagId //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 turn = 1;
 count = 0;
 score1 = 0;
@@ -97,18 +98,16 @@ $(document).ready( () => {
 
     $(".cards-in-hand").draggable({
         revert: "invalid",
-    })    
-    
+    })
+
         $("#playing-card-field").droppable({
             drop: function(event, ui) {
+                cardImageTagId = ui.draggable.attr("id")
                 board[0] =  ui.draggable.attr("value") //identifica qual é a carta
                 turn = 2;
                 $("#playing-card-field").droppable({disabled: true})
                 count++;
-                cleanTheCardField(ui.draggable.attr("id"))
-                takeCardFromCheap(ui.draggable.attr("id"))
                 gameLogic();
-
             }
         }) //passa o turno para o outro player
         
@@ -117,7 +116,6 @@ $(document).ready( () => {
 
 function gameLogic(){
 
-    
     if(count == 2){
         
         if(board[0] == 'e' && board[1] != 'e'){
@@ -163,19 +161,25 @@ function gameLogic(){
         count = 0;
         document.getElementById("score-player1").innerHTML = score1;
         document.getElementById("score-player2").innerHTML = score2;
-        
+
+        setTimeout( () => {
+            cleanTheCardField(cardImageTagId)
+            $("#container-card-player2").html('')
+            takeCardFromCheap(cardImageTagId)
+        }, 2000)
+
         console.log("turno:"+ turn)
         console.log("board:"+ board)
         console.log("score1: " + score1)
         console.log("score2: " + score2)
-        
+
         if(score1 == 5){
             alert("player 1 wins");
         }
         if(score2 == 5){
             alert("player 2 wins");
         }
-        }
+    }
 }
 
 
