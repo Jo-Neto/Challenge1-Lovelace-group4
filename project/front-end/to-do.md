@@ -29,3 +29,4 @@
     Fazer o primeiro recebimento de informações no front
     Fazer o socket.send
     Fazer o socket.onmessage
+

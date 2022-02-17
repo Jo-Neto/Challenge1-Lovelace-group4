@@ -50,11 +50,11 @@ $(document).ready( () => {
     }
 })
 
+
 //Sorteia uma carta do array "cards"
 function randomArray(arr) {
     let num = Math.floor(Math.random() * (arr.length));
     let elem = arr.splice(num,1)[0];
-
     return elem;
 }
 
@@ -233,3 +233,4 @@ function showCard(element) {
         gameLogic();
     }
 }
+
