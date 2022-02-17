@@ -16,3 +16,8 @@
 
 ## JavaScript
     Solicitar visibility dos modais
+
+## Coisas a fazer ainda
+    Tratar o caso do baralho que estiver acabando
+    Colocar sons
+    Tratar o caso quando as cartas acabam

@@ -2,11 +2,10 @@ const cards = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 
 let hand = []
 const board = ["", ""];
 let cardImageTagId //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
-turn = 1;
-count = 0;
-score1 = 0;
-score2 = 0;
-
+let turn = 1;
+let howManyCardsInThePlayingField = 0;
+let score1 = 0;
+let score2 = 0;
 
 //Sorteia uma carta do array "cards"
 function randomArray(arr) {
@@ -93,12 +92,12 @@ $(document).ready( () => {
     $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./assets/${getCardImage(hand[1])}.png" alt="">`)
 
     $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./assets/${getCardImage(hand[2])}.png" alt="">`)
-    
+
     if(turn == 1) {
 
-    $(".cards-in-hand").draggable({
-        revert: "invalid",
-    })
+        $(".cards-in-hand").draggable({
+            revert: "invalid",
+        })
 
         $("#playing-card-field").droppable({
             drop: function(event, ui) {
@@ -106,18 +105,17 @@ $(document).ready( () => {
                 board[0] =  ui.draggable.attr("value") //identifica qual é a carta
                 turn = 2;
                 $("#playing-card-field").droppable({disabled: true})
-                count++;
+                howManyCardsInThePlayingField++;
                 gameLogic();
             }
         }) //passa o turno para o outro player
-        
     }
 })
 
 function gameLogic(){
 
-    if(count == 2){
-        
+    if(howManyCardsInThePlayingField == 2){
+
         if(board[0] == 'e' && board[1] != 'e'){
             score1 ++;
             turn = 1;
@@ -158,7 +156,8 @@ function gameLogic(){
             turn = 2;
             $("#playing-card-field").droppable({disabled: true})
         }
-        count = 0;
+
+        howManyCardsInThePlayingField = 0;
         document.getElementById("score-player1").innerHTML = score1;
         document.getElementById("score-player2").innerHTML = score2;
 
@@ -167,11 +166,6 @@ function gameLogic(){
             $("#container-card-player2").html('')
             takeCardFromCheap(cardImageTagId)
         }, 2000)
-
-        console.log("turno:"+ turn)
-        console.log("board:"+ board)
-        console.log("score1: " + score1)
-        console.log("score2: " + score2)
 
         if(score1 == 5){
             alert("player 1 wins");
@@ -211,7 +205,7 @@ function showCard(element) {
                 break;
         }
         $("#playing-card-field").droppable({disabled: false})
-        count++;
+        howManyCardsInThePlayingField++;
         turn = 1; //passa o turno para o player 1
         gameLogic();
     }
