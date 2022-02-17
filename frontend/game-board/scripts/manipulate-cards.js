@@ -95,6 +95,8 @@ $(document).ready( () => {
 
     if(turn == 1) {
 
+        $("#show-if-is-your-turn").text("É sua vez de jogar!")
+
         $(".cards-in-hand").draggable({
             revert: "invalid",
         })
@@ -104,6 +106,7 @@ $(document).ready( () => {
                 cardImageTagId = ui.draggable.attr("id")
                 board[0] =  ui.draggable.attr("value") //identifica qual é a carta
                 turn = 2;
+                showWhosTurn(turn)
                 $("#playing-card-field").droppable({disabled: true})
                 howManyCardsInThePlayingField++;
                 gameLogic();
@@ -111,6 +114,10 @@ $(document).ready( () => {
         }) //passa o turno para o outro player
     }
 })
+
+function showWhosTurn(turn) {
+    turn === 1 ? $("#show-if-is-your-turn").text("É sua vez de jogar!") : $("#show-if-is-your-turn").text("É a vez do oponente");
+}
 
 function gameLogic(){
 
@@ -167,6 +174,8 @@ function gameLogic(){
             takeCardFromCheap(cardImageTagId)
         }, 2000)
 
+        showWhosTurn(turn)
+
         if(score1 == 5){
             alert("player 1 wins");
         }
@@ -207,6 +216,8 @@ function showCard(element) {
         $("#playing-card-field").droppable({disabled: false})
         howManyCardsInThePlayingField++;
         turn = 1; //passa o turno para o player 1
+        showWhosTurn(turn)
+
         gameLogic();
     }
 }

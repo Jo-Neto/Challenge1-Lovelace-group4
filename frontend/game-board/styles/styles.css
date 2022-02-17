@@ -37,6 +37,12 @@ header {
     margin: 70px 0 0;
 }
 
+#show-if-is-your-turn {
+    font-size: 20px;
+    color: aliceblue;
+    margin-right: 10%;
+}
+
 .container-cards-from-hand {
     width: 7%;
     height: 91%;
