@@ -19,5 +19,6 @@
 
 ## Coisas a fazer ainda
     Tratar o caso do baralho que estiver acabando
+    modal de vitória e derrota, devem ter botões de voltar pra home e pra procurar outra partida
     Colocar sons
     Tratar o caso quando as cartas acabam
