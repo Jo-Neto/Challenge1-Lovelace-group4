@@ -1,0 +1,74 @@
+* {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+    width: 100vw;
+    max-height: 100vh;
+    background-image: url("../assets/background.svg");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    width: 6.7vw !important;
+    height: 21vh !important;
+}
+
+#first-cheap, #img-second-cheap {
+    width: 7.65vw !important;
+    height: 22.91vh !important;
+}
+
+#container-opponents-cheap-and-cards {
+    width: 100vw;
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+#first-cheap {
+    position: relative;
+    right: 35vw;
+}
+
+#container-opponents-cards, #player-cards {
+    width: 30vw;
+    position: absolute;
+    display: flex;
+    justify-self: center;
+    justify-content: space-between;
+}
+
+#playing-card-field {
+    width: 14.5%;
+    align-self: center;
+    margin: 5vh 0 5vh 0;
+}
+
+#container-hand-cards-and-second-cheap {
+    width: 100vw;
+    bottom: 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+#second-cheap {
+    left: 35vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    
+    position: relative;
+}
+
+#img-second-cheap {
+    z-index: -1;
+}
+
+
+
+
+
