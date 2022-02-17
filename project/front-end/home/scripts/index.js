@@ -19,7 +19,6 @@ document.getElementById('play-now-button').addEventListener('click', ()=>{
         //Pedir a página game-board
         console.log("A outra página foi chamada");
         closeModal('modal-loading');
-        console.log(`${url}:80/game`)
         location.replace(`/game`);
       }
    })

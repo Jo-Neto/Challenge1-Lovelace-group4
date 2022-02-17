@@ -1,9 +1,9 @@
 //+------------------------------------------------------------------+
 //|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
-const express = require('./back-end/express');
-const WebSocket = require('./back-end/ws');
-const url = require('./back-end/url');
+const express = require('express');
+const WebSocket = require('ws');
+const url = require('url');
 //const cors = require('cors');
 //const helmet = require('helmet');
 //const morgan = require('morgan');
