@@ -1,28 +1,31 @@
 //+------------------------------------------------------------------+
-//| DEDEPENDENCIES                                                   |
+//|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
 const express = require('express');
 const WebSocket = require('ws');
+const url = require('url');
 //const cors = require('cors');
 //const helmet = require('helmet');
 //const morgan = require('morgan');
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
-//| ARBITRATY PORTS                                                  |
+//|                       ARBITRATY PORTS                            |
 //+------------------------------------------------------------------+
 const frontPort = 80;
-const gameSocketPort = frontPort;
-const apiPort = null; //currently unused;
+const gameSocketPort = null; //currently unused;
+const waitLineSocketPort = null; //currently unused;
 const chatSocketPort = null; //currently unused;
+const restPort = null; //currently unused;
 const envPort = process.env.PORT; //environment port, currently unused;
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
-//| MIDDLEWARES AND SERVER INITIALIZATION                            |
+//|              MIDDLEWARES AND SERVER INITIALIZATION               |
 //+------------------------------------------------------------------+
 const app = express();
 app.use(express.json());
@@ -30,13 +33,14 @@ app.use('/', express.static('front_fabricio'));
 //app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 //app.use(morgan('dev'));
 //app.use(helmet());
+
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
-//| GAME SESSION OBJECT                                              |
+//|                    GAME SESSION OBJECT                           |
 //+------------------------------------------------------------------+
 
 const handCardNum = 3; //currently unused
@@ -68,25 +72,21 @@ class GameSession {
          gameState: {
          },
          player1: {  //server side only, data about player 1
-            socket: null
+            ip: null
          },
          player2: {  //server side only, data about player 2
-            socket: null
+            ip: null
          }
       };
    }
-   /*
-   agua = a, 4un
+/* agua = a, 4un
    fogo = f, 4un
    planta = p, 4un
-   eter = e 2un
-   */
-   shuffle() {
-      //shuffle before sending deck, deck = 10 cartas;
-      //GameSession.dataPublicPlayer = shuffled deck, before sending;
+   eter = e 2un        */
+   
+   shuffle() {  //shuffle before sending deck, deck = 10 cartas;   >>>>>>>  deckCardNum;
       this.dataPublicPlayer1.initialDeck = [];
       this.dataPublicPlayer2.initialDeck = [];
-      deckCardNum;
    }
    randFirstToPlay() {
       //randomize which player plays first, 
@@ -99,117 +99,110 @@ class GameSession {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
-//| SOCKET SERVERS INITIALIZERS                                      |
+//|                SOCKET SERVERS INITIALIZERS                       |
 //+------------------------------------------------------------------+
 
-const gameSocketCreator = (HTTPserver) => {
-   const gameSocketServer = new WebSocket.Server({ server: HTTPserver, clientTracking: true, path: '/stream' });
-   gameSocketServer.on('connection', onConnection);
-   //gameSocketServer.on('error', () => { console.log("constructor error") });
-   //gameSocketServer.on('close', () => { console.log("constructor close") });
-   //gameSocketServer.on('header', () => { console.log("constructor headers") });
-   gameSocketServer.on('listening', () => { console.log("constructor listening") });
-   //gameSocketServer.on('header', () => { console.log("constructor headers") });
-   gameSocketServer.broadcast = broadcast;
-   return gameSocketServer;
-}
+const waitSockServ = new WebSocket.Server({ noServer: true, clientTracking: true });
+waitSockServ.on('error', (error) => { console.log('waitSockServ error: '); console.log(error); });
+waitSockServ.on('connection', lineConnec);
 
-// const chatSocketCreator = (HTTPserver) => { 
-//    const chatSocketServer = new WebSocket.Server({server: HTTPserver, clientTracking: true, path: '/chat', port: chatSocketPort });
-//    chatSocketServer.on('connection', () => { console.log("connected chat") });
-//    chatSocketServer.on('close', () => { console.log("closed chat") });
-//    chatSocketServer.on('open', () => { console.log("opened chat") });
-//    chatSocketServer.on('disconnect', () => { console.log("disconnected chat") });
-//    chatSocketServer.broadcastChat = broadcastChat;
-//    return chatSocketServer;
-// }
-
-// const userSocketCreator = (HTTPserver) => { 
-//    const userSocketCreator = new WebSocket.Server({server: HTTPserver, clientTracking: true, path: '/session', port: chatSocketPort });
-//    userSocketCreator.on('connection', () => { console.log("connected chat") });
-//    userSocketCreator.on('close', () => { console.log("closed chat") });
-//    userSocketCreator.on('open', () => { console.log("opened chat") });
-//    userSocketCreator.on('disconnect', () => { console.log("disconnected chat") });
-//    userSocketCreator.broadcastChat = broadcastChat;
-//    return userSocketCreator;
-// }
-
-//const waitingLineSocket = gameSocketCreator(HTTPserver);
-
-const gameSocketServer = new WebSocket.Server({ server: HTTPserver, clientTracking: true, path: '/line' });
-gameSocketServer.on('connection', onConnectionLine);
-gameSocketServer.on('listening', () => { console.log("constructor listening") });
-gameSocketServer.on('error', () => { console.log("constructor error") });
-gameSocketServer.on('close', () => { console.log("constructor close") });
-gameSocketServer.on('header', () => { console.log("constructor headers") });
-gameSocketServer.broadcast = broadcast;
-
-// const chatSocketServer = chatSocketCreator(HTTPserver); 
-// const userSocketServer = userSocketCreator(HTTPserver); 
+const gameSockServ = new WebSocket.Server({ noServer: true, clientTracking: true });
+gameSockServ.on('connection', gameConnec);
+gameSockServ.on('error', (error) => { console.log('gameSockServ error: '); console.log(error); }); 
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
-//| GAME SESSION CREATION AND PLAYER CONNECTION                      |
+//|                      SOCKET PATH RESOLVER                        |
+//+------------------------------------------------------------------+
+HTTPserver.on('upgrade', function upgrade(request, socket, head) {
+   const { pathname } = url.parse(request.url);
+   if (pathname === '/line') {
+      waitSockServ.handleUpgrade(request, socket, head, (ws) => { waitSockServ.emit('connection', ws); });
+   } else if (pathname === '/gamestream'){
+      gameSockServ.handleUpgrade(request, socket, head, (ws) => { gameSockServ.emit('connection', ws, request); });
+   } else if(pathname === '/chat'){
+      socket.destroy(); //currently unused
+   }
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|     GAMESESSION OBJECT CREATION && PLAYER FINDER ALGHORITHM      |
 //+------------------------------------------------------------------+
 let GameSessionArray = [];  //Arr to store sessions
 let currSessionID = 0;  //next session ID
 
-function onConnectionLine(ws, req) {
-   let p1socket = null;
-   if (gameSocketServer.clients.size === 2) {
-      console.log("handshake ready");
-      ws.send("match ready p2");
-      ws.close();
-      p1socket.send("match ready p1");
-      p1socket.close();
-      p1socket = null;
-   } else
-      p1socket = ws;
+function lineConnec(ws) {
+   if (waitSockServ.clients.size >= 2) {
+      let count=0;
+      waitSockServ.clients.forEach(client => {
+         if (client.readyState === WebSocket.OPEN) {
+            if (count <= 1) {
+               if (count === 0) {
+                  GameSessionArray[currSessionID] = new GameSession;
+                  GameSessionArray[currSessionID].serverSide.player1.ip = client._socket.remoteAddress;
+                  client.send(JSON.stringify(GameSessionArray[currSessionID]))
+                  //console.log("first player data sent");
+                  //console.log("SENT OBJECT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                  //console.log(GameSessionArray[currSessionID]);
+               } else {
+                  GameSessionArray[currSessionID].serverSide.player2.ip = client._socket.remoteAddress;
+                  client.send(JSON.stringify(GameSessionArray[currSessionID]));
+                  //console.log("second player data sent");
+                  //console.log("SENT OBJECT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                  //console.log(GameSessionArray[currSessionID]);
+                  currSessionID++;
+               }
+               count++;
+               //console.log("=================================================================================================");
+               client.send("partida encontrada");
+               client.close(1000, 'connecting to game streaming socket');
+            } else 
+               lineConnec(waitSockServ);
+         }
+      });
+   } else 
+      ws.send("searching for players");
+}  
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                   PLAYER GAME DATA EXCHANGE                      |
+//+------------------------------------------------------------------+
+
+function gameConnec(ws) {
+   ws.on('close', gameOpen);
+   ws.on('error', (error) => { console.log('waitSock error: '); console.log(error); });
+   ws.on('message', (data, isBinary) => gameOpen(data , isBinary));
+   ws.on('open', gameOpen);
 }
 
-
-function onMessageLine(data, isBinary, ws) {
-   ws.send(`sent by server, onmessage function`);
-}
-
-function onError(arg1, arg2, arg3) {
-   console.log('onerror function fired by >>>>');
-   //ws.send(`sent by server, on error function`); 
-}
-
-function onOpen(arg1, arg2, arg3) {
-   console.log('onopen function fired by >>>>');
-   //ws.send(`sent by server, onopen  function`); 
-}
-
-function onClose(arg1, arg2, arg3) {
-   console.log('onclose function fired by >>>>');
-   console.log(arg1)
-   console.log('i ===' + i);
-}
-
-
-setInterval(() => {
-gameSocketServer.broadcast();
-}, 5000)
-
-function broadcast() {
-   //this.clients == every connected client
-   //console.log("WebSocket: <<<<<<<<<<<<<<<<<");
-   //console.log(WebSocket);
-   //console.log("===============================================================================================");
-   //console.log("THIS: <<<<<<<<<<<<<<<<<");
+function gameOpen(data , isBinary) {
    //console.log(this);
-   //console.log("===============================================================================================");
-   //console.log("CLIENT: <<<<<<<<<<<<<<<<<");
-   //console.log(this.clients);
-   //console.log("===============================================================================================");
-   console.log(gameSocketServer.clients.size);
-   //this.clients.forEach(client => {
-   //console.log(client);  //client.readyState === WebSocket.OPEN
-   //client.send('hello, Im the server!, and this is a broadcast');
-   //});
+}
+
+/*setInterval(() => {
+   waitSockServ.broadcast();
+}, 5000)*/
+
+function closeBroadcast(sockServ, code, reason) {
+   sockServ.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN)
+         client.close(code, reason);
+   });
+}
+
+function msgBroadcast(sockServ, msg) {
+   sockServ.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN)
+         client.send(msg);
+   });
 }
 
 //segurança
