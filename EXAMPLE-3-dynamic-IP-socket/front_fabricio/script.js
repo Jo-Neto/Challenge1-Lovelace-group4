@@ -1,4 +1,5 @@
-url = window.location.href.slice(7, -1);
+const url = window.location.href.slice(7, -1);
+const socketLine = new WebSocket(`ws://${url}:80/line`, [], { followRedirects: true });
 
 const reducer = (total, element) => {
    total += `<p>${element}</p>`;
@@ -24,31 +25,39 @@ $(document).ready(() => {
    });
 });
 
-$('input').eq(1).on('click', sendSock);
-$('input').eq(2).on('click', closeSock);
+var socketGame = null;
 
-const socket = new WebSocket(`ws://${url}:80/line`);
-
-function closeSock() {
-   socket.close();
-}
-
-function sendSock() {
-   socket.send($('input').eq(0).val());
-}
-
-socket.onmessage = (event) => {
-   console.log(event.data);
+socketLine.onclose = event => {
+   console.log('closing socket: ' + socketLine.url);
+   console.log('close code: ' + event.code);
+   console.log('close reason: ' + event.reason);
+   if (event.code === 1000) {
+      socketGame = new WebSocket(`ws://${url}:80/gamestream`);
+      $('input').eq(1).on('click', sendSock);
+      $('input').eq(2).on('click', closeSock(socketLine));
+      $('input').eq(1).attr('hidden', false);
+      $('input').eq(2).attr('hidden', false);
+      socketGame.onmessage = (event) => {
+         console.log("message from socket: " + socketGame.url);
+         console.log(event.data);
+      };
+   }
+   else
+      console.log("socket unexpected behaviour");
 };
 
+function sendSock() {
+   socketGame.send($('input').eq(0).val());
+}
+
+
+function closeSock(ws) {
+   ws.close();
+}
 
 
 
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 
 o socket tem 4 estados: aberto, fechado, abrindo, fechando
@@ -58,12 +67,12 @@ vc acessa esse código usando "socket.readyState"
 quando voce cria o objeto socket, a conexão ja é automaticamente estabelecida e o
 evento "onopen" é disparado, assim:    */
 
-const socket = new WebSocket(`ws://localhost:80/line`);  //abre o socket e conecta
+//const socket = new WebSocket(`ws://localhost:80/line`);  //abre o socket e conecta
 // percebe que "socket" agora é um objeto "websocket", e quando voce cria ele,
 //o evento "on open" é disparado       
 
 
-
+/*
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+--------------------------------------------------------------------+
 //|                         EVENTOS DO OBJETO                          |
@@ -138,3 +147,4 @@ socket.send(  //provavelmente não precisa mecher nisso aqui, mas.....
 ) 
 
 //doc:  https://github.com/websockets/ws/blob/master/doc/ws.md
+*/
