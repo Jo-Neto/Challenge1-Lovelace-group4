@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <!-- Meta-dados -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="./styles/index.css">
+        <link rel="stylesheet" href="./styles/reset.css"> <!--Esse evita as modificações do navegador-->
+
+        <title>Elemental Clash</title>
+
+        <!-- Scripts -->
+        <script defer src="./scripts/index.js"></script>
+    </head>
+
+    <body>
+        <main>
+            <img id="image-logo" src="./assets/logo.svg" alt="Logo do Elemental Clash">
+            <button type="button" id="play-now-button" onclick="openModal('modal-loading')">Jogar agora</button>
+            <p>Role para baixo para ver as regras</p>
+        </main>
+        <!-- ------------Informações sobre o jogo e suas regras------------- -->
+        <section id="info-section"> 
+            <h2>Regras do jogo</h2>
+            <p>
+                Elemental Clash é um jogo de cartas dividido em turnos, onde o baralho é composto por elementos, os jogadores devem jogar um elemento na mesa afim de vencer o elemento jogado pelo oponente.
+            </p>
+            <p>
+                Cada jogador recebe um baralho de 14 cartas, sendo 4 cartas do elemento água, 4 do fogo, 4 de planta e 2 de éter. Dessas 14 cartas, 3 são sorteadas e colocadas na mão do jogador.
+            </p>
+            <p>
+                O jogador deve jogar uma carta e aguardar o oponente jogar a carta dele, ao jogar, verifica-se qual das cartas venceram e então o jogador que venceu ganha 1 ponto e será o primeiro a jogar na rodada seguinte.
+            </p>
+            <p>
+                O jogador que ganhar 5 pontos primeiro vence o duelo.
+            </p>
+            <p>
+                A ordem de qual elemento ganha de qual outro elemento é mostrado na imagem abaixo, fogo vence planta, planta vence água e água vence fogo e por fim, o éter vence todos os outros elementos (use-o com sabedoria).
+            </p>
+
+            <img id="img-rules" src="./assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
+
+            <p>
+                Caso os dois jogadores joguem um mesmo elemento, isso causará um empate e ninguém irá pontuar na rodada, então o jogador que foi o primeiro a jogar na rodada anterior será o primeiro a jogar novamente.
+                <br />
+                Divirta-se!!!
+            </p>
+        </section>
+
+        <div id="modal-loading" class="modal">
+            <h3>Buscando adversário digno</h3>
+            <img src="./assets/loading.gif" alt="">
+        </div>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,10 +1,19 @@
 **/package.json
 **/package-lock.json
+<<<<<<< HEAD
 **/node_modules/**
 node_modules/**
 node_modules/
 
 ##############################################
+=======
+**/node_modules
+**/node_modules/
+node_module/**
+
+
+#==============================================================================
+>>>>>>> stable
 
 # Logs
 logs
