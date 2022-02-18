@@ -33,6 +33,13 @@ body {
     right: 35vw;
 }
 
+#show-if-is-your-turn {
+    margin-left: 10%;
+    margin-bottom: -2%;
+    font-size: 1.6vw;
+    color: aliceblue;
+}
+
 #container-opponents-cards, #player-cards {
     width: 30vw;
     position: absolute;
