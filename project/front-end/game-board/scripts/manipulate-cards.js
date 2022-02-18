@@ -6,6 +6,7 @@ let turn = 1;
 let howManyCardsInThePlayingField = 0;
 let score1 = 0;
 let score2 = 0;
+let cardsOnDeck = 0;
 
 //Receber objeto do server com informações iniciais da partida
 
@@ -30,7 +31,6 @@ $(document).ready( () => {
         $(".cards-in-hand").draggable({
             revert: "invalid",
         })
-
         $("#playing-card-field").droppable({
             drop: function(event, ui) {
                 cardImageTagId = ui.draggable.attr("id")
@@ -172,6 +172,13 @@ function gameLogic(){
             score1 ++;
             $("#playing-card-field").droppable({disabled: false});
             //$("#container-card-player2").css('z-index','0');
+        }
+
+        //função para sumir com o deck quando as cartas acabarem
+        cardsOnDeck --;
+        if(cardsOnDeck <= 0){
+        $("#img-second-cheap").hide();
+        $("#pickable-verso").hide();            
         }
 
         howManyCardsInThePlayingField = 0;
