@@ -103,7 +103,7 @@ main {
     text-align: justify;
 }
 
-#img-rules {
+#img-rules, #image-play-example {
     width: 80%;
     height: 40%;
 }
