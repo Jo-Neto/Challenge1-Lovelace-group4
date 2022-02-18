@@ -6,7 +6,7 @@ let turn = 1;
 let howManyCardsInThePlayingField = 0;
 let score1 = 0;
 let score2 = 0;
-let cardsOnDeck = 0;
+let cardsOnDeck = 11;
 
 //Receber objeto do server com informações iniciais da partida
 
