@@ -96,7 +96,7 @@ class CardGameSession {
       this.player2Handshake.hand = this.serverSide.player2.hand;
    }
    randFirstToPlay() {  //randomize which player plays first, 
-      this.serverSide.player1turn = Boolean(Math.round(Math.random()));
+      this.serverSide.player1turn = true /* Boolean(Math.round(Math.random())); */
       this.player1Handshake.firstToPlay = this.serverSide.player1turn;
       this.player2Handshake.firstToPlay = !this.serverSide.player1turn;
 
@@ -334,8 +334,10 @@ function gameMessage(data, isBinary, ws) {
    console.log("p1 deck: "+CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck);
    console.log("p2 hand: "+CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand);
    console.log("p2 deck: "+CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck);
-   let fakeGameState = {};  //safety
-   fakeGameState = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState;
+   let fakeGameState = { ...CardGameSessionArray[tempData.gameSessionID].serverSide.gameState }  //safety
+//    fakeGameState = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState;
+    fakeGameState.board = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board.slice();
+
    if (CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs === ws) {//p1 message
       if (CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p1 turn
          CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, p2 can't play yet
