@@ -14,7 +14,7 @@ const url = require('url');
 //+------------------------------------------------------------------+
 //|                       ARBITRATY PORTS                            |
 //+------------------------------------------------------------------+
-const frontPort = 80;
+const frontPort = 443;
 const gameSocketPort = null; //currently unused;
 const waitLineSocketPort = null; //currently unused;
 const chatSocketPort = null; //currently unused;
