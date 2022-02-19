@@ -9,7 +9,7 @@ function closeModal(modalId) {
 }
 
 const url = window.location.href.slice(7,-1);
-const port = 80;
+const port = 443;
 
 document.getElementById('play-now-button').addEventListener('click', ()=>{
    const socket = new WebSocket(`ws://${url}:${port}/line`);
