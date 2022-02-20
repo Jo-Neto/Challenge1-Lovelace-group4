@@ -10,3 +10,6 @@
 * kebab-case for HTML attributes, this-is-kebab-case
 * camelCase case for Javascript, thisIsCamelCase
 * english language on the code
+
+## Projetos Restantes
+https://github.com/Jo-Neto/Challenge1-Lovelace-group4/projects
