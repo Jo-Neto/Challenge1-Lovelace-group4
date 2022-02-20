@@ -120,6 +120,8 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
+    showWhosTurn()
+
     if ( gameState.board[1] != '' ) {
         showEnemyCard(gameState.board[1]);
     }
@@ -249,8 +251,8 @@ function cleanTheCardField(tagCardId) {
 //     });
 // }
 
-function showWhosmyTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-myTurn").text("É sua vez de jogar!") : $("#show-if-is-your-myTurn").text("É a vez do oponente");
+function showWhosTurn() {
+    gameState.myTurn === true ? $("#show-if-is-your-turn").text("É sua vez de jogar!") : $("#show-if-is-your-turn").text("É a vez do oponente");
 }
 
 /*
