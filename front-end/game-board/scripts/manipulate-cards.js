@@ -12,39 +12,52 @@ let gameState = {
     hand: null,
     board: ['', '']  //me, enemy
 }
+
 /*
-     gameSessionID: Number(currSessionID),
-            gameSessionID: Number(currSessionID),
-            currTurn: 0,
-            myTurn: null,
-            board: ['',''],  // 
-            scoreP1: 0,
-            scoreP2: 0,
-            enemyGaveUp: false
+    coisas faltando:
+        1- receber mensagem de vitoria e derrota
+        2- ping/pong pra saber se o server ta vivo
+        3- mensagem de reconexão na pagina HOME
+        4- leaderboard
+        5- leaderboard
+        6- layout do chat, precisa ter um array pro player e pro adversario, para não haver limite de mensagens, pode haver anti-spam,
+        7- leaderboard
+        8- tela de login e registro na home
 */
 
 //board [null, card]
 
 gameSocket.onopen = (event) => {
-    console.log("game socket open");
+    console.log("GAME SOCKET OPEN, SOCKET DATA: ");
+    console.log(event);
+    console.log("=====================================================");
 }
 
 gameSocket.onmessage = (event) => {
+    console.log("SERV MSG ==> "+ event.data);
+    console.log("=====================================================");
     let obj = JSON.parse(event.data);
-    console.log(obj);
     if (obj.hasOwnProperty('myTurn')) {
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
         // showEnemyCard(obj.board[1]);
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
-        document.getElementById("score-player1").innerHTML = obj.scoreP1;
-        document.getElementById("score-player2").innerHTML = obj.scoreP2;
+        document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
+        document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
+        console.log("PARSED SERV MESSAGE: ");
+        console.log(obj);
+        console.log("=====================================================");
     } else {
         gameState.gameSessionID = obj.gameSessionID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
+        document.getElementById("score-player1").innerHTML = '0';
+        document.getElementById("score-player2").innerHTML = '0';
+        console.log("SERV HANDSHAKE OBJECT: ");
+        console.log(obj);
+        console.log("=====================================================");
     }
     if (gameState.myTurn) {
         $("#playing-card-field").droppable( { disabled: false } );
@@ -52,8 +65,15 @@ gameSocket.onmessage = (event) => {
     if (!gameState.myTurn) {
         $("#playing-card-field").droppable( { disabled: true } );
     }
+    console.log("LOCAL GAME STATE: ");
     console.log(gameState);
+    console.log("=====================================================");
     gameStart();
+}
+
+gameSocket.onclose = (event) => {
+    console.log("SOCKET CLOSE ==> "+ event.data);
+    console.log("CODE: "+ event.code+"REASON: "+event.reason);
 }
 
 function showEnemyCard(cardString) {
