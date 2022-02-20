@@ -8,7 +8,7 @@
 4. push nesta branch
 >`Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos, qualquer duvida só colar no ZAP que eu explico`
 
-##Lembretes
+##Lembretes:
 *responsividade mobile (o kenji falou isso bem claro) (sugiro seguir o fluxo "mobile first", que é padrão na industria)
 *Kebab case for HTML attributes
 *camelCase case for Javascript
