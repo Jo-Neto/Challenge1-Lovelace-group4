@@ -33,14 +33,14 @@ let gameState = {
 
 gameSocket.onopen = (event) => {
     console.log("GAME SOCKET OPEN, SOCKET DATA: ");
-    console.log(event);
-    console.log("=======================================");
+    // console.log(event);
+    // console.log("=======================================");
 }
 
 gameSocket.onmessage = (event) => {
-    console.log("==============================================================================================================================================================================================================================================================================================================================");
-    console.log("SERV MSG ==> "+ event.data);
-    console.log("=======================================");
+    // console.log("==============================================================================================================================================================================================================================================================================================================================");
+    // console.log("SERV MSG ==> "+ event.data);
+    // console.log("=======================================");
     let obj = JSON.parse(event.data);
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         gameState.gameSessionID = obj.gameSessionID; //safety
@@ -52,13 +52,15 @@ gameSocket.onmessage = (event) => {
         gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        console.log("RECEIVED DATA: ");
-        console.log(obj);
-        console.log("=======================================");
-    } else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
-        console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
-        console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
-        console.log("=======================================");//fez
+        // console.log("RECEIVED DATA: ");
+        // console.log(obj);
+        // console.log("=======================================");
+    }
+
+    else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
+        // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
+        // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
+        // console.log("=======================================");//fez
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -66,16 +68,21 @@ gameSocket.onmessage = (event) => {
         gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-    } else {
+    }
+
+    else {
         gameState.gameSessionID = obj.gameSessionID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
         document.getElementById("score-player1").innerHTML = '0';
         document.getElementById("score-player2").innerHTML = '0';
-        console.log("SERV HANDSHAKE OBJECT: ");
-        console.log(obj);
-        console.log("=======================================");
+        // console.log("SERV HANDSHAKE OBJECT: ");
+        // console.log(obj);
+        // console.log("=======================================");
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
     }
     if (gameState.myTurn) {
         $("#playing-card-field").droppable( { disabled: false } );
@@ -120,23 +127,17 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
+    showWhosmyTurn();
+    
     if ( gameState.board[1] != '' ) {
         showEnemyCard(gameState.board[1]);
     }
 
-    if ( gameState.board[0] != '' && gameState.board[1] != '') {
-            setTimeout(() => {
-            cleanTheCardField(cardImageTagId);
-            $("#container-card-player2").html('');
-        }, 2000);
-    }
-
-    $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-    $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-    $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
-
     if (gameState.myTurn) {
-        console.log("gamestart rodando if");
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+
         $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
 
         $(".cards-in-hand").draggable({
@@ -157,7 +158,7 @@ function gameStart() {
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
-                callbackFunction(ui.draggable.attr('value'))
+                // callbackFunction(ui.draggable.attr('value'))
                 );
             }
         }); //passa o myTurno para o outro player   
@@ -176,15 +177,6 @@ function callbackFunction(value) {
     console.log(gameState)
     // takeCardFromDeck(value)
 }
-
-/*
-//Sorteia uma carta do array "cards"
-function randomArray(arr) {
-    let num = Math.floor(Math.random() * (arr.length));
-    let elem = arr.splice(num,1)[0];
-
-    return elem;
-}*/
 
 function getCardImage(card) {
 
@@ -222,131 +214,6 @@ function cleanTheCardField(tagCardId) {
     }
 }
 
-// function takeCardFromDeck(tagCardId) {
-
-//     gameState.hand.forEach((card, index) => {
-//         if (card === "empty") {
-
-//             let containerEmpty;
-
-//             switch (index) {
-//                 case 0: containerEmpty = "first";
-//                     break;
-
-//                 case 1: containerEmpty = "second";
-//                     break;
-
-//                 case 2: containerEmpty = "third";
-//                     break;
-//             }
-
-//             $(`#container-${containerEmpty}-hand-card`).html(`<img id=${tagCardId} value=${gameState.hand[index]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[index])}.png" alt="">`);
-
-//             $(".cards-in-hand").draggable({
-//                 revert: "invalid",
-//             });
-//         }
-//     });
-// }
-
 function showWhosmyTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-myTurn").text("É sua vez de jogar!") : $("#show-if-is-your-myTurn").text("É a vez do oponente");
+    gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
-
-/*
-function gameLogic() {
-
-    if (gameState.myTurn === true) {
-        document.getElementById("container-card-player2").style.zIndex = 4;
-    }
-    if (gameState.myTurn === false) {
-        document.getElementById("container-card-player2").style.zIndex = 2;
-    }
-
-
-    if (gameState.howManyCardsInThePlayingField == 2) {
-
-        if (gameState.board[0] == 'e' && gameState.board[1] != 'e') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[1] == 'e' && gameState.board[0] != 'e') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'w' && gameState.board[1] == 'f') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'w' && gameState.board[1] == 'p') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'f' && gameState.board[1] == 'w') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'f' && gameState.board[1] == 'p') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'p' && gameState.board[1] == 'w') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'p' && gameState.board[1] == 'f') {
-            gameState.myTurn = false;
-        }
-
-        howManyCardsInThePlayingField = 0;
-        document.getElementById("score-player1").innerHTML = gameState.score1;
-        document.getElementById("score-player2").innerHTML = gameState.score2;
-
-        setTimeout(() => {
-            cleanTheCardField(cardImageTagId);
-            $("#container-card-player2").html('');
-            takeCardFromDeck(cardImageTagId);
-        }, 2000);
-
-        showWhosmyTurn();
-
-        if (gameState.score1 == 5) {
-            alert("player 1 wins");
-        }
-        if (gameState.score2 == 5) {
-            alert("player 2 wins");
-        }
-    }
-}
-
-/*
-funçoes para teste do player 2 abaixo
-*/
-
-//Socket onmessage vai chamar showCard()
-//Obs: tem q mexer na showCard()
-/*
-function showCard(element) {
-    if (myTurn == 2) {
-        switch (element) {
-            case 'f':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-fire.png" alt="">');
-                gameState.board[1] = "f";
-                break;
-            case 'w':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-water.png" alt="">');
-                gameState.board[1] = "w";
-                break;
-            case 'p':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-plant.png" alt="">');
-                gameState.board[1] = "p";
-                break;
-            case 'e':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-ether.png" alt="">');
-                gameState.board[1] = "e";
-                break;
-
-            default:
-                break;
-        }
-        $("#playing-card-field").droppable({ disabled: false });
-        howManyCardsInThePlayingField++;
-        myTurn = 1; //passa o myTurno para o player 1
-        showWhosmyTurn(myTurn);
-
-        gameLogic();
-    }
-}*/

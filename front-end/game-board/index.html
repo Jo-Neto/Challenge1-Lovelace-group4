@@ -10,19 +10,17 @@
         <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
 
         <!-- Styles -->
+        <link rel="stylesheet" href="styles/reset.css"> <!--Esse evita as interferências do navegador-->
         <link rel="stylesheet" href="styles/styles.css">
-        <link rel="stylesheet" href="styles/reset.css"> <!--Esse evita as modificações do navegador-->
+        <link rel="stylesheet" href="styles/top.css">
+        <link rel="stylesheet" href="styles/modal.css">
+        <link rel="stylesheet" href="styles/cheap-flip.css">
+        <link rel="stylesheet" href="styles/sidebar-menu.css">
+        
 
         <title>Element Clash</title>
-
-        <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
-        <script defer src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-        <script defer src="./scripts/scripts.js"></script>
-        <script defer src="./scripts/manipulate-cards.js"></script>
     </head>
-    
     <body>
-
         <nav id="menu">
             <img src="./assets/menu_open_white_24dp.svg" alt="" onclick="closeModal('menu')" id="btn-menu-out">
             <ul>
@@ -31,57 +29,66 @@
                 <li onclick="openModal('modal-logoff')">Sair</li>
             </ul>
         </nav>
-
         <header>
             <img src="./assets/menu_white_24dp.svg" alt="" onclick="openModal('menu')" id="btn-menu-in">
-            <div id="game-score">
-                <span>Player 1</span>
-                <span> 
-                    <span class="score-numbers" id="score-player1">0</span>
-                     X 
-                    <span class="score-numbers" id="score-player2">0</span> 
-                </span>
-                <span>Player 2</span>
-            </div>
+            <span id="right-side">
+               <span id="show-if-is-your-turn"></span>
+                <div id="game-score">
+                    <span>Player 1</span>
+                    <span> 
+                        <span class="score-numbers" id="score-player1">0</span>
+                        X 
+                        <span class="score-numbers" id="score-player2">0</span> 
+                    </span>
+                    <span>Player 2</span>
+                </div> 
+            </span>
+            
         </header>
 
-        <!-- elementos para teste abaixo-->
-        <div id="player2-test">
-            <button class="btn-elements" id="btn-fire" onclick="showCard('f')">Fogo</button>
-            <button class="btn-elements" id="btn-water" onclick="showCard('w')">Agua</button>
-            <button class="btn-elements" id="btn-plant" onclick="showCard('p')">Planta</button>
-            <button class="btn-elements" id="btn-eter" onclick="showCard('e')">Eter</button>
+        <div id="container-opponents-cheap-and-cards">
+            <img id="first-cheap" class="cheap" src="./assets/cheap.png" alt="">
+            <span id="container-opponents-cards">
+                <img class="card" id="first-opponents-card" src="assets/verso.png" alt="">
+                <img class="card" id="second-opponents-card" src="assets/verso.png" alt="">
+                <img class="card" id="third-opponents-card" src="assets/verso.png" alt="">
+            </span>
         </div>
+        
+        <img id="playing-card-field" src="./assets/playing-card-field.svg" alt="">
 
-        <div class="container-cards-from-hand" id="container-card-player2"></div>
-
-        </div>
-
-
-        <!-- elementos para teste acima-->
-
-        <img id="first-cheap" src="./assets/cheap.svg" alt="">
-        <img id="playing-card-field" src="./assets/playing-card-field.svg" alt="">        
         <div id="container-hand-cards-and-second-cheap">
 
-            <span id="show-if-is-your-turn"></span>
-
-            <div class="container-cards-from-hand" id="container-first-hand-card"> </div>
-            <div class="container-cards-from-hand" id="container-second-hand-card"> </div>
-            <div class="container-cards-from-hand" id="container-third-hand-card"> </div>
+            <div id="player-cards">
+                <div class="container-cards-from-hand card" id="container-first-hand-card"></div>
+                <div class="container-cards-from-hand card" id="container-second-hand-card"></div>
+                <div class="container-cards-from-hand card" id="container-third-hand-card"></div>
+            </div>
 
             <div id="second-cheap">
-                <img id="img-second-cheap" src="./assets/cheap.svg" alt="">
+                <img id="img-second-cheap" class="cheap" src="./assets/cheap.png" alt="">
                 
                 <div class="flip-card">
                     <div class="flip-card-inner">
-                        <img id="pickable-verso" class="flip-card-front" src="./assets/verso.png" alt="" onclick="flipCard()">
+                        <img id="pickable-verso" class="card flip-card-front" src="./assets/verso.png" alt="" onclick="flipCard()">
                         <!-- Arrastar esse lado -->
-                        <img id="pickable-card" class="flip-card-back" src="./assets/card-ether.png" alt="">
+                        <img id="pickable-card" class="card flip-card-back" src="./assets/card-ether.png" alt="">
                     </div>
                 </div>
-            </div>
-            
+            </div> 
+            <!-- elementos para teste abaixo-->
+
+            <!-- <div id="player2-test">
+                    <button class="btn-elements" id="btn-fire" onclick="showCard('f')">Fogo</button>
+                    <button class="btn-elements" id="btn-water" onclick="showCard('w')">Agua</button>
+                    <button class="btn-elements" id="btn-plant" onclick="showCard('p')">Planta</button>
+                    <button class="btn-elements" id="btn-eter" onclick="showCard('e')">Eter</button>
+                </div>
+                <div class="container-cards-from-hand" id="container-card-player2"></div> -->
+            <!-- elementos para teste acima-->
+        </div>
+
+        
             
         </div>
 
@@ -105,5 +112,9 @@
                 Divirta-se!!!</p>
         </div>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        <script src="./scripts/scripts.js"></script>
+        <script src="./scripts/manipulate-cards.js"></script>
     </body>
 </html>
