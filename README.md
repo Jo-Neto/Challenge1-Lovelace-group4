@@ -16,3 +16,5 @@
 -camelCase case for Javascript
 
 -english language on the code
+
+> Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos, qualquer duvida só colar no ZAP que eu explico
