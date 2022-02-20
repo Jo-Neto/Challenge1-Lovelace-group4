@@ -377,14 +377,17 @@ function gameMessage(data, isBinary, ws) {
          console.log("p1 hand: " + CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand);
          console.log("p1 deck: " + CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck);
          fakeGameState.gameSessionID = tempData.gameSessionID;
-         fakeGameState.board[0] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1]; //send board to p2
-         fakeGameState.board[1] = tempData.cardPlayed;
          fakeGameState.hand = [...CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand];
+         fakeGameState.msgType = 'waitingFeedback';
          CardGameSessionArray[tempData.gameSessionID].roundCheck();
+         fakeGameState.board[0] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1]; //send board to p2
+         fakeGameState.board[1] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0];
          fakeGameState.myTurn = !CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn;
          fakeGameState.scoreP1 = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1;
          fakeGameState.scoreP2 = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2;
          CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify({
+            msgType: 'instantFeedback',
+            board: [CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0], CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1]],
             newHand: CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand,
             myTurn: CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
             scoreP1: CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
@@ -405,14 +408,17 @@ function gameMessage(data, isBinary, ws) {
          console.log("p2 hand: " + CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand);
          console.log("p2 deck: " + CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck);
          fakeGameState.gameSessionID = tempData.gameSessionID;
-         fakeGameState.board[0] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0];  //send board to p1
-         fakeGameState.board[1] = tempData.cardPlayed;
          fakeGameState.hand = [...CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand];
+         fakeGameState.msgType = 'waitingFeedback';
          CardGameSessionArray[tempData.gameSessionID].roundCheck();
+         fakeGameState.board[0] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0];  //send board to p1
+         fakeGameState.board[1] = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1];
          fakeGameState.myTurn = CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn;
          fakeGameState.scoreP1 = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1;
          fakeGameState.scoreP2 = CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2;
          CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify({
+            msgType: 'instantFeedback',
+            board: [CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1], CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0]],
             newHand: CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand,
             myTurn: !CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
             scoreP1: CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
