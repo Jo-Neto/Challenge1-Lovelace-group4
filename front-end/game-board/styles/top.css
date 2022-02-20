@@ -1,6 +1,10 @@
 header {
     width: 100vw;
     height: 7vh;
+
+    display: flex;
+    justify-content: space-between;
+
 }
 
 #btn-menu-in {
@@ -8,11 +12,39 @@ header {
     margin-left: 3vw;
 }
 
+#right-side{
+    width: 70vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+#show-if-is-your-turn {
+    width: 25vw;
+    height: 7vh;
+    margin-right: 48vw;
+    padding-left: 4.3vw;
+
+    position: relative;
+    visibility: visible;
+
+    font-size: 1.6vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    color: aliceblue;
+
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(0, 149, 59, 0.8) 0%, rgba(107, 199, 42, 0.8) 100%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 0px 30px;
+}
+
 #game-score {
-    width: 50%;
+    width: 50vw;
     min-width: 250px;
     height: 7vh;
-    float: right;
+    position: absolute;
     color: #f5f5f5;
     font-size: 20px;
 
