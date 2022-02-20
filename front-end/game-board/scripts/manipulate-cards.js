@@ -15,14 +15,18 @@ let gameState = {
 
 /*
     coisas faltando:
-        1- receber mensagem de vitoria e derrota
-        2- ping/pong pra saber se o server ta vivo
-        3- mensagem de reconexão na pagina HOME
-        4- leaderboard
-        5- leaderboard
-        6- layout do chat, precisa ter um array pro player e pro adversario, para não haver limite de mensagens, pode haver anti-spam,
-        7- leaderboard
-        8- tela de login e registro na home
+        --fazer a carta comprada aparecer
+        -- identificador visualmente qual player eu sou e colocar nomes no lugar de "player 1" e "player 2"
+        -- fazer a carta inimiga não sumir até o round terminar
+        -- receber mensagem de vitoria e derrota
+        -- ping/pong pra saber se o server ta vivo
+        -- mensagem de reconexão na pagina HOME
+        -- leaderboard
+        -- layout do chat, precisa ter um array pro player e pro adversario, para não haver limite de mensagens, pode haver anti-spam,
+        -- tela de login e registro na home
+
+        SUGESTÃO: fica dificil saber a carta inimiga porque o layout do board ja tem 4 cartas, acabo me confundindo
+        então talvez tirar as 4 cartas fixas, ou distinguir melhor as cartas de "verdade"
 */
 
 //board [null, card]
@@ -30,14 +34,15 @@ let gameState = {
 gameSocket.onopen = (event) => {
     console.log("GAME SOCKET OPEN, SOCKET DATA: ");
     console.log(event);
-    console.log("=====================================================");
+    console.log("=======================================");
 }
 
 gameSocket.onmessage = (event) => {
+    console.log("==============================================================================================================================================================================================================================================================================================================================");
     console.log("SERV MSG ==> "+ event.data);
-    console.log("=====================================================");
+    console.log("=======================================");
     let obj = JSON.parse(event.data);
-    if (obj.hasOwnProperty('myTurn')) {
+    if (obj.hasOwnProperty('board')) { //só recebe board quando o outro joga
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
         // showEnemyCard(obj.board[1]);
@@ -45,9 +50,17 @@ gameSocket.onmessage = (event) => {
         gameState.myTurn = obj.myTurn;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        console.log("PARSED SERV MESSAGE: ");
+        console.log("RECEIVED PLAY: PARSED SERV MESSAGE: ");
         console.log(obj);
-        console.log("=====================================================");
+        console.log("=======================================");
+    } else if(obj.hasOwnProperty('newHand')) { //carta comprada, recebe a nova mão logo depois de jogar
+        console.log("AFTERPLAY: PARSED SERV MESSAGE: ");
+        console.log(obj);
+        console.log("=======================================");
+        gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
+        gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
+        document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
+        document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     } else {
         gameState.gameSessionID = obj.gameSessionID;
         gameState.player = obj.whichPlayer;
@@ -57,7 +70,7 @@ gameSocket.onmessage = (event) => {
         document.getElementById("score-player2").innerHTML = '0';
         console.log("SERV HANDSHAKE OBJECT: ");
         console.log(obj);
-        console.log("=====================================================");
+        console.log("=======================================");
     }
     if (gameState.myTurn) {
         $("#playing-card-field").droppable( { disabled: false } );
@@ -67,13 +80,14 @@ gameSocket.onmessage = (event) => {
     }
     console.log("LOCAL GAME STATE: ");
     console.log(gameState);
-    console.log("=====================================================");
+    console.log("=======================================");
     gameStart();
 }
 
 gameSocket.onclose = (event) => {
-    console.log("SOCKET CLOSE ==> "+ event.data);
-    console.log("CODE: "+ event.code+"REASON: "+event.reason);
+    console.log("SOCKET CLOSE ==> "+ event);
+    console.log("CODE: "+ event.code);
+    console.log("REASON: "+event.reason);
 }
 
 function showEnemyCard(cardString) {
