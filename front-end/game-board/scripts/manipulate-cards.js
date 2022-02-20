@@ -1,6 +1,6 @@
 $("#playing-card-field").droppable({ disabled: true });  //impossibilita o jogador de jogar até que....
 const url = window.location.href.slice(7, -6);
-const port = 443;
+const port = 80;
 const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
