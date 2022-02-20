@@ -1,21 +1,14 @@
-# Stable version Repo
-
-##Workflow:
-*por favor galera, utilizem o workflow abaixo:
+## Workflow:
+por favor galera, utilizem o workflow abaixo:
 1. criar uma **nova** branch
 2. fazer alterações na **nova** branch
 3. commitar nesta branch
 4. push nesta branch
->`Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos, qualquer duvida só colar no ZAP que eu explico`
 
-##Lembretes:
-*responsividade mobile (o kenji falou isso bem claro) (sugiro seguir o fluxo "mobile first", que é padrão na industria)
-*Kebab case for HTML attributes
-*camelCase case for Javascript
-*english language on the code
+##### `Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos, qualquer duvida só colar no ZAP que eu explico`
 
-
-We also have the following build guides:
-* Building on Windows with `MSYS2` at [COMPILING-MSYS.md](doc/COMPILING/COMPILING-MSYS.md)
-* Building on Windows with `vcpkg` at [COMPILING-VS-VCPKG.md](doc/COMPILING/COMPILING-VS-VCPKG.md)
-* Building with `cmake` at [COMPILING-CMAKE.md](doc/COMPILING/COMPILING-CMAKE.md)  (*unofficial guide*)
+## Lembretes
+* responsividade mobile (o kenji falou isso bem claro) (sugiro seguir o fluxo "mobile first", que é padrão na industria)
+* Kebab case for HTML attributes
+* camelCase case for Javascript
+* english language on the code
