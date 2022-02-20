@@ -1,5 +1,5 @@
 ## Workflow:
-###por favor galera, utilizem o workflow abaixo:
+### por favor galera, utilizem o workflow abaixo:
 1. criar uma **nova** branch
 2. fazer alterações na **nova** branch
 3. commitar nesta branch
