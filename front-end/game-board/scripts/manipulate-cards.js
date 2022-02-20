@@ -33,32 +33,33 @@ let gameState = {
 
 gameSocket.onopen = (event) => {
     console.log("GAME SOCKET OPEN, SOCKET DATA: ");
-    console.log(event);
-    console.log("=======================================");
+    // console.log(event);
+    // console.log("=======================================");
 }
 
 gameSocket.onmessage = (event) => {
-    console.log("==============================================================================================================================================================================================================================================================================================================================");
-    console.log("SERV MSG ==> "+ event.data);
-    console.log("=======================================");
+    // console.log("==============================================================================================================================================================================================================================================================================================================================");
+    // console.log("SERV MSG ==> "+ event.data);
+    // console.log("=======================================");
     let obj = JSON.parse(event.data);
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
-        // showEnemyCard(obj.board[1]);
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        console.log("RECEIVED DATA: ");
-        console.log(obj);
-        console.log("=======================================");
-    } else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
-        console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
-        console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
-        console.log("=======================================");//fez
+        // console.log("RECEIVED DATA: ");
+        // console.log(obj);
+        // console.log("=======================================");
+    }
+
+    else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
+        // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
+        // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
+        // console.log("=======================================");//fez
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -66,16 +67,21 @@ gameSocket.onmessage = (event) => {
         gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-    } else {
+    }
+
+    else {
         gameState.gameSessionID = obj.gameSessionID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
         document.getElementById("score-player1").innerHTML = '0';
         document.getElementById("score-player2").innerHTML = '0';
-        console.log("SERV HANDSHAKE OBJECT: ");
-        console.log(obj);
-        console.log("=======================================");
+        // console.log("SERV HANDSHAKE OBJECT: ");
+        // console.log(obj);
+        // console.log("=======================================");
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
     }
     if (gameState.myTurn) {
         $("#playing-card-field").droppable( { disabled: false } );
@@ -120,25 +126,29 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
+<<<<<<< HEAD
     showWhosTurn()
 
     if ( gameState.board[1] != '' ) {
         showEnemyCard(gameState.board[1]);
     }
+=======
+>>>>>>> 3039bf1087d0398c24043b13df35166dc5f7e443
 
-    if ( gameState.board[0] != '' && gameState.board[1] != '') {
-            setTimeout(() => {
-            cleanTheCardField(cardImageTagId);
-            $("#container-card-player2").html('');
-        }, 2000);
+    console.log(gameState.board)
+    console.log("indice 1: " + gameState.board[1])
+
+    if ( gameState.board[1] === 'w' || gameState.board[1] === 'f' || gameState.board[1] === 'p' || gameState.board[1] === 'e' ) {
+        showEnemyCard(gameState.board[1]);
     }
 
-    $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-    $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-    $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+    showWhosmyTurn();
 
     if (gameState.myTurn) {
-        console.log("gamestart rodando if");
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+
         $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
 
         $(".cards-in-hand").draggable({
@@ -159,7 +169,7 @@ function gameStart() {
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
-                callbackFunction(ui.draggable.attr('value'))
+                // callbackFunction(ui.draggable.attr('value'))
                 );
             }
         }); //passa o myTurno para o outro player   
@@ -178,15 +188,6 @@ function callbackFunction(value) {
     console.log(gameState)
     // takeCardFromDeck(value)
 }
-
-/*
-//Sorteia uma carta do array "cards"
-function randomArray(arr) {
-    let num = Math.floor(Math.random() * (arr.length));
-    let elem = arr.splice(num,1)[0];
-
-    return elem;
-}*/
 
 function getCardImage(card) {
 
@@ -224,6 +225,7 @@ function cleanTheCardField(tagCardId) {
     }
 }
 
+<<<<<<< HEAD
 // function takeCardFromDeck(tagCardId) {
 
 //     gameState.hand.forEach((card, index) => {
@@ -352,3 +354,8 @@ function showCard(element) {
         gameLogic();
     }
 }*/
+=======
+function showWhosmyTurn() {
+    gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
+}
+>>>>>>> 3039bf1087d0398c24043b13df35166dc5f7e443
