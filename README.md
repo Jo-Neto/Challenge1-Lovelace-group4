@@ -7,6 +7,14 @@
 
 -camelCase case for Javascript
 
--english language
+-english language on the code
 
-A pasta "project" conterá a nossa aplicação
+##Workflow
+
+-por favor galera, utilizem o workflow abaixo:
+    1. criar uma **nova** branch
+    2. fazer alterações na **nova** branch
+    3. commitar nesta branch
+    4. push nesta branch
+
+    Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos

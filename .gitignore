@@ -1,11 +1,19 @@
 **/package.json
 **/package-lock.json
+<<<<<<< HEAD
+**/node_modules/**
+node_modules/**
+node_modules/
+
+##############################################
+=======
 **/node_modules
 **/node_modules/
 node_module/**
 
 
 #==============================================================================
+>>>>>>> stable
 
 # Logs
 logs
@@ -111,3 +119,5 @@ dist
 
 # TernJS port file
 .tern-port
+
+**/node_modules
