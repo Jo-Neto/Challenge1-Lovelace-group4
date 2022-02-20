@@ -63,6 +63,7 @@ gameSocket.onmessage = (event) => {
         // console.log("=======================================");//fez
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
+        playCardSound("cardDraw");//executa o som de comprar carta        
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
@@ -107,18 +108,22 @@ function showEnemyCard(cardString) {
         case 'f':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.png" alt="">');
             gameState.board[1] = "f";
+            playCardSound("f");
             break;
         case 'w':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.png" alt="">');
             gameState.board[1] = "w";
+            playCardSound("w");
             break;
         case 'p':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.png" alt="">');
             gameState.board[1] = "p";
+            playCardSound("p");
             break;
         case 'e':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-ether.png" alt="">');
             gameState.board[1] = "e";
+            playCardSound("e");
             break;
         default:
             break;
@@ -148,6 +153,7 @@ function gameStart() {
             drop: function (event, ui) {
                 cardImageTagId = ui.draggable.attr("id");
                 gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
+                playCardSound(gameState.board[0]);
                 gameState.myTurn = false;
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosmyTurn();
@@ -194,6 +200,36 @@ function getCardImage(card) {
     }
 
     return nameOfImageArchive;
+}
+
+function playCardSound(card) {
+
+    let nameOfSoundArchive;
+
+    switch (card) {
+        case "w": nameOfSoundArchive = new Audio('assets/sounds/waterCardSound.mp3');
+            nameOfSoundArchive.play();
+            break;
+        case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
+            nameOfSoundArchive.play();
+            break;
+        case "p": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para plantCardSound quando tiver o som
+            nameOfSoundArchive.play();
+            break;
+        case "e": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para eterCardSound quando tiver o som
+            nameOfSoundArchive.play();
+            break;
+        case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+            nameOfSoundArchive.play();
+            break;
+        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+            nameOfSoundArchive.play();
+            break;
+        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+            nameOfSoundArchive.play();
+            break;
+        
+    }
 }
 
 function cleanTheCardField(tagCardId) {
