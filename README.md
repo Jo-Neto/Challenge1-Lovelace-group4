@@ -7,6 +7,6 @@
 ##### `Assim mantemos a organização e a integridade do repositório, e facilmente resolvemos os conflitos, qualquer duvida só colar no ZAP que eu explico`
 ## Lembretes
 * responsividade mobile (o kenji falou isso bem claro) (sugiro seguir o fluxo "mobile first", que é padrão na industria)
-* Kebab case for HTML attributes
-* camelCase case for Javascript
+* kebab-case for HTML attributes, this-is-kebab-case
+* camelCase case for Javascript, thisIsCamelCase
 * english language on the code
