@@ -10,12 +10,14 @@ let gameState = {
     player: null,
     myTurn: null,
     hand: null,
-    board: ['', '']  //me, enemy
+    board: ['', ''],  //me, enemy
+    scoreP1: 0,
+    scoreP2: 0 
 }
 
 /*
     coisas faltando:
-        --fazer a carta comprada aparecer
+        -- fazer a carta comprada aparecer
         -- identificador visualmente qual player eu sou e colocar nomes no lugar de "player 1" e "player 2"
         -- fazer a carta inimiga não sumir até o round terminar
         -- receber mensagem de vitoria e derrota
@@ -29,8 +31,6 @@ let gameState = {
         então talvez tirar as 4 cartas fixas, ou distinguir melhor as cartas de "verdade"
 */
 
-//board [null, card]
-
 gameSocket.onopen = (event) => {
     console.log("GAME SOCKET OPEN, SOCKET DATA: ");
     console.log(event);
@@ -42,23 +42,28 @@ gameSocket.onmessage = (event) => {
     console.log("SERV MSG ==> "+ event.data);
     console.log("=======================================");
     let obj = JSON.parse(event.data);
-    if (obj.hasOwnProperty('board')) { //só recebe board quando o outro joga
+    if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
         // showEnemyCard(obj.board[1]);
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
+        gameState.scoreP1 = obj.scoreP1;
+        gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        console.log("RECEIVED PLAY: PARSED SERV MESSAGE: ");
+        console.log("RECEIVED DATA: ");
         console.log(obj);
         console.log("=======================================");
-    } else if(obj.hasOwnProperty('newHand')) { //carta comprada, recebe a nova mão logo depois de jogar
-        console.log("AFTERPLAY: PARSED SERV MESSAGE: ");
-        console.log(obj);
-        console.log("=======================================");
+    } else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
+        console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
+        console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
+        console.log("=======================================");//fez
+        gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
+        gameState.scoreP1 = obj.scoreP1;
+        gameState.scoreP2 = obj.scoreP2;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     } else {
