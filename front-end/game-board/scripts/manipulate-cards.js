@@ -45,7 +45,6 @@ gameSocket.onmessage = (event) => {
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
-        // showEnemyCard(obj.board[1]);
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
         gameState.scoreP1 = obj.scoreP1;
@@ -127,11 +126,14 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
-    showWhosmyTurn();
-    
-    if ( gameState.board[1] != '' ) {
+    console.log(gameState.board)
+    console.log("indice 1: " + gameState.board[1])
+
+    if ( gameState.board[1] === 'w' || gameState.board[1] === 'f' || gameState.board[1] === 'p' || gameState.board[1] === 'e' ) {
         showEnemyCard(gameState.board[1]);
     }
+
+    showWhosmyTurn();
 
     if (gameState.myTurn) {
         $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
