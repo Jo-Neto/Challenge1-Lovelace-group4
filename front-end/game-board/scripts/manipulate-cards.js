@@ -131,6 +131,11 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
+    showWhosTurn()
+
+    if ( gameState.board[1] != '' ) {
+        showEnemyCard(gameState.board[1]);
+    }
 
     console.log(gameState.board)
     console.log("indice 1: " + gameState.board[1])
@@ -253,6 +258,6 @@ function cleanTheCardField(tagCardId) {
     }
 }
 
-function showWhosmyTurn() {
+function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
