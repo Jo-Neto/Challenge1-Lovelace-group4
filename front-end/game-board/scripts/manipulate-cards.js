@@ -126,6 +126,7 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
+
     console.log(gameState.board)
     console.log("indice 1: " + gameState.board[1])
 
