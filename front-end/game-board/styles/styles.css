@@ -52,6 +52,17 @@ body {
     margin: 5vh 0 5vh 0;
 }
 
+#container-card-player2 {
+    position: fixed;
+    left: 46%;
+    top: 41%;
+}
+
+#container-card-player2 img {
+    position: relative;
+    width: 40%;
+}
+
 #container-hand-cards-and-second-cheap {
     width: 100vw;
     display: flex;
