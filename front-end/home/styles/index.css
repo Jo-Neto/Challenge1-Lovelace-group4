@@ -2,7 +2,9 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
-/* Direction Settings */
+::-webkit-scrollbar {
+    width: 0px;
+}
 
 .row-direction {
     display: flex;
@@ -11,45 +13,34 @@
     align-items: center;
 }
 
-/* FINAL Direction Settings */
-
-html {
-    /* Align */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 body {
-    /* Sizing */
     width: 100vw;
+    overflow-x: hidden;
+    overflow-y : scroll;
     min-height: 90vh;
 
     background-color: #0F0F0F;
     color: #F8F0F0;
 
-    /* Align */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* overflow-x: hidden; */
 }
 
 main {
-    /* Sizing */
-    width: 100%;
+    width: 95vw;
+    margin: 5vh 2.5% auto 2.5%;
     height: 90vh;
-    margin-top: 5vh;
     min-height: 235px;
 
     background: #DB1C1C;
     border-radius: 40px;
 
-    /* Align */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    align-self: center;
 }
 
 #play-now-button {
@@ -62,23 +53,24 @@ main {
     height: 40px;
 
     margin-top: 60px;
+    margin-bottom: 5vh;
     cursor: pointer;
 }
 
 #image-logo {
-    /* Sizing */
-    width: 90%;
+    margin-top: 5vh;
+    width: 100%;
     height: 37%;
 }
 
 #info-section {
-    /* Sizing */
     width: 85%;
 
-    /* Align */
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding-bottom: 15vh;
 }
 
 #info-section h2 {
@@ -94,7 +86,6 @@ main {
 }
 
 #info-section p {
-    /* Sizing */
     width: 85%;
 
     font-size: 21px;
@@ -112,7 +103,6 @@ main {
 /* Modais */
 
 .modal {
-    /* Sizing */
     width: 30vw;
     height: 40vh;
     margin: 30vh 30vw 25vh 30vw;
@@ -123,7 +113,6 @@ main {
     background-color: #313030;
     border-radius: 20px;
 
-    /* Align */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -154,7 +143,7 @@ main {
 /* FINAL Modais */
 
 footer {
-    width: 100vw;
+    width: 100%;
     height: 15vh;
 
     background: #232323;
@@ -175,4 +164,16 @@ footer section {
 #social-media {
     width: 50vw;
     justify-content: space-around;
+}
+
+footer h3 {
+   font-size: 20px;
+}
+
+#social-media td img{
+    vertical-align: middle;
+}
+
+.linkedin-logo {
+    width: 1em;
 }
