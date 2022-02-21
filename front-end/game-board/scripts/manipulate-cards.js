@@ -131,14 +131,11 @@ function showEnemyCard(cardString) {
 
 function gameStart() {
 
-<<<<<<< HEAD
     showWhosTurn()
 
     if ( gameState.board[1] != '' ) {
         showEnemyCard(gameState.board[1]);
     }
-=======
->>>>>>> 3039bf1087d0398c24043b13df35166dc5f7e443
 
     console.log(gameState.board)
     console.log("indice 1: " + gameState.board[1])
@@ -147,7 +144,7 @@ function gameStart() {
         showEnemyCard(gameState.board[1]);
     }
 
-    showWhosmyTurn();
+    showWhosTurn();
 
     if (gameState.myTurn) {
         $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
@@ -261,137 +258,6 @@ function cleanTheCardField(tagCardId) {
     }
 }
 
-<<<<<<< HEAD
-// function takeCardFromDeck(tagCardId) {
-
-//     gameState.hand.forEach((card, index) => {
-//         if (card === "empty") {
-
-//             let containerEmpty;
-
-//             switch (index) {
-//                 case 0: containerEmpty = "first";
-//                     break;
-
-//                 case 1: containerEmpty = "second";
-//                     break;
-
-//                 case 2: containerEmpty = "third";
-//                     break;
-//             }
-
-//             $(`#container-${containerEmpty}-hand-card`).html(`<img id=${tagCardId} value=${gameState.hand[index]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[index])}.png" alt="">`);
-
-//             $(".cards-in-hand").draggable({
-//                 revert: "invalid",
-//             });
-//         }
-//     });
-// }
-
 function showWhosTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-turn").text("É sua vez de jogar!") : $("#show-if-is-your-turn").text("É a vez do oponente");
-}
-
-/*
-function gameLogic() {
-
-    if (gameState.myTurn === true) {
-        document.getElementById("container-card-player2").style.zIndex = 4;
-    }
-    if (gameState.myTurn === false) {
-        document.getElementById("container-card-player2").style.zIndex = 2;
-    }
-
-
-    if (gameState.howManyCardsInThePlayingField == 2) {
-
-        if (gameState.board[0] == 'e' && gameState.board[1] != 'e') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[1] == 'e' && gameState.board[0] != 'e') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'w' && gameState.board[1] == 'f') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'w' && gameState.board[1] == 'p') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'f' && gameState.board[1] == 'w') {
-            gameState.myTurn = false;
-        }
-        if (gameState.board[0] == 'f' && gameState.board[1] == 'p') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'p' && gameState.board[1] == 'w') {
-            gameState.myTurn = true;
-        }
-        if (gameState.board[0] == 'p' && gameState.board[1] == 'f') {
-            gameState.myTurn = false;
-        }
-
-        howManyCardsInThePlayingField = 0;
-        document.getElementById("score-player1").innerHTML = gameState.score1;
-        document.getElementById("score-player2").innerHTML = gameState.score2;
-
-        setTimeout(() => {
-            cleanTheCardField(cardImageTagId);
-            $("#container-card-player2").html('');
-            takeCardFromDeck(cardImageTagId);
-        }, 2000);
-
-        showWhosmyTurn();
-
-        if (gameState.score1 == 5) {
-            alert("player 1 wins");
-        }
-        if (gameState.score2 == 5) {
-            alert("player 2 wins");
-        }
-    }
-}
-
-/*
-funçoes para teste do player 2 abaixo
-*/
-
-//Socket onmessage vai chamar showCard()
-//Obs: tem q mexer na showCard()
-/*
-function showCard(element) {
-    if (myTurn == 2) {
-        switch (element) {
-            case 'f':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-fire.png" alt="">');
-                gameState.board[1] = "f";
-                break;
-            case 'w':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-water.png" alt="">');
-                gameState.board[1] = "w";
-                break;
-            case 'p':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-plant.png" alt="">');
-                gameState.board[1] = "p";
-                break;
-            case 'e':
-                $("#container-card-player2").html('<img id="card1" value="w" class="cards-in-hand" src="./assets/card-ether.png" alt="">');
-                gameState.board[1] = "e";
-                break;
-
-            default:
-                break;
-        }
-        $("#playing-card-field").droppable({ disabled: false });
-        howManyCardsInThePlayingField++;
-        myTurn = 1; //passa o myTurno para o player 1
-        showWhosmyTurn(myTurn);
-
-        gameLogic();
-    }
-}*/
-=======
-function showWhosmyTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
->>>>>>> 3039bf1087d0398c24043b13df35166dc5f7e443
