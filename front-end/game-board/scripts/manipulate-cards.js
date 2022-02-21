@@ -42,7 +42,12 @@ gameSocket.onmessage = (event) => {
     // console.log("SERV MSG ==> "+ event.data);
     // console.log("=======================================");
     let obj = JSON.parse(event.data);
+    //console.log("RECEIVED OBJ ==> "+ obj);
+    //console.log(obj);
+    //console.log(event.data);
+    //console.log("=======================================");
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
+        console.log("waitingFeedback");
         gameState.gameSessionID = obj.gameSessionID; //safety
         gameState.board = obj.board;
         gameState.hand = obj.hand;
@@ -60,6 +65,7 @@ gameSocket.onmessage = (event) => {
         // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
+        console.log("instantFeedback");
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
         playCardSound("cardDraw");//executa o som de comprar carta        
@@ -71,6 +77,7 @@ gameSocket.onmessage = (event) => {
     }
 
     else {
+        console.log("message else");
         gameState.gameSessionID = obj.gameSessionID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
@@ -97,9 +104,10 @@ gameSocket.onmessage = (event) => {
 }
 
 gameSocket.onclose = (event) => {
-    console.log("SOCKET CLOSE ==> "+ event);
-    console.log("CODE: "+ event.code);
-    console.log("REASON: "+event.reason);
+    console.log("SOCKET CLOSE: ");
+    console.log(event);
+    console.log("CLOSE CODE: "+ event.code);
+    console.log("CLOSE REASON: "+event.reason);
 }
 
 function showEnemyCard(cardString) {
@@ -162,9 +170,9 @@ function gameStart() {
                 cardImageTagId = ui.draggable.attr("id");
                 gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
                 playCardSound(gameState.board[0]);
-                gameState.myTurn = false;
+                //gameState.myTurn = false;
                 $("#playing-card-field").droppable({ disabled: true })
-                showWhosmyTurn();
+                showWhosTurn();
 
                 gameSocket.send(JSON.stringify({
                     gameSessionID: gameState.gameSessionID,
