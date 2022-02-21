@@ -31,6 +31,7 @@ let gameState = {
 */
 
 gameSocket.onopen = (event) => {
+    playCardSound("backgroundSound");
     //console.log("GAME SOCKET OPEN, SOCKET DATA: ");
     // console.log(event);
     // console.log("=======================================");
@@ -253,6 +254,7 @@ function playCardSound(card) {
             break;
         case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
             nameOfSoundArchive.play();
+            nameOfSoundArchive.volume = 0.15;
             break;
         case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
             nameOfSoundArchive.play();
@@ -268,8 +270,25 @@ function playCardSound(card) {
             break;
         case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
             nameOfSoundArchive.play();
+        case "backgroundSound": nameOfSoundArchive = new Audio('assets/sounds/backgroundSound.mp3');
+            nameOfSoundArchive.loop = true;
+            nameOfSoundArchive.volume = 0.08;
+            nameOfSoundArchive.play();
             break;
         
+    }
+}
+
+function backgroundSound(){
+    myAudio = new Audio('someSound.ogg');
+    if (typeof myAudio.loop == 'boolean') {
+        myAudio.loop = true;
+    }
+    else {
+        myAudio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
     }
 }
 
