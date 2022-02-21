@@ -50,14 +50,16 @@ gameSocket.onmessage = (event) => {
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            openModal("modal-victory")
+            openModal("modal-victory");
+            playCardSound("roundWinner");
         } else {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            openModal("modal-defeat")
+            openModal("modal-defeat");
+            playCardSound("roundLoser");
 
         }
 
-        return console.log(event.data)
+        return console.log(event.data);
     }
 
     //console.log("RECEIVED OBJ ==> "+ obj);
@@ -265,10 +267,10 @@ function playCardSound(card) {
         case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/winnerRound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
             nameOfSoundArchive.play();
             break;
         
