@@ -254,10 +254,10 @@ function playCardSound(card) {
         case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "p": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para plantCardSound quando tiver o som
+        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "e": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para eterCardSound quando tiver o som
+        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');
             nameOfSoundArchive.play();
             break;
         case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
