@@ -263,10 +263,10 @@ function playCardSound(card) {
         case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/winnerRound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
             nameOfSoundArchive.play();
             break;
         
