@@ -88,6 +88,15 @@ gameSocket.onmessage = (event) => {
         gameState.hand = obj.hand;
         document.getElementById("score-player1").innerHTML = '0';
         document.getElementById("score-player2").innerHTML = '0';
+
+        if( gameState.player == 1) {
+            $(`#span-player1`).text("Você")
+            $(`#span-player2`).text("Oponente")
+        } else {
+            $(`#span-player1`).text("Oponente")
+            $(`#span-player2`).text("Você")
+        }
+
         // console.log("SERV HANDSHAKE OBJECT: ");
         // console.log(obj);
         // console.log("=======================================");
