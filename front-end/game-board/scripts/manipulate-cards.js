@@ -5,6 +5,7 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 
 //código 1000 ou vc tá indo pro socket da partida ou acaba a partida
 //Se não é sua partida, o código é 4004, e o socket fecha
+//Modal de vitória ou derrota na linha 119
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
@@ -113,6 +114,10 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: "+ event.code);
     console.log("CLOSE REASON: "+event.reason);
+
+    if (event.reason = "match has finished" ) {
+        //Chama o modal
+    }
 }
 
 function showEnemyCard(cardString) {
