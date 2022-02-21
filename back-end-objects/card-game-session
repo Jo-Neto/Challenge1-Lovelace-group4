@@ -1,0 +1,177 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+this object has internal variables for each game session
+//|                    GAME SESSION OBJECT                           |and methods for controlling each game session independently
+//+------------------------------------------------------------------+and methods for storing the matches in the database
+
+const fs = require('fs');
+
+const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e'];
+
+class CardGameSession {
+   constructor(currSessionID) {
+      this.player1Handshake = {  //first object sent to player 1, sent only once
+         gameSessionID: Number(currSessionID),
+         whichPlayer: 1,
+         firstToPlay: null,
+         hand: []
+      };
+      this.player2Handshake = { //first object sent to player 2, sent only once
+         gameSessionID: Number(currSessionID),
+         whichPlayer: 2,
+         firstToPlay: null,
+         hand: []
+      };
+      this.serverSide = {  //info about the session, server only
+         player1turn: null,
+         gameState: {
+            gameSessionID: Number(currSessionID),
+            currTurn: 0,
+            board: ['', ''],  // [player1, player2]
+            scoreP1: 0,
+            scoreP2: 0,
+            enemyGaveUp: false,
+            isFinished: false
+         },
+         player1: {  //server side only, data about player 1
+            hand: [],
+            indexToReplace: null,
+            deck: null,
+            ip: null,
+            lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
+            gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
+            chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
+         },
+         player2: {  //server side only, data about player 2
+            hand: [],
+            indexToReplace: null,
+            deck: null,
+            ip: null,
+            lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
+            gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
+            chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
+         }
+      };
+      this.randFirstToPlay();
+      this.shuffleDeck();
+      this.serverSide.player1.hand = this.serverSide.player1.deck.splice(0, 3);
+      this.serverSide.player2.hand = this.serverSide.player2.deck.splice(0, 3);
+      this.player1Handshake.hand = this.serverSide.player1.hand;
+      this.player2Handshake.hand = this.serverSide.player2.hand;
+   }
+   randFirstToPlay() {  //randomize which player plays first, 
+      this.serverSide.player1turn = Boolean(Math.round(Math.random()));
+      this.player1Handshake.firstToPlay = this.serverSide.player1turn;
+      this.player2Handshake.firstToPlay = !this.serverSide.player1turn;
+
+   }
+   shuffleDeck() { //shuffle deck 
+      this.serverSide.player1.deck = shuffle(unordDeck);
+      this.serverSide.player2.deck = shuffle(unordDeck);
+   }
+   roundCheck() {
+      console.log("P1 board = " + this.serverSide.gameState.board[0]);
+      console.log("P2 board = " + this.serverSide.gameState.board[1]);
+      if ((this.serverSide.gameState.board[0] === '') || (this.serverSide.gameState.board[1] === '')) //p1 não jogou ou p2 não jogou ainda
+         if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) {//mas ambos não jogaram ainda
+            console.log("round unfinished");
+            if (this.serverSide.gameState.board[0] === '') {
+               console.log("passing turn to P1");
+               this.serverSide.player1turn = true;
+            }
+            else if (this.serverSide.gameState.board[1] === '') {
+               console.log("passing turn to P2");
+               this.serverSide.player1turn = false;
+            } else
+               console.log("logical error, roundcheck(fn), passing turn");
+            return; //XOR return, //só um jogou, o outro não
+         } else
+            console.log("XOR ELSE");
+      else if (this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1]) { //empate 
+         console.log("roundCheck(fn) --> draw");
+      } else if (this.serverSide.gameState.board[0] == 'e' && this.serverSide.gameState.board[1] != 'e') {
+         this.serverSide.gameState.scoreP1++;
+         this.serverSide.player1turn = true;
+      } else if (this.serverSide.gameState.board[1] == 'e' && this.serverSide.gameState.board[0] != 'e') {
+         this.serverSide.gameState.scoreP2++;
+         this.serverSide.player1turn = false;
+      } else if (this.serverSide.gameState.board[0] == 'w' && this.serverSide.gameState.board[1] == 'f') {
+         this.serverSide.gameState.scoreP1++;
+         this.serverSide.player1turn = true;
+      } else if (this.serverSide.gameState.board[0] == 'w' && this.serverSide.gameState.board[1] == 'p') {
+         this.serverSide.gameState.scoreP2++;
+         this.serverSide.player1turn = false;
+      } else if (this.serverSide.gameState.board[0] == 'f' && this.serverSide.gameState.board[1] == 'w') {
+         this.serverSide.gameState.scoreP2++;
+         this.serverSide.player1turn = false;
+      } else if (this.serverSide.gameState.board[0] == 'f' && this.serverSide.gameState.board[1] == 'p') {
+         this.serverSide.gameState.scoreP1++;
+         this.serverSide.player1turn = true;
+      } else if (this.serverSide.gameState.board[0] == 'p' && this.serverSide.gameState.board[1] == 'w') {
+         this.serverSide.gameState.scoreP1++;
+         this.serverSide.player1turn = true;
+      } else if (this.serverSide.gameState.board[0] == 'p' && this.serverSide.gameState.board[1] == 'f') {
+         this.serverSide.gameState.scoreP2++;
+         this.serverSide.player1turn = false;
+      } else
+         console.log("logical error, CardGameSession -> roundCheck method, final else condition");
+
+      if (this.serverSide.gameState.scoreP1 === 5) {
+         console.log("P1 wins the match");
+         this.serverSide.gameState.isFinished = true;
+         this.serverSide.player1.gameWs.send("voce ganhou");
+         this.serverSide.player1.gameWs.close(1000, 'match has finished');
+         this.serverSide.player2.gameWs.send("voce perdeu");
+         this.serverSide.player2.gameWs.close(1000, 'match has finished');
+         this.serverSide.player1.gameWs.terminate();
+         this.serverSide.player2.gameWs.terminate();
+         this.storeOnDatabase('p1');
+         return;
+      } else if (this.serverSide.gameState.scoreP2 === 5) {
+         console.log("P2 wins the match");
+         this.serverSide.gameState.isFinished = true;
+         this.serverSide.player2.gameWs.send("voce ganhou");
+         this.serverSide.player2.gameWs.close(1000, 'match has finished');
+         this.serverSide.player1.gameWs.send("voce perdeu");
+         this.serverSide.player1.gameWs.close(1000, 'match has finished');
+         this.serverSide.player2.gameWs.terminate();
+         this.serverSide.player1.gameWs.terminate();
+         this.storeOnDatabase('p2');
+         return;
+      }
+      this.serverSide.gameState.currTurn++;
+      this.serverSide.gameState.board[0] = '';
+      this.serverSide.gameState.board[1] = '';
+   }
+   storeOnDatabase(winner) {
+      fs.readFile('./database/game-sessions.json', (err, readData) => {
+         let dataBase = JSON.parse(readData);
+         dataBase.push({
+            gameSessionID: this.serverSide.gameState.gameSessionID,
+            currTurn: this.serverSide.gameState.currTurn,
+            isFinished: this.serverSide.gameState.isFinished,
+            hasGivenUp: this.serverSide.gameState.enemyGaveUp,
+            scoreP1: this.serverSide.gameState.scoreP1,
+            scoreP2: this.serverSide.gameState.scoreP2,
+            winner: winner //add disconnect condition
+         });
+         let toWrite = JSON.stringify(dataBase);
+         fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => { });
+         console.log("game session num:" + this.serverSide.gameState.gameSessionID + ' registered on database');
+      });
+   }
+}
+
+function shuffle(array) {
+   let arrCpy = [...array];
+   let currentIndex = arrCpy.length;
+   let randomIndex;
+   while (currentIndex != 0) {   // While there remain elements to shuffle...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--; // Pick a remaining element...
+      [arrCpy[currentIndex], arrCpy[randomIndex]] =  // And swap it with the current element.
+         [arrCpy[randomIndex], arrCpy[currentIndex]];
+   }
+   return arrCpy;
+}
+
+module.exports = CardGameSession;
