@@ -54,9 +54,13 @@ body {
 
 #container-card-player2 {
     position: fixed;
-    left: 45%;
-    top: 38%;
-    width: 8%;
+    left: 46%;
+    top: 41%;
+}
+
+#container-card-player2 img {
+    position: relative;
+    width: 40%;
 }
 
 #container-hand-cards-and-second-cheap {
