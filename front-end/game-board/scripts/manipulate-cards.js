@@ -3,6 +3,9 @@ const url = window.location.href.slice(7, -6);
 const port = 80;
 const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
 
+//código 1000 ou vc tá indo pro socket da partida ou acaba a partida
+//Se não é sua partida, o código é 4004, e o socket fecha
+
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
 let gameState = {
@@ -144,8 +147,6 @@ function gameStart() {
         showEnemyCard(gameState.board[1]);
     }
 
-    showWhosmyTurn();
-
     if (gameState.myTurn) {
         $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
         $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
@@ -164,7 +165,7 @@ function gameStart() {
                 playCardSound(gameState.board[0]);
                 gameState.myTurn = false;
                 $("#playing-card-field").droppable({ disabled: true })
-                showWhosmyTurn();
+                showWhosTurn();
 
                 gameSocket.send(JSON.stringify({
                     gameSessionID: gameState.gameSessionID,
