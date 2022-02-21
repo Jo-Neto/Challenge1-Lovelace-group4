@@ -5,7 +5,6 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 
 //código 1000 ou vc tá indo pro socket da partida ou acaba a partida
 //Se não é sua partida, o código é 4004, e o socket fecha
-//O controle de mostrar o modal de vitória ou derrota é dentro do catch na linha 53
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
@@ -51,16 +50,13 @@ gameSocket.onmessage = (event) => {
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            openModal("modal-victory");
-            playCardSound("roundWinner");
+            openModal("modal-victory")
         } else {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            openModal("modal-defeat");
-            playCardSound("roundLoser");
-
+            openModal("modal-defeat")
         }
 
-        return console.log(event.data);
+        return console.log(event.data)
     }
 
     //console.log("RECEIVED OBJ ==> "+ obj);
@@ -260,10 +256,10 @@ function playCardSound(card) {
             nameOfSoundArchive.play();
             nameOfSoundArchive.volume = 0.15;
             break;
-        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');//mudar para plantCardSound quando tiver o som
+        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');//mudar para eterCardSound quando tiver o som
+        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');
             nameOfSoundArchive.play();
             break;
         case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
