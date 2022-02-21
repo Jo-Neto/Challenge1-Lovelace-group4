@@ -34,6 +34,7 @@
   "homepage": "https://github.com/Jo-Neto/Challenge1-Lovelace-group4#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "fs": "^0.0.1-security",
     "url": "^0.11.0",
     "ws": "^8.5.0"
   }
