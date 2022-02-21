@@ -5,7 +5,6 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 
 //código 1000 ou vc tá indo pro socket da partida ou acaba a partida
 //Se não é sua partida, o código é 4004, e o socket fecha
-//O controle de mostrar o modal de vitória ou derrota é dentro do catch na linha 53
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
@@ -21,10 +20,6 @@ let gameState = {
 
 /*
     coisas faltando:
-        -- fazer a carta comprada aparecer
-        -- identificador visualmente qual player eu sou e colocar nomes no lugar de "player 1" e "player 2"
-        -- fazer a carta inimiga não sumir até o round terminar
-        -- receber mensagem de vitoria e derrota
         -- ping/pong pra saber se o server ta vivo
         -- mensagem de reconexão na pagina HOME
         -- leaderboard
@@ -54,10 +49,10 @@ gameSocket.onmessage = (event) => {
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            //Chamar modal de vitória
+            openModal("modal-victory")
         } else {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            //Chamar modal de derrota
+            openModal("modal-defeat")
         }
 
         return console.log(event.data)
@@ -89,7 +84,7 @@ gameSocket.onmessage = (event) => {
         // console.log("instantFeedback");
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta        
+        playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
@@ -140,10 +135,6 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: "+ event.code);
     console.log("CLOSE REASON: "+event.reason);
-
-    if (event.reason = "match has finished" ) {
-        //Chama o modal
-    }
 }
 
 function showEnemyCard(cardString) {
@@ -178,7 +169,7 @@ function verifyIfHaveTwoCardsInTheField() {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            
+
             $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
             $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
             $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
@@ -194,7 +185,7 @@ setInterval(() => {
 
 function gameStart() {
 
-    console.log(gameState)
+    // console.log(gameState)
 
     $(".cards-in-hand").draggable({
         revert: "invalid",
@@ -217,7 +208,6 @@ function gameStart() {
                 cardImageTagId = ui.draggable.attr("id");
                 gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
                 playCardSound(gameState.board[0]);
-                //gameState.myTurn = false;
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosTurn();
 
@@ -227,18 +217,12 @@ function gameStart() {
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
-                // callbackFunction(ui.draggable.attr('value'))
                 );
 
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   
     }
-}
-
-function callbackFunction(value) {
-    console.log(gameState)
-    // takeCardFromDeck(value)
 }
 
 function getCardImage(card) {
@@ -293,17 +277,14 @@ function cleanTheCardField(tagCardId) {
 
     if (tagCardId === "card1") {
         $("#container-first-hand-card").html("");
-        //gameState.hand[0] = "empty";
     }
 
     else if (tagCardId === "card2") {
         $("#container-second-hand-card").html("");
-        //gameState.hand[1] = "empty";
     }
 
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
-        //gameState.hand[2] = "empty";
     }
 }
 
