@@ -22,7 +22,7 @@ html {
 
 body {
     /* Sizing */
-    width: 95vw;
+    width: 100vw;
     min-height: 90vh;
 
     background-color: #0F0F0F;
@@ -32,6 +32,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* overflow-x: hidden; */
 }
 
 main {
@@ -151,3 +152,27 @@ main {
 }
 
 /* FINAL Modais */
+
+footer {
+    width: 100vw;
+    height: 15vh;
+
+    background: #232323;
+    box-shadow: inset 0px 10px 20px 5px rgba(0, 0, 0, 0.4);
+}
+
+footer section {
+    width: 100%;
+    height: 100%;
+    padding: 15px 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#social-media {
+    width: 50vw;
+    justify-content: space-around;
+}
