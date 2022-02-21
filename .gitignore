@@ -1,12 +1,10 @@
 #package.json will be manually controlled
-
-**/package.json
+**/package.json/**
+package.json
 **/package-lock.json
-<<<<<<< HEAD
 **/node_modules/**
 node_modules/**
 node_modules/
-
 ###############################################################################################################
 
 
