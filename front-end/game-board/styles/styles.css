@@ -16,6 +16,10 @@ body {
     height: auto;
 }
 
+.cards-in-hand {
+    cursor: pointer;
+}
+
 .card img {
     width: 6.7vw;
     height: auto;
