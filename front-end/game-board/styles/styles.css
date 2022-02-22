@@ -24,6 +24,8 @@ body {
 #first-cheap, #img-second-cheap {
     width: 7.65vw;
     height: 22.91vh;
+
+    cursor: pointer;
 }
 
 #container-opponents-cheap-and-cards {

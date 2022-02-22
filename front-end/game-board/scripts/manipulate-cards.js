@@ -7,6 +7,7 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 //Se não é sua partida, o código é 4004, e o socket fecha
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
+let turnForDeck = 11;
 
 let gameState = {
     gameSessionID: null,
@@ -100,11 +101,12 @@ gameSocket.onmessage = (event) => {
         // console.log("instantFeedback");
         gameState.gameSessionID = obj.gameSessionID; 
         gameState.board = obj.board;
-        gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
+        gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
+        gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     }
@@ -125,7 +127,6 @@ gameSocket.onmessage = (event) => {
             $(`#span-player1`).text("Oponente")
             $(`#span-player2`).text("Você")
         }
-
         // console.log("SERV HANDSHAKE OBJECT: ");
         // console.log(obj);
         // console.log("=======================================");
@@ -187,6 +188,8 @@ function showEnemyCard(cardString) {
         default:
             break;
     }
+    
+
 }
 
 function verifyIfHaveTwoCardsInTheField() {
@@ -223,9 +226,10 @@ function gameStart() {
     }
 
     verifyIfHaveTwoCardsInTheField()
-
+    
     if (gameState.myTurn) {
-
+        hideCheap();
+        turnForDeck --;
         $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
 
         $("#playing-card-field").droppable({
@@ -255,14 +259,22 @@ function getCardImage(card) {
     let nameOfImageArchive;
 
     switch (card) {
-        case "w": nameOfImageArchive = 'card-water';
+        case "w": 
+            nameOfImageArchive = 'card-water';
             break;
-        case "f": nameOfImageArchive = 'card-fire';
+        case "f": 
+            nameOfImageArchive = 'card-fire';
             break;
-        case "p": nameOfImageArchive = 'card-plant';
+        case "p": 
+            nameOfImageArchive = 'card-plant';
             break;
-        case "e": nameOfImageArchive = 'card-ether';
+        case "e": 
+            nameOfImageArchive = 'card-ether';
             break;
+        case null:
+            nameOfImageArchive = 'null';
+            break
+
     }
 
     return nameOfImageArchive;
@@ -347,4 +359,13 @@ function cleanTheCardField(tagCardId) {
 
 function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
+}
+
+function hideCheap() {
+    if(turnForDeck == 0){
+        $("#second-cheap").hide();
+    }
+    // if(turnForDeck == 0){
+    //     $("#first-cheap").attr('src','./assets/null.png');
+    // }
 }
