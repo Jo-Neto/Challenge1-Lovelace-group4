@@ -5,7 +5,6 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 
 //código 1000 ou vc tá indo pro socket da partida ou acaba a partida
 //Se não é sua partida, o código é 4004, e o socket fecha
-//Modal de vitória ou derrota na linha 119
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
@@ -21,10 +20,6 @@ let gameState = {
 
 /*
     coisas faltando:
-        -- fazer a carta comprada aparecer
-        -- identificador visualmente qual player eu sou e colocar nomes no lugar de "player 1" e "player 2"
-        -- fazer a carta inimiga não sumir até o round terminar
-        -- receber mensagem de vitoria e derrota
         -- ping/pong pra saber se o server ta vivo
         -- mensagem de reconexão na pagina HOME
         -- leaderboard
@@ -36,6 +31,7 @@ let gameState = {
 */
 
 gameSocket.onopen = (event) => {
+    playCardSound("backgroundSound");
     //console.log("GAME SOCKET OPEN, SOCKET DATA: ");
     // console.log(event);
     // console.log("=======================================");
@@ -45,7 +41,24 @@ gameSocket.onmessage = (event) => {
     // console.log("==============================================================================================================================================================================================================================================================================================================================");
     // console.log("SERV MSG ==> "+ event.data);
     // console.log("=======================================");
-    let obj = JSON.parse(event.data);
+
+    let obj
+    //Esse trecho é pra ver se recebeu alguma string, se receber string é pq a partida acabou, as possíveis strings são "voce ganhou" e "voce perdeu"
+    try {
+        obj = JSON.parse(event.data)
+    } catch {
+
+        if ( event.data === "voce ganhou" ) {
+            gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
+            openModal("modal-victory")
+        } else {
+            gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
+            openModal("modal-defeat")
+        }
+
+        return console.log(event.data)
+    }
+
     //console.log("RECEIVED OBJ ==> "+ obj);
     //console.log(obj);
     //console.log(event.data);
@@ -72,7 +85,7 @@ gameSocket.onmessage = (event) => {
         // console.log("instantFeedback");
         gameState.board = obj.board;
         gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta        
+        playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
@@ -123,10 +136,6 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: "+ event.code);
     console.log("CLOSE REASON: "+event.reason);
-
-    if (event.reason = "match has finished" ) {
-        //Chama o modal
-    }
 }
 
 function showEnemyCard(cardString) {
@@ -161,7 +170,7 @@ function verifyIfHaveTwoCardsInTheField() {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            
+
             $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
             $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
             $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
@@ -177,7 +186,7 @@ setInterval(() => {
 
 function gameStart() {
 
-    console.log(gameState)
+    // console.log(gameState)
 
     $(".cards-in-hand").draggable({
         revert: "invalid",
@@ -200,7 +209,6 @@ function gameStart() {
                 cardImageTagId = ui.draggable.attr("id");
                 gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
                 playCardSound(gameState.board[0]);
-                //gameState.myTurn = false;
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosTurn();
 
@@ -210,18 +218,12 @@ function gameStart() {
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
-                // callbackFunction(ui.draggable.attr('value'))
                 );
 
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   
     }
-}
-
-function callbackFunction(value) {
-    console.log(gameState)
-    // takeCardFromDeck(value)
 }
 
 function getCardImage(card) {
@@ -252,23 +254,41 @@ function playCardSound(card) {
             break;
         case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
             nameOfSoundArchive.play();
+            nameOfSoundArchive.volume = 0.15;
             break;
-        case "p": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para plantCardSound quando tiver o som
+        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "e": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');//mudar para eterCardSound quando tiver o som
+        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');
             nameOfSoundArchive.play();
             break;
         case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/winnerRound.mp3');
             nameOfSoundArchive.play();
             break;
-        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
+        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
+            nameOfSoundArchive.play();
+        case "backgroundSound": nameOfSoundArchive = new Audio('assets/sounds/backgroundSound.mp3');
+            nameOfSoundArchive.loop = true;
+            nameOfSoundArchive.volume = 0.08;
             nameOfSoundArchive.play();
             break;
         
+    }
+}
+
+function backgroundSound(){
+    myAudio = new Audio('someSound.ogg');
+    if (typeof myAudio.loop == 'boolean') {
+        myAudio.loop = true;
+    }
+    else {
+        myAudio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
     }
 }
 
@@ -276,17 +296,14 @@ function cleanTheCardField(tagCardId) {
 
     if (tagCardId === "card1") {
         $("#container-first-hand-card").html("");
-        //gameState.hand[0] = "empty";
     }
 
     else if (tagCardId === "card2") {
         $("#container-second-hand-card").html("");
-        //gameState.hand[1] = "empty";
     }
 
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
-        //gameState.hand[2] = "empty";
     }
 }
 

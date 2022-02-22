@@ -33,6 +33,14 @@
     visibility: hidden;
 }
 
+#modal-victory {
+    visibility: hidden;
+}
+
+#modal-defeat {
+    visibility: hidden;
+}
+
 #btn-modal-logoff {
     /* background-color: #DB1C1C; */
     margin-right: 2vw;
