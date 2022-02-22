@@ -122,6 +122,26 @@
             <img src="./assets/loading.gif" alt="">
         </div>
 
+        <div id="modal-disconnected" class="modal">
+            <h3>Oponente se desconectou</h3>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
+            </div>
+        </div>
+
+        <div id="modal-give-up" class="modal">
+            <h3>Oponente desistiu</h3>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
+            </div>
+        </div>
+
         <div id="modal-rules">
             <img onclick="closeModal('modal-rules')" src="./assets/close_white_24dp.svg" alt="">
             <h2>Regras do jogo</h2>

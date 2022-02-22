@@ -42,6 +42,12 @@
     visibility: hidden;
 }
 
+#modal-disconnected {
+    visibility: hidden;
+}
+#modal-give-up {
+    visibility: hidden;
+}
 #btn-modal-logoff {
     /* background-color: #DB1C1C; */
     margin-right: 2vw;
