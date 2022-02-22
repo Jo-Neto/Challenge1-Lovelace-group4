@@ -13,12 +13,12 @@ const ServerLib = require('../back-end-libs/disconnector-lib.js');
 //|                  SOCKET SERVERS INITIALIZERS                     |
 //+------------------------------------------------------------------+
 const gameSockServ = new WebSocket.Server({ noServer: true, clientTracking: true }); //create serverless socket for multisocket server
-gameSockServ.on('error', (error) => { console.log('gameSockServ error: '); console.log(error); }); //SocketServer error print
+gameSockServ.on('error', (error) => { console.log('GAMESOCK: gameSockServ error: '); console.log(error); }); //SocketServer error print
 gameSockServ.on('connection', gameConnec);  //called at socket creation, at a new game session
-gameSockServ.on('close', () => { console.log("closed gameSockServ"); clearInterval(sockServInterval); }); //clear connection checker 
+gameSockServ.on('close', () => { console.log("GAMESOCK: closed gameSockServ"); clearInterval(sockServInterval); }); //clear connection checker 
 
 function gameConnec(ws) {  //socket initialiazers
-    ws.on('error', (error) => { console.log('gameSock error: '); console.log(error); });  //WebSocket error print
+    ws.on('error', (error) => { console.log('GAMESOCK: gameWebSock error: '); console.log(error); });  //WebSocket error print
     ws.on('close', () => gameClose(ws));
     ws.on('message', (data, isBinary) => gameMessage(data, isBinary, ws));
     ws.isAlive = true;
@@ -32,11 +32,11 @@ function gameConnec(ws) {  //socket initialiazers
 //+------------------------------------------------------------------+
 //|                 TIMEOUT & DISCONNECTION LOGIC                    | //TODO: NEEDS SIMULTANEOUS SESSIONS TEST
 //+------------------------------------------------------------------+
-const sockServInterval = setInterval(() => { 
-    console.log("gameSockServ interval");
+const sockServInterval = setInterval(() => {
+    console.log("GAMESOCK: gameSockServ interval called");
     gameSockServ.clients.forEach((ws) => { //loops trough all the server connections
         if (ws.isAlive === false) { //socket is not alive
-            console.log(ws._socket.remoteAddress+" game socket did not respond a ping, terminating");
+            console.log("GAMESOCK: socket address: " + ws._socket.remoteAddress + " did not respond a ping, terminating");
             return ws.terminate();
         }
         ws.isAlive = false;
@@ -45,13 +45,14 @@ const sockServInterval = setInterval(() => {
 }, 60995); //60995 for possible desync
 
 function gameClose(ws) { //regular disconnect socket
-    console.log("gameClose");
+    console.log("GAMESOCK: ws address: " + ws._socket.remoteAddress + " closed");
     ws.isAlive = false;
     ws.terminate();
-    ServerLib.connectCheckerGame(ServerModule.CardGameSessionArray);
 }
 
-const lineHangChecker = setInterval(() => { ServerLib.connectCheckerGame(ServerModule.CardGameSessionArray); }, 10973); //93333 for possible desync
+const lineHangChecker = setInterval(() => {
+    ServerLib.connectCheckerGame(ServerModule.CardGameSessionArray);
+}, 10973); //93333 for possible desync
 
 
 
@@ -60,20 +61,27 @@ const lineHangChecker = setInterval(() => { ServerLib.connectCheckerGame(ServerM
 //|                       "HANDSHAKE" LOGIC                          | 
 //+------------------------------------------------------------------+ 
 function gameOpen(ws) {
-    console.log("gameOpen -- socket ip: " + ws._socket.remoteAddress);
+    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session) => {  //loops trough all active games
-        console.log("gameOpen -- p1 IP=" + Session.serverSide.player1.ip);
-        console.log("gameOpen -- p2 IP=" + Session.serverSide.player2.ip);
         if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //player 1 waiting handshake or reconnecting
             Session.serverSide.player1.gameWs = ws; //assing socket to P1
-            console.log("sent gamesession to p1");
-            ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
+            if (Session.serverSide.player1.waitingReconec) { //reconnecting
+                Session.serverSide.player1.waitingReconec = false;
+                //TODO: send game state
+            }
+            else //waiting handshake
+                ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
+            console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress);
         } else if ((ws._socket.remoteAddress === Session.serverSide.player2.ip)) { //player 2 waiting handshake or reconnecting
             Session.serverSide.player2.gameWs = ws;  //assing socket to P2
-            console.log("sent gamesession to p2");
+            if (Session.serverSide.player2.waitingReconec) { //reconnecting
+                Session.serverSide.player2.waitingReconec = false;
+                //TODO: send game state
+            }
             ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
+            console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress);
         } else {
-            console.log("player does not belong to session, terminating");
+            console.log("GAMESOCK: player does not belong to session, terminating");
             ws.close(4004, `you don't belong to any ongoing matches`);
             //TODO: REDIRECT TO HOME PAGE
             ws.terminate(); //safety
@@ -145,8 +153,10 @@ function gameMessage(data, isBinary, ws) {
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify(enemyFakeGameState)); //send message to p2
         }
-        else
+        else {
             ws.send("not your turn, front-end error or cheat");
+            console.log("GAMESOCK: wrong player message");
+        }
     }
     else if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p2 turn
@@ -191,10 +201,12 @@ function gameMessage(data, isBinary, ws) {
             //////////////////////////////////////////
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify(enemyFakeGameState));
-        } else
+        } else {
             ws.send("not your turn, front-end error or cheat");
+            console.log("GAMESOCK: wrong player message");
+        }
     }
-    else //ws doesn't belong to session, check possible reconnection trial
+    else {//ws doesn't belong to session, check possible reconnection trial
         ServerModule.CardGameSessionArray.forEach((Session) => {
             if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //p1 trying to reconnect
                 Session.serverSide.player1.gameWs = ws; //redefine websocket
@@ -205,6 +217,7 @@ function gameMessage(data, isBinary, ws) {
                 //TODO: SEND GAME STATE TO P2
             }
         })
+    }
 }
 
 module.exports.gameSockServ = gameSockServ;
