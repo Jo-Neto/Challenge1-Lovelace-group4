@@ -268,9 +268,9 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-function playCardSound(card) {
+let nameOfSoundArchive;
 
-    let nameOfSoundArchive;
+function playCardSound(card) {
 
     switch (card) {
         case "w": nameOfSoundArchive = new Audio('assets/sounds/waterCardSound.mp3');
@@ -299,7 +299,21 @@ function playCardSound(card) {
             nameOfSoundArchive.volume = 0.08;
             nameOfSoundArchive.play();
             break;
-        
+    }
+}
+
+let count = -1;
+function changeSoundConf() {
+    count++;
+    const button = document.getElementById('btn-sound');
+    if(count%2 == 0) {
+        button.setAttribute('src', '');
+        button.setAttribute('src', './assets/music_note_white_24dp.svg');
+        nameOfSoundArchive.pause();
+    } else {
+        button.setAttribute('src', '');
+        button.setAttribute('src', './assets/music_off_white_24dp.svg');
+        nameOfSoundArchive.play();
     }
 }
 
