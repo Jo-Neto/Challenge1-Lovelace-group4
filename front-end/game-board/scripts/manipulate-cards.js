@@ -100,11 +100,12 @@ gameSocket.onmessage = (event) => {
         // console.log("instantFeedback");
         gameState.gameSessionID = obj.gameSessionID; 
         gameState.board = obj.board;
-        gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
+        gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
+        gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     }
