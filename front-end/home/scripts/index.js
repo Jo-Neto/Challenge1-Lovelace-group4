@@ -15,7 +15,7 @@ document.getElementById('play-now-button').addEventListener('click', ()=>{
    const socket = new WebSocket(`ws://${url}:${port}/line`);
 
     socket.addEventListener('close', (event)=>{
-      if(event.code === 1000){
+      if(event.code === 1000 || event.code === 4000){
         //Pedir a página game-board
         console.log("A outra página foi chamada");
         closeModal('modal-loading');
