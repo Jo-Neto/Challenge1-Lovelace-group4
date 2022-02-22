@@ -13,12 +13,12 @@ body {
 
 .card {
     width: 6.7vw;
-    height: 21vh;
+    height: auto;
 }
 
 .card img {
     width: 6.7vw;
-    height: 21vh;
+    height: auto;
 }
 
 #first-cheap, #img-second-cheap {
