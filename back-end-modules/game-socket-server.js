@@ -2,10 +2,9 @@
 //|                    DEDEPENDENCIES/MODULES                        |
 //+------------------------------------------------------------------+
 const WebSocket = require('ws');
-const fs = require('fs');
 
 const ServerModule = require('../server.js');
-const ServerLib = require('../back-end-libs/server-lib');
+const ServerLib = require('../back-end-libs/disconnector-lib.js');
 
 
 
