@@ -113,6 +113,7 @@ function gameMessage(data, isBinary, ws) {
         if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p1 turn
             //TODO: CHECK PLAYER 2 CONNECTION, IF NOT CONNECTED, SAVE P1 PLAY, DISABLE P1 TURN, WAIT FOR P2,
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
+            ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.lastPlayed = 1;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0] = tempData.cardPlayed;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand[tempData.cardPlayedIndex - 1] = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck.shift();
             //console.log("p1 shift index: " + (tempData.cardPlayedIndex - 1));
@@ -157,11 +158,11 @@ function gameMessage(data, isBinary, ws) {
             ws.send("not your turn, front-end error or cheat");
             console.log("GAMESOCK: wrong player message");
         }
-    }
-    else if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs === ws) { //p2 message
+    } else if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p2 turn
             //TODO: CHECK PLAYER 1 CONNECTION, IF NOT CONNECTED, SAVE P2 PLAY, DISABLE P2 TURN, WAIT FOR P1, 
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
+            ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.lastPlayed = 2;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1] = tempData.cardPlayed;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand[tempData.cardPlayedIndex - 1] = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck.shift();
             //console.log("p2 shift index: " + (tempData.cardPlayedIndex - 1));
@@ -206,17 +207,16 @@ function gameMessage(data, isBinary, ws) {
             console.log("GAMESOCK: wrong player message");
         }
     }
-    else {//ws doesn't belong to session, check possible reconnection trial
-        ServerModule.CardGameSessionArray.forEach((Session) => {
-            if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //p1 trying to reconnect
+    else { //ws doesn't belong to session, check possible reconnection trial
+        ServerModule.CardGameSessionArray.forEach( (Session) => {
+            if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //p1 trying to reconnect
                 Session.serverSide.player1.gameWs = ws; //redefine websocket
                 //TODO: SEND GAME STATE TO P1
-            }
-            else if ((ws._socket.remoteAddress === Session.serverSide.player2.ip)) { //p2 trying to reconnect
+            } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //p2 trying to reconnect
                 Session.serverSide.player2.gameWs = ws; //redefine websocket
                 //TODO: SEND GAME STATE TO P2
             }
-        })
+        });
     }
 }
 
