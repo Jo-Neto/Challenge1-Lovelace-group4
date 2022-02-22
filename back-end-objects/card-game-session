@@ -2,13 +2,13 @@
 //+------------------------------------------------------------------+this object has internal variables for each game session
 //|                    GAME SESSION OBJECT                           |and methods for controlling each game session independently
 //+------------------------------------------------------------------+and methods for storing the matches in the database
-
 const fs = require('fs');
 
 const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e'];
 
 class CardGameSession {
    constructor(currSessionID) {
+      this.isFinished = false;
       this.player1Handshake = {  //first object sent to player 1, sent only once
          gameSessionID: Number(currSessionID),
          whichPlayer: 1,
@@ -30,7 +30,7 @@ class CardGameSession {
             scoreP1: 0,
             scoreP2: 0,
             enemyGaveUp: false,
-            isFinished: false
+            disconnec: false
          },
          player1: {  //server side only, data about player 1
             hand: [],
@@ -83,7 +83,7 @@ class CardGameSession {
                this.serverSide.player1turn = false;
             } else
                console.log("logical error, roundcheck(fn), passing turn");
-            return; //XOR return, //só um jogou, o outro não
+            return false; //XOR return, //só um jogou, o outro não
          } else
             console.log("XOR ELSE");
       else if (this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1]) { //empate 
@@ -117,7 +117,6 @@ class CardGameSession {
 
       if (this.serverSide.gameState.scoreP1 === 5) {
          console.log("P1 wins the match");
-         this.serverSide.gameState.isFinished = true;
          this.serverSide.player1.gameWs.send("voce ganhou");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
          this.serverSide.player2.gameWs.send("voce perdeu");
@@ -125,10 +124,9 @@ class CardGameSession {
          this.serverSide.player1.gameWs.terminate();
          this.serverSide.player2.gameWs.terminate();
          this.storeOnDatabase('p1');
-         return;
+         return true;
       } else if (this.serverSide.gameState.scoreP2 === 5) {
          console.log("P2 wins the match");
-         this.serverSide.gameState.isFinished = true;
          this.serverSide.player2.gameWs.send("voce ganhou");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
          this.serverSide.player1.gameWs.send("voce perdeu");
@@ -136,26 +134,35 @@ class CardGameSession {
          this.serverSide.player2.gameWs.terminate();
          this.serverSide.player1.gameWs.terminate();
          this.storeOnDatabase('p2');
-         return;
+         return true;
       }
       this.serverSide.gameState.currTurn++;
       this.serverSide.gameState.board[0] = '';
       this.serverSide.gameState.board[1] = '';
    }
    storeOnDatabase(winner) {
+      console.log("storeOnDatabase(fn)");
+      this.isFinished = true;
+      this.serverSide.player1.lineWs = null;
+      this.serverSide.player1.gameWs = null;
+      this.serverSide.player1.chatWs = null;
+      this.serverSide.player2.lineWs = null;
+      this.serverSide.player2.gameWs = null;
+      this.serverSide.player2.chatWs = null;
       fs.readFile('./database/game-sessions.json', (err, readData) => {
+         console.log(err);
          let dataBase = JSON.parse(readData);
          dataBase.push({
             gameSessionID: this.serverSide.gameState.gameSessionID,
             currTurn: this.serverSide.gameState.currTurn,
-            isFinished: this.serverSide.gameState.isFinished,
+            disconnec: this.serverSide.gameState.disconnec, //a player has disconnected
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
             scoreP1: this.serverSide.gameState.scoreP1,
             scoreP2: this.serverSide.gameState.scoreP2,
             winner: winner //add disconnect condition
          });
          let toWrite = JSON.stringify(dataBase);
-         fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => { });
+         fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {});
          console.log("game session num:" + this.serverSide.gameState.gameSessionID + ' registered on database');
       });
    }
