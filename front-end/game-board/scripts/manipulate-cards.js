@@ -48,6 +48,8 @@ gameSocket.onmessage = (event) => {
         obj = JSON.parse(event.data)
     } catch {
 
+        $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
             openModal("modal-victory")
