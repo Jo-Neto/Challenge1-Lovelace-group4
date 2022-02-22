@@ -18,16 +18,16 @@ function gameAgain() {
     openModal("modal-loading")
 
     //Procura partida
-    const url = window.location.href.slice(7, -6);
-    const port = 80;
-    const socket = new WebSocket(`ws://${url}:${port}/line`);
+    // const url = window.location.href.slice(7, -6);
+    // const port = 80;
+    // const socket = new WebSocket(`ws://${url}:${port}/line`);
 
-    socket.addEventListener('close', (event)=>{
-      if(event.code === 1000){
-        //Pedir a página game-board
-        console.log("A outra página foi chamada");
-        closeModal('modal-loading');
-        location.replace(`/game`);
-      }
-    })
+    // socket.addEventListener('close', (event)=>{
+    //   if(event.code === 1000){
+    //     //Pedir a página game-board
+    //     console.log("A outra página foi chamada");
+    //     closeModal('modal-loading');
+    //     location.replace(`/game`);
+    //   }
+    // })
 }
