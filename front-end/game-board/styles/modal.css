@@ -29,6 +29,7 @@
     width: 8vw;
 }
 
+
 #modal-logoff {
     visibility: hidden;
 }
@@ -49,6 +50,14 @@
 #btn-modal-logoff {
     background-color: #1AE316;
     margin-left: 2vw;
+}
+
+#modal-loading {
+    visibility: hidden;
+}
+
+#modal-loading img {
+    width: 80%;
 }
 
 #modal-rules {

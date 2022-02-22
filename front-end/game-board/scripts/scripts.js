@@ -13,3 +13,9 @@ function flipCard() {
     card.style.transform = "rotateY(180deg)";
 }
 
+function gameAgain() {
+    closeModal("modal-defeat")
+    openModal("modal-loading")
+
+    //Procura partida
+}
