@@ -165,22 +165,22 @@ gameSocket.onclose = (event) => {
 function showEnemyCard(cardString) {
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.png" alt="">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.png" alt="">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.png" alt="">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-ether.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.png" alt="">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
