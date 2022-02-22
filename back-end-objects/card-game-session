@@ -30,13 +30,14 @@ class CardGameSession {
             scoreP1: 0,
             scoreP2: 0,
             enemyGaveUp: false,
-            disconnec: false
+            disconnec: false,
          },
          player1: {  //server side only, data about player 1
             hand: [],
             indexToReplace: null,
             deck: null,
             ip: null,
+            waitingReconec: false,
             lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
@@ -46,6 +47,7 @@ class CardGameSession {
             indexToReplace: null,
             deck: null,
             ip: null,
+            waitingReconec: false,
             lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
@@ -69,25 +71,20 @@ class CardGameSession {
       this.serverSide.player2.deck = shuffle(unordDeck);
    }
    roundCheck() {
-      console.log("P1 board = " + this.serverSide.gameState.board[0]);
-      console.log("P2 board = " + this.serverSide.gameState.board[1]);
       if ((this.serverSide.gameState.board[0] === '') || (this.serverSide.gameState.board[1] === '')) //p1 não jogou ou p2 não jogou ainda
-         if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) {//mas ambos não jogaram ainda
-            console.log("round unfinished");
+         if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) { //mas ambos não jogaram ainda
             if (this.serverSide.gameState.board[0] === '') {
-               console.log("passing turn to P1");
                this.serverSide.player1turn = true;
             }
             else if (this.serverSide.gameState.board[1] === '') {
-               console.log("passing turn to P2");
                this.serverSide.player1turn = false;
             } else
-               console.log("logical error, roundcheck(fn), passing turn");
+               console.log("CardGameSession object --> roundcheck(fn), logical error, on passing turn(first check), Session Num: " + this.serverSide.gameState.gameSessionID);
             return false; //XOR return, //só um jogou, o outro não
          } else
-            console.log("XOR ELSE");
+            console.log("CardGameSession object --> roundCheck(fn) --> XOR ELSE, Session Num: " + this.serverSide.gameState.gameSessionID);
       else if (this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1]) { //empate 
-         console.log("roundCheck(fn) --> draw");
+         console.log("CardGameSession object --> roundCheck(fn) --> " + "Session Num: " + this.serverSide.gameState.gameSessionID + " draw");
       } else if (this.serverSide.gameState.board[0] == 'e' && this.serverSide.gameState.board[1] != 'e') {
          this.serverSide.gameState.scoreP1++;
          this.serverSide.player1turn = true;
@@ -113,10 +110,8 @@ class CardGameSession {
          this.serverSide.gameState.scoreP2++;
          this.serverSide.player1turn = false;
       } else
-         console.log("logical error, CardGameSession -> roundCheck method, final else condition");
-
+         console.log("CardGameSession object --> logical error, CardGameSession -> roundCheck method, final else condition");
       if (this.serverSide.gameState.scoreP1 === 5) {
-         console.log("P1 wins the match");
          this.serverSide.player1.gameWs.send("voce ganhou");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
          this.serverSide.player2.gameWs.send("voce perdeu");
@@ -126,7 +121,6 @@ class CardGameSession {
          this.storeOnDatabase('p1');
          return true;
       } else if (this.serverSide.gameState.scoreP2 === 5) {
-         console.log("P2 wins the match");
          this.serverSide.player2.gameWs.send("voce ganhou");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
          this.serverSide.player1.gameWs.send("voce perdeu");
@@ -141,7 +135,7 @@ class CardGameSession {
       this.serverSide.gameState.board[1] = '';
    }
    storeOnDatabase(winner) {
-      console.log("storeOnDatabase(fn)");
+      console.log("CardGameSession object --> storeOnDatabase(fn) --> SessionNum:" + this.serverSide.gameState.gameSessionID);
       this.isFinished = true;
       this.serverSide.player1.lineWs = null;
       this.serverSide.player1.gameWs = null;
@@ -150,7 +144,7 @@ class CardGameSession {
       this.serverSide.player2.gameWs = null;
       this.serverSide.player2.chatWs = null;
       fs.readFile('./database/game-sessions.json', (err, readData) => {
-         console.log(err);
+         if (err) throw console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on reading database: " + err);
          let dataBase = JSON.parse(readData);
          dataBase.push({
             gameSessionID: this.serverSide.gameState.gameSessionID,
@@ -162,8 +156,10 @@ class CardGameSession {
             winner: winner //add disconnect condition
          });
          let toWrite = JSON.stringify(dataBase);
-         fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {});
-         console.log("game session num:" + this.serverSide.gameState.gameSessionID + ' registered on database');
+         fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {
+            if (err) throw console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on writing database: " + err);
+         });
+         console.log("game session num: " + this.serverSide.gameState.gameSessionID + ' registered on database');
       });
    }
 }

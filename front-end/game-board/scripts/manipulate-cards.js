@@ -156,27 +156,35 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: "+ event.code);
     console.log("CLOSE REASON: "+event.reason);
+
+    if ( event.code === 4000 ) {
+        console.log("O oponente desconectou")
+        openModal("modal-disconnected")
+    } else if ( event.code === 4200 ) {
+        console.log("O oponente desistiu")
+        openModal("modal-give-up")
+    }
 }
 
 function showEnemyCard(cardString) {
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.png" alt="">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.png" alt="">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.png" alt="">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-ether.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.png" alt="">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
