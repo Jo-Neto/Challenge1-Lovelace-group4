@@ -23,6 +23,7 @@ class CardGameSession {
       };
       this.serverSide = {  //info about the session, server only
          player1turn: null,
+         lastPlayed: null,
          gameState: {
             gameSessionID: Number(currSessionID),
             currTurn: 0,
@@ -73,10 +74,9 @@ class CardGameSession {
    roundCheck() {
       if ((this.serverSide.gameState.board[0] === '') || (this.serverSide.gameState.board[1] === '')) //p1 não jogou ou p2 não jogou ainda
          if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) { //mas ambos não jogaram ainda
-            if (this.serverSide.gameState.board[0] === '') {
+            if (this.serverSide.gameState.board[0] === '') { //p2 jogou
                this.serverSide.player1turn = true;
-            }
-            else if (this.serverSide.gameState.board[1] === '') {
+            } else if (this.serverSide.gameState.board[1] === '') { //p2 jogou
                this.serverSide.player1turn = false;
             } else
                console.log("CardGameSession object --> roundcheck(fn), logical error, on passing turn(first check), Session Num: " + this.serverSide.gameState.gameSessionID);
@@ -85,6 +85,10 @@ class CardGameSession {
             console.log("CardGameSession object --> roundCheck(fn) --> XOR ELSE, Session Num: " + this.serverSide.gameState.gameSessionID);
       else if (this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1]) { //empate 
          console.log("CardGameSession object --> roundCheck(fn) --> " + "Session Num: " + this.serverSide.gameState.gameSessionID + " draw");
+         if (this.serverSide.lastPlayed === 1) //if draw, play again
+            this.serverSide.player1turn = false;
+         else  
+            this.serverSide.player1turn = true;
       } else if (this.serverSide.gameState.board[0] == 'e' && this.serverSide.gameState.board[1] != 'e') {
          this.serverSide.gameState.scoreP1++;
          this.serverSide.player1turn = true;
@@ -148,12 +152,12 @@ class CardGameSession {
          let dataBase = JSON.parse(readData);
          dataBase.push({
             gameSessionID: this.serverSide.gameState.gameSessionID,
-            currTurn: this.serverSide.gameState.currTurn,
-            disconnec: this.serverSide.gameState.disconnec, //a player has disconnected
+            tunrNum: this.serverSide.gameState.currTurn,
+            disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
             scoreP1: this.serverSide.gameState.scoreP1,
             scoreP2: this.serverSide.gameState.scoreP2,
-            winner: winner //add disconnect condition
+            winner: winner
          });
          let toWrite = JSON.stringify(dataBase);
          fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {
