@@ -56,10 +56,6 @@ gameSocket.onmessage = (event) => {
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
             openModal("modal-defeat")
-        } else if ( event.code === 4000 ) {
-            console.log("O oponente desconectou")
-        } else if ( event.code === 4200 ) {
-            console.log("O oponente desistiu")
         }
 
         return console.log(event.data)
@@ -142,6 +138,14 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: "+ event.code);
     console.log("CLOSE REASON: "+event.reason);
+
+    if ( event.code === 4000 ) {
+        console.log("O oponente desconectou")
+        openModal("modal-disconnected")
+    } else if ( event.code === 4200 ) {
+        console.log("O oponente desistiu")
+        openModal("modal-give-up")
+    }
 }
 
 function showEnemyCard(cardString) {
