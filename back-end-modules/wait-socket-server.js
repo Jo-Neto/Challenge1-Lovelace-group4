@@ -20,15 +20,15 @@ function getnextSessionID(err, readData) {
 }
 
 const waitSockServ = new WebSocket.Server({ noServer: true, clientTracking: true }); //create serverless socket for multisocket server
-waitSockServ.on('error', (error) => { console.log('waitSockServ error: '); console.log(error); }); //SocketServer error print
+waitSockServ.on('error', (error) => { console.log('WAITSOCK: waitSockServ error: '); console.log(error); }); //SocketServer error print
 waitSockServ.on('connection', (ws, req) => { //called at socket creation, when players start looking for a match
-    ws.on('error', (error) => { console.log('waitSock error: '); console.log(error); }); //WebSocket error print
+    ws.on('error', (error) => { console.log('WAITSOCK: waitWebSock error: '); console.log(error); }); //WebSocket error print
     ws.on('close', () => waitClose(ws));
     ws.isAlive = true;  //create property is alive for this socket
     ws.on('pong', () => { ws.isAlive = true }); //pong received = connection alive
     lineConnec(ws);
 });  //called at socket creation, when players start looking for a match
-waitSockServ.on('close', () => { console.log("closed waitSockServ"); clearInterval(sockServInterval); }); //clear connection checker 
+waitSockServ.on('close', () => { console.log("WAITSOCK: closed waitSockServ"); clearInterval(sockServInterval); }); //clear connection checker 
 
 
 
@@ -37,12 +37,12 @@ waitSockServ.on('close', () => { console.log("closed waitSockServ"); clearInterv
 //|                 TIMEOUT & DISCONNECTION LOGIC                    | //TODO: NEEDS SIMULTANEOUS SESSIONS TEST
 //+------------------------------------------------------------------+
 let count = 12;
-const sockServInterval = setInterval(() => {
-    console.log("waitSockServ interval timeout  -->> " + count);
-    console.log("waitSockServ.clients -->> " + waitSockServ.clients.size);
+const sockServInterval = setInterval( () => {
+    console.log("WAITSOCK: waitSockServ interval timeout  -->> " + count);
+    console.log("WAITSOCK: waitSockServ.client num -->> " + waitSockServ.clients.size);
     if (waitSockServ.clients.size === 1) {
         if (count === 0) {
-            waitSockServ.clients.forEach((ws) => {
+            waitSockServ.clients.forEach( (ws) => {
                 ws.send("Não há outros jogadores no momento, tente novamente mais tarde");
                 ws.close(4100, 'not enough players');
                 ws.terminate();
@@ -55,7 +55,8 @@ const sockServInterval = setInterval(() => {
 
 
 function waitClose(ws) { //connection was closed regularly
-    console.log("waitClose");
+    console.log("WAITSOCK: ws address: " + ws._socket.remoteAddress + " closed");
+    ws.isAlive = false;
     ws.terminate(); //safety
 }
 
@@ -66,14 +67,14 @@ function waitClose(ws) { //connection was closed regularly
 //|     GAME CREATION & PLAYER FINDER & RECONNECTION ALGORITHM       |
 //+------------------------------------------------------------------+
 function lineConnec(ws) {  //called when new socket connecting to waitSockServ
-    console.log("lineConnec");
+    console.log("WAITSOCK: lineConnec(fn)");
     //ws.isAlive = true;
     //ws.on('pong', (ws) => ws.isAlive = true );
     ServerModule.CardGameSessionArray.forEach((Session) => { //loops trough all active game sessions
-        console.log("ServerModule.CardGameSessionArray");
         if (ws._socket.remoteAddress === Session.serverSide.player1.ip && !Session.isFinished) {  //player 1 reconnecting;
             Session.serverSide.player1.ip = ws._socket.remoteAddress;
             Session.serverSide.player1.lineWs = ws;
+            //TODO: redirect
             ws.send("reconectando");
             ws.close(4000, 'redirect to game streaming socket');
             ws.terminate();  //safety
@@ -81,6 +82,7 @@ function lineConnec(ws) {  //called when new socket connecting to waitSockServ
         } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip && !Session.isFinished) { //player 2 reconnecting;
             Session.serverSide.player2.ip = ws._socket.remoteAddress;
             Session.serverSide.player2.lineWs = ws;
+            //TODO: redirect
             ws.send("reconectando");
             ws.close(4000, 'redirect to game streaming socket');
             ws.terminate(); //safety
@@ -91,7 +93,7 @@ function lineConnec(ws) {  //called when new socket connecting to waitSockServ
 }
 
 function lineConnecNew() {  //called if player is not reconnecting to a match
-    console.log("lineConnecNew");
+    console.log("WAITSOCK: lineConnecNew(fn)");
     if (waitSockServ.clients.size === 2) { //if there are 2 or more waiting players and...
         let count = 0;
         let p1done = false;
