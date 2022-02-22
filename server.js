@@ -34,13 +34,14 @@ app.use('/game', express.static('front-end/game-board'));
 //app.use(morgan('dev'));
 //app.use(helmet());
 
+const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
 //|                      SOCKET PATH RESOLVER                        |
 //+------------------------------------------------------------------+
-const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 const waitSockModule = require('./back-end-modules/wait-socket-server');
 const gameSockServModule = require('./back-end-modules/game-socket-server');
 
@@ -55,40 +56,5 @@ HTTPserver.on('upgrade', function upgrade(request, socket, head) {
    } 
 });
 
-let CardGameSessionArray = [];  //Arr to store ACTIVE card game sessions
+let CardGameSessionArray = [];  //Arr to store card game sessions
 exports.CardGameSessionArray = CardGameSessionArray;
-
-/*
-const waitSockServInterval = setInterval( () => {
-   waitSockServ.clients.forEach( client => {
-      if ( client.isAlive === false ) 
-         return client.terminate();
-      client.isAlive = false;
-      client.ping();
-   })
-}, 15000 ) //timeout timer
-*/
-
-
-
-/*setInterval(() => {
-   waitSockServ.broadcast();
-}, 5000)*/
-/*
-function pingBroadcast(sockServ) {
-
-}
-
-function closeBroadcast(sockServ, code, reason) {
-   sockServ.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN)
-         client.close(code, reason);
-   });
-}
-
-function msgBroadcast(sockServ, msg) {
-   sockServ.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN)
-         client.send(msg);
-   });
-}*/
