@@ -38,8 +38,8 @@ module.exports = {
                     console.log("SERVER-LIB: connectCheckerGame(fn) both players left the game, Session Num: " + Session.serverSide.gameState.gameSessionID);
                     module.exports.finishWinBothDC(Session);
                 }
-                else
-                    console.log("SERVER-LIB: connectCheckerGame(fn) ---> FINAL ELSE MAIN, Session Num: " + Session.serverSide.gameState.gameSessionID);
+                //else
+                    //console.log("SERVER-LIB: connectCheckerGame(fn) ---> FINAL ELSE MAIN, Session Num: " + Session.serverSide.gameState.gameSessionID);
             }
         });
     },
@@ -62,7 +62,7 @@ module.exports = {
                             if (Session.serverSide.player2.lineWs === null) { // p2 line didn't even load too
                                 console.log("SERVER-LIB: lineHangChecker(fn) - FATAL - game started but P2 did not have a line socket, Session Num: " + Session.serverSide.gameState.gameSessionID);
                                 module.exports.finishNoWin(Session, Session.serverSide.player1.gameWs);
-                            } else if (Session.serverSide.player2.lineWs.readyState === WebSocket.CLOSED) { //p2 gamews did not load but line closed, probably DC'ed
+                            } else if (Session.serverSide.player2.lineWs.readyState === WebSocket.CLOSED && Session.serverSide.player2.gameWs === null) { //p2 gamews did not load but line closed, probably DC'ed
                                 console.log("SERVER-LIB: lineHangChecker(fn) - P1 ON, P2 HANG ON CLOSED, Session Num: " + Session.serverSide.gameState.gameSessionID);
                                 module.exports.finishNoWin(Session, Session.serverSide.player1.gameWs);
                             }
@@ -77,20 +77,27 @@ module.exports = {
                             if (Session.serverSide.player1.lineWs === null) { // p1 line didn't even load too
                                 console.log("SERVER-LIB: lineHangChecker(fn) - FATAL - game started but P1 did not have a line socket, Session Num: " + Session.serverSide.gameState.gameSessionID);
                                 module.exports.finishNoWin(Session, Session.serverSide.player2.gameWs);
-                            } else if (Session.serverSide.player1.lineWs.readyState === WebSocket.CLOSED) { //p1 gamews did not load but line closed, probably DC'ed
+                            } else if (Session.serverSide.player1.lineWs.readyState === WebSocket.CLOSED && Session.serverSide.player1.gameWs === null) { //p1 gamews did not load but line closed, probably DC'ed
                                 console.log("SERVER-LIB: lineHangChecker(fn) - P2 ON, P1 HANG ON CLOSED, Session Num: " + Session.serverSide.gameState.gameSessionID);
                                 module.exports.finishNoWin(Session, Session.serverSide.player2.gameWs);
                             }
                         }
                     }
-                } else
-                    console.log("SERVER-LIB: lineHangChecker(fn) ---> LOGICAL ERROR - FINAL ELSE, Session Num: " + Session.serverSide.gameState.gameSessionID);
+                } //else
+                    //console.log("SERVER-LIB: lineHangChecker(fn) ---> - FINAL ELSE, Session Num: " + Session.serverSide.gameState.gameSessionID);
             }
         });
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishNoWin: (Session, ws) => {
         console.log("SERVER-LIB: finishNoWin(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
+        if (ws === Session.serverSide.player1.gameWs && Session.serverSide.player2.waitingReconec < 2) { //p1 is the future winner, when it gets to 2
+            Session.serverSide.player2.waitingReconec++;
+            return;
+        } else if (ws === Session.serverSide.player2.gameWs && Session.serverSide.player1.waitingReconec < 2) { //p2 is the future winner, when it gets to 2
+            Session.serverSide.player1.waitingReconec++;
+            return;
+        }
         ws.send("O oponente saiu antes do inicio da partida");
         ws.close(4200, 'player disconnected before match was ready');
         ws.terminate();
@@ -116,6 +123,11 @@ module.exports = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishWinBothDC: (Session) => {
         console.log("SERVER-LIB: finishWinBothDC(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
+        if ( Session.serverSide.player1.waitingReconec < 3 && Session.serverSide.player2.waitingReconec < 3 ) { //p1 and p2 DC counter should be 2
+            Session.serverSide.player1.waitingReconec++;
+            Session.serverSide.player2.waitingReconec++;
+            return;
+        }
         Session.serverSide.gameState.disconnec = true;
         if (Session.serverSide.gameState.scoreP1 > Session.serverSide.gameState.scoreP2)
             Session.storeOnDatabase('p1');
