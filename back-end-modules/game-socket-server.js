@@ -68,22 +68,22 @@ const lineHangChecker = setInterval(() => { //check if someone disconnected
 //|                       "HANDSHAKE" LOGIC                          | 
 //+------------------------------------------------------------------+ 
 function gameOpen(ws) {
-    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
+    //console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session, index) => {  //loops trough all active games
-        console.log("GAMESOCK: gameOpen(fn) --> starting");
-        console.log("GAMESOCK: gameOpen(fn) --> SESSION INDEX: "+ index);
+        //console.log("GAMESOCK: gameOpen(fn) --> starting");
+        console.log("GAMESOCK: gameOpen(fn) --> session type: "+ typeof Session);
         console.log("GAMESOCK: gameOpen(fn) --> SESSION is finished: "+ Session.isFinished);
-        console.log("GAMESOCK: gameOpen(fn) --> SESSION gameSessionID: "+ Session.serverSide.gameState.gameSessionID);
-        console.log("GAMESOCK: gameOpen(fn) --> P1 IP: "+ Session.serverSide.player1.ip);
-        console.log("GAMESOCK: gameOpen(fn) --> P2 IP: "+ Session.serverSide.player2.ip);
-        console.log("GAMESOCK: opened socket addres(fn) --> SESSION is finished: "+ ws._socket.remoteAddress);
+        console.log("GAMESOCK: gameOpen(fn) --> P1 IP: "+ Session.serverSide.player1.ip+",  on index: "+index+ ",  session id: "+Session.serverSide.gameState.gameSessionID);
+        console.log("GAMESOCK: gameOpen(fn) --> P2 IP: "+ Session.serverSide.player2.ip+",  on index: "+index+ ",  session id: "+Session.serverSide.gameState.gameSessionID);
+        console.log("GAMESOCK: opened socket addres(fn) --> "+ ws._socket.remoteAddress);
+        console.log("=================================================================================================");
         if (!Session.isFinished) {
-            console.log("GAMESOCK: gameOpen(fn) --> active session found" + index);
+            console.log("GAMESOCK: gameOpen(fn) --> active session foundn on index: "+ index);
             if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //player 1 waiting handshake or reconnecting
-                console.log("GAMESOCK: gameOpen(fn) --> checking P1");
+                console.log("GAMESOCK: gameOpen(fn) --> checking P1 on index: "+ index);
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1
                 if (Session.serverSide.player1.waitingReconec > 1) { //reconnecting
-                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P1 - reconnecting");
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P1-reconnecting,  on index: "+ index);
                     Session.serverSide.player1.waitingReconec = 0;
                     ws.send(JSON.stringify({
                         msgType: 'reconnection',
@@ -98,12 +98,12 @@ function gameOpen(ws) {
                 }
                 else //waiting handshake
                     ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
-                console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress);
+                console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress+",  on index: "+ index);
             } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //player 2 waiting handshake or reconnecting
-                console.log("GAMESOCK: gameOpen(fn) --> checking P2");
+                console.log("GAMESOCK: gameOpen(fn) --> checking P2 on index: "+ index);
                 Session.serverSide.player2.gameWs = ws;  //assign socket to P2
                 if (Session.serverSide.player2.waitingReconec > 1) { //reconnecting
-                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P2 - reconnecting");
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P2-reconnecting,  on index: "+ index );
                     Session.serverSide.player2.waitingReconec = 0;
                     ws.send(JSON.stringify({
                         msgType: 'reconnection',
@@ -117,10 +117,10 @@ function gameOpen(ws) {
                     }));
                 }
                 else //waiting handshake
-                    ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
-                console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress);
+                ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
+                console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress+",  on index: "+ index);
             } else {
-                console.log("GAMESOCK: player does not belong to session, terminating");
+                console.log("GAMESOCK: player does not belong to session, terminating,  on index: "+ index);
                 ws.close(4004, `you don't belong to any ongoing matches`);
                 ws.terminate(); //safety
             }

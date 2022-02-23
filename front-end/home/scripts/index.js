@@ -11,8 +11,10 @@ function closeModal(modalId) {
 const url = window.location.href.slice(7, -1);
 const port = 80;
 
+let socket = null;
+
 document.getElementById('play-now-button').addEventListener('click', () => {
-  const socket = new WebSocket(`ws://${url}:${port}/line`);
+  socket = new WebSocket(`ws://${url}:${port}/line`);
   
   const playerName = 'myName';
 
@@ -25,6 +27,7 @@ document.getElementById('play-now-button').addEventListener('click', () => {
   }
 
   socket.onmessage = (event) => {
+    console.log("onmessage fired");
     console.log(JSON.parse(event.data));
     console.log(event.data);
   }
