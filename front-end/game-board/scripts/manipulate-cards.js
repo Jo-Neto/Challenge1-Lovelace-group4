@@ -57,10 +57,6 @@ gameSocket.onmessage = (event) => {
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
             openModal("modal-defeat")
-        } else if ( event.code === 4000 ) {
-            console.log("O oponente desconectou")
-        } else if ( event.code === 4200 ) {
-            console.log("O oponente desistiu")
         }
 
         return console.log(event.data)
@@ -154,15 +150,21 @@ gameSocket.onmessage = (event) => {
 gameSocket.onclose = (event) => {
     console.log("SOCKET CLOSE: ");
     console.log(event);
-    console.log("CLOSE CODE: "+ event.code);
-    console.log("CLOSE REASON: "+event.reason);
+    console.log("CLOSE CODE: " + event.code);
+    console.log("CLOSE REASON: " + event.reason);
 
-    if ( event.code === 4000 ) {
+    if ( event.code === 4000 || event.code === 4200 ) {
         console.log("O oponente desconectou")
         openModal("modal-disconnected")
-    } else if ( event.code === 4200 ) {
-        console.log("O oponente desistiu")
-        openModal("modal-give-up")
+    } else if ( event.code === 4008 ) {
+        console.log("O oponente trapaceou")
+        openModal("modal-opponent-cheat")
+    } else if ( event.code === 4004 ) {
+        console.log("Você não esta em nenhuma partida")
+        openModal("modal-no-match")
+    } else if ( event.code === 1008 ) {
+        console.log("Você trapaceou")
+        openModal("modal-cheat")
     }
 }
 
