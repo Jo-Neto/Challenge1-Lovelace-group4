@@ -46,11 +46,13 @@ const sockServInterval = setInterval(() => {
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws) => {
+
             console.log('LOOP START: nextSessionID = '+nextSessionID);
             //console.log("ws.playerName-->>" + ws.playerName);
             //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 console.log('BEFORE CREATION nextSessionID = '+nextSessionID);
+
                 if (futureP1) {
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
                     ws.timeoutCount = 20;
