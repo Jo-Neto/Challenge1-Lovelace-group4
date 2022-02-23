@@ -89,6 +89,8 @@
     /* Typography */
     font-size: 16px;
     color: #E5E5E5;
+
+    overflow: auto;
 }
 
 #modal-rules h2 {
@@ -110,4 +112,8 @@
 
 #img-rules {
     width: 50%;
+}
+
+.imagens {
+    width: 80%;
 }
