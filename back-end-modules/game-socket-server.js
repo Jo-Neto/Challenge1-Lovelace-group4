@@ -149,7 +149,7 @@ function gameMessage(data, isBinary, ws) {
                 ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.hasCheated = true;
                 if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.waitingReconec === 0) {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send("cheat");
-                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.close(4000, 'the other player cheated');
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.close(4008, 'the other player cheated');
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.terminate();
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p2');
                     return;
@@ -228,7 +228,7 @@ function gameMessage(data, isBinary, ws) {
                 ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.hasCheated = true;
                 if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.waitingReconec === 0) {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send("cheat");
-                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.close(4000, 'the other player cheated');
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.close(4008, 'the other player cheated');
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.terminate();
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p1');
                     return;
