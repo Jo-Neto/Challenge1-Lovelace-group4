@@ -69,7 +69,7 @@ const lineHangChecker = setInterval(() => { //check if someone disconnected
 //+------------------------------------------------------------------+ 
 function gameOpen(ws) {
     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
-    ServerModule.CardGameSessionArray.forEach((Session) => {  //loops trough all active games
+    ServerModule.CardGameSessionArray.forEach((Session, index) => {  //loops trough all active games
         console.log("GAMESOCK: gameOpen(fn) --> starting");
         console.log("GAMESOCK: gameOpen(fn) --> SESSION INDEX: "+ index);
         console.log("GAMESOCK: gameOpen(fn) --> SESSION is finished: "+ Session.isFinished);
