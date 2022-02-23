@@ -45,7 +45,7 @@ const sockServInterval = setInterval(() => {
     console.log("WAITSOCK: waitSockServ.client num -->> " + waitSockServ.clients.size);
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
-        waitSockServ.clients.forEach((ws, index) => {
+        waitSockServ.clients.forEach((ws) => {
             //console.log("ws.playerName-->>" + ws.playerName);
             //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
@@ -59,6 +59,7 @@ const sockServInterval = setInterval(() => {
                     ws.send("partida encontrada");
                     ws.close(1000, 'redirect to game streaming socket');
                     ws.terminate(); //safety
+                    console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P2");
                     futureP1.timeoutCount = 20;
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P1 INFO");
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
@@ -68,6 +69,8 @@ const sockServInterval = setInterval(() => {
                     futureP1.send("partida encontrada");
                     futureP1.close(1000, 'redirect to game streaming socket');
                     futureP1.terminate(); //safety
+                    futureP1 = null;
+                    console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P1 -- future = null");
                     return;
                 } else
                     futureP1 = ws;
