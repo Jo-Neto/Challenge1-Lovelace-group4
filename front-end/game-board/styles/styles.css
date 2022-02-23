@@ -5,8 +5,10 @@
 body {
     width: 100vw;
     max-height: 100vh;
+    
     background-image: url("../assets/background.svg");
     background-size: cover;
+
     display: flex;
     flex-direction: column;
 }
@@ -27,7 +29,9 @@ body {
 
 #first-cheap, #img-second-cheap {
     width: 7.65vw;
-    height: 22.91vh;
+    height: auto;
+
+    cursor: pointer;
 }
 
 #container-opponents-cheap-and-cards {
@@ -53,7 +57,7 @@ body {
 #playing-card-field {
     width: 14.5%;
     align-self: center;
-    margin: 5vh 0 5vh 0;
+    margin: 3vh 0 3vh 0;
 }
 
 #container-card-player2 {

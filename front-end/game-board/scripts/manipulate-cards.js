@@ -7,6 +7,7 @@ const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web sock
 //Se não é sua partida, o código é 4004, e o socket fecha
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
+let turnForDeck = 11;
 
 let gameState = {
     gameSessionID: null,
@@ -101,14 +102,14 @@ gameSocket.onmessage = (event) => {
         // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
-        // console.log("instantFeedback");
+        console.log("reconnection");
         gameState.gameSessionID = obj.gameSessionID; 
         gameState.board = obj.board;
-        gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta
+        gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
+        gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     }
@@ -129,13 +130,12 @@ gameSocket.onmessage = (event) => {
             $(`#span-player1`).text("Oponente")
             $(`#span-player2`).text("Você")
         }
-
         // console.log("SERV HANDSHAKE OBJECT: ");
         // console.log(obj);
         // console.log("=======================================");
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
     }
 
     if (gameState.myTurn) {
@@ -169,28 +169,30 @@ gameSocket.onclose = (event) => {
 function showEnemyCard(cardString) {
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.svg" alt="">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.svg" alt="">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.svg" alt="">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg" alt="">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
         default:
             break;
     }
+    
+
 }
 
 function verifyIfHaveTwoCardsInTheField() {
@@ -199,9 +201,9 @@ function verifyIfHaveTwoCardsInTheField() {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
 
-            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
         }, 2000);
     }
 }
@@ -227,9 +229,10 @@ function gameStart() {
     }
 
     verifyIfHaveTwoCardsInTheField()
-
+    
     if (gameState.myTurn) {
-
+        hideCheap();
+        turnForDeck --;
         $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
 
         $("#playing-card-field").droppable({
@@ -259,22 +262,30 @@ function getCardImage(card) {
     let nameOfImageArchive;
 
     switch (card) {
-        case "w": nameOfImageArchive = 'card-water';
+        case "w": 
+            nameOfImageArchive = 'card-water';
             break;
-        case "f": nameOfImageArchive = 'card-fire';
+        case "f": 
+            nameOfImageArchive = 'card-fire';
             break;
-        case "p": nameOfImageArchive = 'card-plant';
+        case "p": 
+            nameOfImageArchive = 'card-plant';
             break;
-        case "e": nameOfImageArchive = 'card-ether';
+        case "e": 
+            nameOfImageArchive = 'card-ether';
             break;
+        case null:
+            nameOfImageArchive = 'null';
+            break
+
     }
 
     return nameOfImageArchive;
 }
 
-function playCardSound(card) {
+let nameOfSoundArchive;
 
-    let nameOfSoundArchive;
+function playCardSound(card) {
 
     switch (card) {
         case "w": nameOfSoundArchive = new Audio('assets/sounds/waterCardSound.mp3');
@@ -303,7 +314,21 @@ function playCardSound(card) {
             nameOfSoundArchive.volume = 0.08;
             nameOfSoundArchive.play();
             break;
-        
+    }
+}
+
+let count = -1;
+function changeSoundConf() {
+    count++;
+    const button = document.getElementById('btn-sound');
+    if(count%2 == 0) {
+        button.setAttribute('src', '');
+        button.setAttribute('src', './assets/music_off_white_24dp.svg');
+        nameOfSoundArchive.pause();
+    } else {
+        button.setAttribute('src', '');
+        button.setAttribute('src', './assets/music_note_white_24dp.svg');
+        nameOfSoundArchive.play();
     }
 }
 
@@ -337,4 +362,13 @@ function cleanTheCardField(tagCardId) {
 
 function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
+}
+
+function hideCheap() {
+    if(turnForDeck == 0){
+        $("#second-cheap").hide();
+    }
+    // if(turnForDeck == 0){
+    //     $("#first-cheap").attr('src','./assets/null.png');
+    // }
 }
