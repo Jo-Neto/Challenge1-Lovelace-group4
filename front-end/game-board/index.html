@@ -99,46 +99,80 @@
                 <button id="btn-modal-cancel" class="btn-modal" onclick="closeModal('modal-logoff')">Cancelar</button>
             </div>
         </div>
+
         <div id="modal-victory" class="modal">
             <h3>Vitória!</h3>
             <div class="row-direction">
                <a class="btn-back-to-home">
                     <button id="btn-modal-logoff" class="btn-modal">Home</button>
                </a>
-                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
             </div>
         </div>
+
         <div id="modal-defeat" class="modal">
             <h3>Derrota!</h3>
             <div class="row-direction">
                 <a class="btn-back-to-home">
                     <button id="btn-modal-logoff" class="btn-modal">Home</button>
                </a>
-                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
             </div>
         </div>
-        <div id="modal-loading" class="modal">
-            <h3>Buscando adversário digno</h3>
-            <img src="./assets/loading.gif">
-        </div>
+
         <div id="modal-disconnected" class="modal">
             <h3>Oponente se desconectou</h3>
             <div class="row-direction">
                <a class="btn-back-to-home">
                     <button id="btn-modal-logoff" class="btn-modal">Home</button>
                </a>
-                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
             </div>
         </div>
+
         <div id="modal-give-up" class="modal">
             <h3>Oponente desistiu</h3>
             <div class="row-direction">
                <a class="btn-back-to-home">
                     <button id="btn-modal-logoff" class="btn-modal">Home</button>
                </a>
-                <button id="btn-modal-cancel" class="btn-modal" onclick="gameAgain()">Jogar</button>
             </div>
         </div>
+
+        <div id="modal-opponent-cheat" class="modal">
+            <h3>Oponente trapaceou</h3>
+            <span>partida finalizada</span>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+            </div>
+        </div>
+
+        <div id="modal-no-match" class="modal">
+            <h3>Você não está em nenhuma partida</h3>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+            </div>
+        </div>
+
+        <div id="modal-cheat" class="modal">
+            <h3>Você trapaceou :( <br> partida encerrada</h3>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+            </div>
+        </div>
+
+        <div id="unknow-error" class="modal">
+            <h3>Ocorreu algum erro, volte para a home</h3>
+            <div class="row-direction">
+               <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Home</button>
+               </a>
+            </div>
+        </div>
+
         <div id="modal-rules">
             <img onclick="closeModal('modal-rules')" src="./assets/close_white_24dp.svg">
             <h2>Regras do jogo</h2>
