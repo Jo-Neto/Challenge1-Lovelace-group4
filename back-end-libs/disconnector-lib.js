@@ -91,10 +91,10 @@ module.exports = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishNoWin: (Session, ws) => {
         console.log("SERVER-LIB: finishNoWin(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
-        if (ws === Session.serverSide.player1.gameWs && Session.serverSide.player2.waitingReconec < 2) { //p1 is the future winner, when it gets to 2
+        if (ws === Session.serverSide.player1.gameWs && Session.serverSide.player2.waitingReconec < 3) { //p1 is the future winner, when it gets to 2
             Session.serverSide.player2.waitingReconec++;
             return;
-        } else if (ws === Session.serverSide.player2.gameWs && Session.serverSide.player1.waitingReconec < 2) { //p2 is the future winner, when it gets to 2
+        } else if (ws === Session.serverSide.player2.gameWs && Session.serverSide.player1.waitingReconec < 3) { //p2 is the future winner, when it gets to 2
             Session.serverSide.player1.waitingReconec++;
             return;
         }
@@ -107,10 +107,10 @@ module.exports = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishWinOneDC: (Session, ws, winString) => {
         console.log("SERVER-LIB: finishWinOneDC(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
-        if (winString === 'p2' && Session.serverSide.player1.waitingReconec < 2) { //p2 is the future winner, when it gets to 2
+        if (winString === 'p2' && Session.serverSide.player1.waitingReconec < 3) { //p2 is the future winner, when it gets to 2
             Session.serverSide.player1.waitingReconec++;
             return;
-        } else if (winString === 'p1' && Session.serverSide.player2.waitingReconec < 2) { //p1 is the future winner, when it gets to 2
+        } else if (winString === 'p1' && Session.serverSide.player2.waitingReconec < 3) { //p1 is the future winner, when it gets to 2
             Session.serverSide.player2.waitingReconec++;
             return;
         }
@@ -123,7 +123,7 @@ module.exports = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishWinBothDC: (Session) => {
         console.log("SERVER-LIB: finishWinBothDC(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
-        if ( Session.serverSide.player1.waitingReconec < 3 && Session.serverSide.player2.waitingReconec < 3 ) { //p1 and p2 DC counter should be 2
+        if ( Session.serverSide.player1.waitingReconec < 4 && Session.serverSide.player2.waitingReconec < 4 ) { //p1 and p2 DC counter should be 2
             Session.serverSide.player1.waitingReconec++;
             Session.serverSide.player2.waitingReconec++;
             return;
