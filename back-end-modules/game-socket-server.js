@@ -46,45 +46,74 @@ const sockServInterval = setInterval(() => {
 
 function gameClose(ws) { //regular disconnect socket
     console.log("GAMESOCK: ws address: " + ws._socket.remoteAddress + " closed");
-    ws.isAlive = false;
-    ws.terminate();
+    ServerModule.CardGameSessionArray.forEach((Session) => {
+        if (!Session.isFinished) {
+            if (Session.serverSide.player1.gameWs === ws) {
+                Session.serverSide.player1.waitingReconec = 1;
+            } else if (Session.serverSide.player2.gameWs === ws) {
+                Session.serverSide.player2.waitingReconec = 1;
+            }
+        }
+    });
 }
 
-const lineHangChecker = setInterval(() => {
+const lineHangChecker = setInterval(() => { //check if someone disconnected
     ServerLib.connectCheckerGame(ServerModule.CardGameSessionArray);
 }, 10973); //93333 for possible desync
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//+------------------------------------------------------------------+  TODO: reconnecting logic
+//+------------------------------------------------------------------+ 
 //|                       "HANDSHAKE" LOGIC                          | 
 //+------------------------------------------------------------------+ 
 function gameOpen(ws) {
     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session) => {  //loops trough all active games
-        if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //player 1 waiting handshake or reconnecting
-            Session.serverSide.player1.gameWs = ws; //assing socket to P1
-            if (Session.serverSide.player1.waitingReconec) { //reconnecting
-                Session.serverSide.player1.waitingReconec = false;
-                //TODO: send game state
+        if (!Session.isFinished) {
+            if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //player 1 waiting handshake or reconnecting
+                Session.serverSide.player1.gameWs = ws; //assign socket to P1
+                if (Session.serverSide.player1.waitingReconec != 0) { //reconnecting
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P1 - reconnecting");
+                    Session.serverSide.player1.waitingReconec = 0;
+                    ws.send(JSON.stringify({
+                        msgType: 'reconnection',
+                        gameSessionID: Session.serverSide.gameState.gameSessionID,
+                        board: [Session.serverSide.gameState.board[0], Session.serverSide.gameState.board[1]], //inverted board for p2
+                        hand: Session.serverSide.player1.hand,  //recebe a nova mão com a carta comprada
+                        myTurn: Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
+                        scoreP1: Session.serverSide.gameState.scoreP1,
+                        scoreP2: Session.serverSide.gameState.scoreP2,
+                        whichPlayer: 1
+                    }));
+                }
+                else //waiting handshake
+                    ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
+                console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress);
+            } else if ((ws._socket.remoteAddress === Session.serverSide.player2.ip)) { //player 2 waiting handshake or reconnecting
+                Session.serverSide.player2.gameWs = ws;  //assign socket to P2
+                if (Session.serverSide.player2.waitingReconec != 0) { //reconnecting
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P2 - reconnecting");
+                    Session.serverSide.player2.waitingReconec = 0;
+                    ws.send(JSON.stringify({
+                        msgType: 'reconnection',
+                        gameSessionID: Session.serverSide.gameState.gameSessionID,
+                        board: [Session.serverSide.gameState.board[1], Session.serverSide.gameState.board[0]], //inverted board for p2
+                        hand: Session.serverSide.player2.hand,  //recebe a nova mão com a carta comprada
+                        myTurn: !Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
+                        scoreP1: Session.serverSide.gameState.scoreP1,
+                        scoreP2: Session.serverSide.gameState.scoreP2,
+                        whichPlayer: 2
+                    }));
+                }
+                else //waiting handshake
+                    ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
+                console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress);
+            } else {
+                console.log("GAMESOCK: player does not belong to session, terminating");
+                ws.close(4004, `you don't belong to any ongoing matches`);
+                ws.terminate(); //safety
             }
-            else //waiting handshake
-                ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
-            console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress);
-        } else if ((ws._socket.remoteAddress === Session.serverSide.player2.ip)) { //player 2 waiting handshake or reconnecting
-            Session.serverSide.player2.gameWs = ws;  //assing socket to P2
-            if (Session.serverSide.player2.waitingReconec) { //reconnecting
-                Session.serverSide.player2.waitingReconec = false;
-                //TODO: send game state
-            }
-            ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
-            console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress);
-        } else {
-            console.log("GAMESOCK: player does not belong to session, terminating");
-            ws.close(4004, `you don't belong to any ongoing matches`);
-            //TODO: REDIRECT TO HOME PAGE
-            ws.terminate(); //safety
         }
     });
 }
@@ -111,14 +140,44 @@ function gameMessage(data, isBinary, ws) {
     //console.log("p2 deck: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck);
     if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs === ws) { //p1 message
         if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p1 turn
-            //TODO: CHECK PLAYER 2 CONNECTION, IF NOT CONNECTED, SAVE P1 PLAY, DISABLE P1 TURN, WAIT FOR P2,
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
+            if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand[tempData.cardPlayedIndex - 1] !== tempData.cardPlayed) {
+                console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tempData.gameSessionID);
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send("cheat detected, you lost");
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.close(1008, 'player cheated');
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.terminate();
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.hasCheated = true;
+                if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.waitingReconec === 0) {
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send("cheat");
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.close(4000, 'the other player cheated');
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.terminate();
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p2');
+                    return;
+                } else { 
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p2');
+                    return;
+                }
+            }
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.lastPlayed = 1;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0] = tempData.cardPlayed;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand[tempData.cardPlayedIndex - 1] = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck.shift();
             //console.log("p1 shift index: " + (tempData.cardPlayedIndex - 1));
             //console.log("p1 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand);
             //console.log("p1 deck: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck);
+            if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.waitingReconec != 0) {
+                console.log("GAMESOCK: gameMessage(fn) --> p1 waiting p2 reconnec --> Session id: " + tempData.gameSessionID);
+                if (ServerModule.CardGameSessionArray[tempData.gameSessionID].roundCheck())
+                    return;
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify({
+                    msgType: 'reconnection',
+                    newHand: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand,
+                    board: [ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0], ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1]],
+                    myTurn: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
+                    scoreP1: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
+                    scoreP2: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2
+                }));
+                return;
+            }
             enemyFakeGameState.msgType = 'waitingFeedback';
             enemyFakeGameState.gameSessionID = tempData.gameSessionID;
             enemyFakeGameState.hand = [...ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand];
@@ -160,14 +219,44 @@ function gameMessage(data, isBinary, ws) {
         }
     } else if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p2 turn
-            //TODO: CHECK PLAYER 1 CONNECTION, IF NOT CONNECTED, SAVE P2 PLAY, DISABLE P2 TURN, WAIT FOR P1, 
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
+            if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand[tempData.cardPlayedIndex - 1] !== tempData.cardPlayed) {
+                console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tempData.gameSessionID);
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send("cheat detected, you lost");
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.close(1008, 'player cheated');
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.terminate();
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.hasCheated = true;
+                if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.waitingReconec === 0) {
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send("cheat");
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.close(4000, 'the other player cheated');
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.terminate();
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p1');
+                    return;
+                } else { 
+                    ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p1');
+                    return;
+                }
+            }
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.lastPlayed = 2;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1] = tempData.cardPlayed;
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand[tempData.cardPlayedIndex - 1] = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck.shift();
             //console.log("p2 shift index: " + (tempData.cardPlayedIndex - 1));
             //console.log("p2 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand);
             //console.log("p2 deck: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck);
+            if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.waitingReconec != 0) {
+                console.log("GAMESOCK: gameMessage(fn) --> p1 waiting p2 reconnec --> Session id: " + tempData.gameSessionID);
+                if (ServerModule.CardGameSessionArray[tempData.gameSessionID].roundCheck())
+                    return;
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify({
+                    msgType: 'reconnection',
+                    newHand: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand,
+                    board: [ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1], ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0]],
+                    myTurn: !ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
+                    scoreP1: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
+                    scoreP2: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2
+                }));
+                return;
+            }
             enemyFakeGameState.msgType = 'waitingFeedback';
             enemyFakeGameState.gameSessionID = tempData.gameSessionID;
             enemyFakeGameState.hand = [...ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand];
@@ -208,13 +297,18 @@ function gameMessage(data, isBinary, ws) {
         }
     }
     else { //ws doesn't belong to session, check possible reconnection trial
-        ServerModule.CardGameSessionArray.forEach( (Session) => {
-            if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //p1 trying to reconnect
-                Session.serverSide.player1.gameWs = ws; //redefine websocket
-                //TODO: SEND GAME STATE TO P1
-            } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //p2 trying to reconnect
-                Session.serverSide.player2.gameWs = ws; //redefine websocket
-                //TODO: SEND GAME STATE TO P2
+        ServerModule.CardGameSessionArray.forEach((Session) => {
+            if (!Session.isFinished) {
+                if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //p1 trying to reconnect
+                    Session.serverSide.player1.gameWs = ws; //redefine websocket
+                    Session.serverSide.player1.waitingReconec = 0;
+                    console.log("GAMESOCK: gameMessage(fn) --> final else - player 1 reconec");
+                } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //p2 trying to reconnect
+                    Session.serverSide.player2.gameWs = ws; //redefine websocket
+                    Session.serverSide.player2.waitingReconec = 0;
+                    console.log("GAMESOCK: gameMessage(fn) --> final else - player 2 reconec");
+                } else
+                    console.log("GAMESOCK: gameMessage(fn) --> final else - ws && IP does not belong to session");
             }
         });
     }
