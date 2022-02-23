@@ -46,11 +46,13 @@ const sockServInterval = setInterval(() => {
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws) => {
-            onsole.log('LOOP START: nextSessionID = '+nextSessionID);
+
+            console.log('LOOP START: nextSessionID = '+nextSessionID);
             //console.log("ws.playerName-->>" + ws.playerName);
             //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
-                onsole.log('BEFORE CREATION nextSessionID = '+nextSessionID);
+                console.log('BEFORE CREATION nextSessionID = '+nextSessionID);
+
                 if (futureP1) {
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
                     ws.timeoutCount = 20;
@@ -67,7 +69,7 @@ const sockServInterval = setInterval(() => {
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.name = futureP1.playerName;
-                    onsole.log('nextSessionID = '+nextSessionID);
+                    console.log('nextSessionID = '+nextSessionID);
                     nextSessionID++;
                     console.log('nextSessionID = '+nextSessionID);
                     futureP1.send("partida encontrada");
