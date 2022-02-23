@@ -166,7 +166,7 @@ gameSocket.onclose = (event) => {
         console.log("Você trapaceou")
         openModal("modal-cheat")
     } else {
-        openModal("unknow-error")
+        openModal("modal-unknow-error")
     }
 }
 

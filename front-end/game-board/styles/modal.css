@@ -30,7 +30,7 @@
 }
 
 
-#modal-logoff, #modal-victory, #modal-defeat, #modal-disconnected, #modal-give-up, #modal-opponent-cheat, #modal-no-match, #modal-cheat {
+#modal-logoff, #modal-victory, #modal-defeat, #modal-disconnected, #modal-give-up, #modal-opponent-cheat, #modal-no-match, #modal-cheat, #modal-unknow-error {
     visibility: hidden;
 }
 
