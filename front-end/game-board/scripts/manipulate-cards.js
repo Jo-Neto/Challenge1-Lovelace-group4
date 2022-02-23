@@ -97,11 +97,10 @@ gameSocket.onmessage = (event) => {
         // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
-        // console.log("instantFeedback");
+        console.log("reconnection");
         gameState.gameSessionID = obj.gameSessionID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;

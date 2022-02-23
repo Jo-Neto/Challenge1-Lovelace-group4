@@ -37,12 +37,12 @@ waitSockServ.on('close', () => { console.log("WAITSOCK: closed waitSockServ"); c
 //|                 TIMEOUT & DISCONNECTION LOGIC                    | //TODO: NEEDS SIMULTANEOUS SESSIONS TEST
 //+------------------------------------------------------------------+
 let count = 12;
-const sockServInterval = setInterval( () => {
+const sockServInterval = setInterval(() => {
     console.log("WAITSOCK: waitSockServ interval timeout  -->> " + count);
     console.log("WAITSOCK: waitSockServ.client num -->> " + waitSockServ.clients.size);
     if (waitSockServ.clients.size === 1) {
         if (count === 0) {
-            waitSockServ.clients.forEach( (ws) => {
+            waitSockServ.clients.forEach((ws) => {
                 ws.send("Não há outros jogadores no momento, tente novamente mais tarde");
                 ws.close(4100, 'not enough players');
                 ws.terminate();
@@ -63,7 +63,7 @@ function waitClose(ws) { //connection was closed regularly
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//+------------------------------------------------------------------+ TODO: reconnecting logic
+//+------------------------------------------------------------------+
 //|     GAME CREATION & PLAYER FINDER & RECONNECTION ALGORITHM       |
 //+------------------------------------------------------------------+
 function lineConnec(ws) {  //called when new socket connecting to waitSockServ
@@ -71,22 +71,22 @@ function lineConnec(ws) {  //called when new socket connecting to waitSockServ
     //ws.isAlive = true;
     //ws.on('pong', (ws) => ws.isAlive = true );
     ServerModule.CardGameSessionArray.forEach((Session) => { //loops trough all active game sessions
-        if (ws._socket.remoteAddress === Session.serverSide.player1.ip && !Session.isFinished) {  //player 1 reconnecting;
-            Session.serverSide.player1.ip = ws._socket.remoteAddress;
-            Session.serverSide.player1.lineWs = ws;
-            //TODO: redirect
-            ws.send("reconectando");
-            ws.close(4000, 'redirect to game streaming socket');
-            ws.terminate();  //safety
-            return true;
-        } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip && !Session.isFinished) { //player 2 reconnecting;
-            Session.serverSide.player2.ip = ws._socket.remoteAddress;
-            Session.serverSide.player2.lineWs = ws;
-            //TODO: redirect
-            ws.send("reconectando");
-            ws.close(4000, 'redirect to game streaming socket');
-            ws.terminate(); //safety
-            return true;
+        if (!Session.isFinished) {
+            if (ws._socket.remoteAddress === Session.serverSide.player1.ip && !Session.isFinished) {  //player 1 reconnecting;
+                Session.serverSide.player1.ip = ws._socket.remoteAddress;
+                Session.serverSide.player1.lineWs = ws;
+                ws.send("reconectando");
+                ws.close(4000, 'redirect to game streaming socket');
+                ws.terminate();  //safety
+                return true;
+            } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip && !Session.isFinished) { //player 2 reconnecting;
+                Session.serverSide.player2.ip = ws._socket.remoteAddress;
+                Session.serverSide.player2.lineWs = ws;
+                ws.send("reconectando");
+                ws.close(4000, 'redirect to game streaming socket');
+                ws.terminate(); //safety
+                return true;
+            }
         }
     });
     lineConnecNew(); //if no active session, go to waiting line
