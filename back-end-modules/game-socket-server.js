@@ -71,8 +71,14 @@ function gameOpen(ws) {
     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session) => {  //loops trough all active games
         console.log("GAMESOCK: gameOpen(fn) --> starting");
+        console.log("GAMESOCK: gameOpen(fn) --> SESSION INDEX: "+ index);
+        console.log("GAMESOCK: gameOpen(fn) --> SESSION is finished: "+ Session.isFinished);
+        console.log("GAMESOCK: gameOpen(fn) --> SESSION gameSessionID: "+ Session.serverSide.gameState.gameSessionID);
+        console.log("GAMESOCK: gameOpen(fn) --> P1 IP: "+ Session.serverSide.player1.ip);
+        console.log("GAMESOCK: gameOpen(fn) --> P2 IP: "+ Session.serverSide.player2.ip);
+        console.log("GAMESOCK: opened socket addres(fn) --> SESSION is finished: "+ ws._socket.remoteAddress);
         if (!Session.isFinished) {
-            console.log("GAMESOCK: gameOpen(fn) --> active session found");
+            console.log("GAMESOCK: gameOpen(fn) --> active session found" + index);
             if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //player 1 waiting handshake or reconnecting
                 console.log("GAMESOCK: gameOpen(fn) --> checking P1");
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1

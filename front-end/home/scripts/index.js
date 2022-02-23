@@ -25,6 +25,7 @@ document.getElementById('play-now-button').addEventListener('click', () => {
   }
 
   socket.onmessage = (event) => {
+    console.log(JSON.parse(event.data));
     console.log(event.data);
   }
 

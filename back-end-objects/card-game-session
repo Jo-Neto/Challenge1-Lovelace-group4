@@ -87,7 +87,7 @@ class CardGameSession {
          } else
             console.log("CardGameSession object --> roundCheck(fn) --> XOR ELSE, Session Num: " + this.serverSide.gameState.gameSessionID);
       else if (this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1]) { //empate 
-         console.log("CardGameSession object --> roundCheck(fn) --> " + "Session Num: " + this.serverSide.gameState.gameSessionID + " draw");
+         //console.log("CardGameSession object --> roundCheck(fn) --> " + "Session Num: " + this.serverSide.gameState.gameSessionID + " draw");
          if (this.serverSide.lastPlayed === 1) //if draw, play again
             this.serverSide.player1turn = false;
          else  
