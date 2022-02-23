@@ -19,7 +19,7 @@ waitSockServ.on('connection', (ws, req) => { //called at socket creation, when p
     ws.on('error', (error) => { console.log('WAITSOCK: waitWebSock error: '); console.log(error); }); //WebSocket error print
     ws.on('close', () => waitClose(ws));
     ws.isAlive = true;  //create property is alive for this socket
-    ws.timeoutCount = 20;
+    ws.timeoutCount = 10;
     ws.on('pong', () => { ws.isAlive = true }); //pong received = connection alive
     ws.on('message', (data, isBinary) => waitMessage(data, isBinary, ws));
     lineConnec(ws);
@@ -46,8 +46,8 @@ const sockServInterval = setInterval(() => {
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws, index) => {
-            console.log("ws.playerName-->>" + ws.playerName);
-            console.log("wfutureP1-->>" + futureP1);
+            //console.log("ws.playerName-->>" + ws.playerName);
+            //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 if (futureP1) {
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
@@ -72,9 +72,11 @@ const sockServInterval = setInterval(() => {
                 } else
                     futureP1 = ws;
             } else if (ws.readyState === WebSocket.OPEN && !ws.playerName) {
+                console.log("WAITSOCK: waitSockServ --> decrementing timer for address: "+ws._socket.remoteAddress);
                 ws.send('Escolha um nome ou faça seu login');
                 ws.timeoutCount--;
             } else if (ws.timeoutCount === 0) {
+                console.log("WAITSOCK: waitSockServ --> time out-ing address: "+ws._socket.remoteAddress);
                 ws.send("Não há outros jogadores ativos no momento");
                 ws.close(4100, 'not enough player right now');
                 ws.terminate(); //safety
