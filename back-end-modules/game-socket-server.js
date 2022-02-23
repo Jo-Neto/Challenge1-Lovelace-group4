@@ -71,19 +71,19 @@ function gameOpen(ws) {
     //console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session, index) => {  //loops trough all active games
         //console.log("GAMESOCK: gameOpen(fn) --> starting");
-        console.log("GAMESOCK: gameOpen(fn) --> session type: "+ typeof Session);
-        console.log("GAMESOCK: gameOpen(fn) --> SESSION is finished: "+ Session.isFinished);
-        console.log("GAMESOCK: gameOpen(fn) --> P1 IP: "+ Session.serverSide.player1.ip+",  on index: "+index+ ",  session id: "+Session.serverSide.gameState.gameSessionID);
-        console.log("GAMESOCK: gameOpen(fn) --> P2 IP: "+ Session.serverSide.player2.ip+",  on index: "+index+ ",  session id: "+Session.serverSide.gameState.gameSessionID);
-        console.log("GAMESOCK: opened socket addres(fn) --> "+ ws._socket.remoteAddress);
+        console.log("GAMESOCK: gameOpen(fn) --> session type: " + typeof Session);
+        console.log("GAMESOCK: gameOpen(fn) --> SESSION is finished: " + Session.isFinished);
+        console.log("GAMESOCK: gameOpen(fn) --> P1 IP: " + Session.serverSide.player1.ip + ",  on index: " + index + ",  session id: " + Session.serverSide.gameState.gameSessionID);
+        console.log("GAMESOCK: gameOpen(fn) --> P2 IP: " + Session.serverSide.player2.ip + ",  on index: " + index + ",  session id: " + Session.serverSide.gameState.gameSessionID);
+        console.log("GAMESOCK: opened socket addres(fn) --> " + ws._socket.remoteAddress);
         console.log("=================================================================================================");
         if (!Session.isFinished) {
-            console.log("GAMESOCK: gameOpen(fn) --> active session foundn on index: "+ index);
+            console.log("GAMESOCK: gameOpen(fn) --> active session foundn on index: " + index);
             if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //player 1 waiting handshake or reconnecting
-                console.log("GAMESOCK: gameOpen(fn) --> checking P1 on index: "+ index);
+                console.log("GAMESOCK: gameOpen(fn) --> checking P1 on index: " + index);
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1
                 if (Session.serverSide.player1.waitingReconec > 1) { //reconnecting
-                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P1-reconnecting,  on index: "+ index);
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P1-reconnecting,  on index: " + index);
                     Session.serverSide.player1.waitingReconec = 0;
                     ws.send(JSON.stringify({
                         msgType: 'reconnection',
@@ -98,12 +98,12 @@ function gameOpen(ws) {
                 }
                 else //waiting handshake
                     ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
-                console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress+",  on index: "+ index);
+                console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress + ",  on index: " + index);
             } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //player 2 waiting handshake or reconnecting
-                console.log("GAMESOCK: gameOpen(fn) --> checking P2 on index: "+ index);
+                console.log("GAMESOCK: gameOpen(fn) --> checking P2 on index: " + index);
                 Session.serverSide.player2.gameWs = ws;  //assign socket to P2
                 if (Session.serverSide.player2.waitingReconec > 1) { //reconnecting
-                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P2-reconnecting,  on index: "+ index );
+                    console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P2-reconnecting,  on index: " + index);
                     Session.serverSide.player2.waitingReconec = 0;
                     ws.send(JSON.stringify({
                         msgType: 'reconnection',
@@ -117,10 +117,10 @@ function gameOpen(ws) {
                     }));
                 }
                 else //waiting handshake
-                ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
-                console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress+",  on index: "+ index);
+                    ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
+                console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress + ",  on index: " + index);
             } else {
-                console.log("GAMESOCK: player does not belong to session, terminating,  on index: "+ index);
+                console.log("GAMESOCK: player does not belong to session, terminating,  on index: " + index);
                 ws.close(4004, `you don't belong to any ongoing matches`);
                 ws.terminate(); //safety
             }
@@ -141,7 +141,7 @@ function gameMessage(data, isBinary, ws) {
     cardPlayed: ui.draggable.attr('value'),
     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
     */
-    let tempData = { };  //data received from player
+    let tempData = {};  //data received from player
     try { tempData = JSON.parse(data); }
     catch (e) { console.log("GAMESOCK: gameMessage(fn) --> received non-parsable DATA --> " + e); return; }
     try {
@@ -161,9 +161,9 @@ function gameMessage(data, isBinary, ws) {
             ws.terminate();
             return;
         }
-    }   
+    }
     catch (e) { console.log("GAMESOCK: gameMessage(fn) --> non comparable tempData --> " + e); return; }
-    
+
     let enemyFakeGameState = { board: [] }; //safety obj clean
     let feedbackFakeGameState = { board: [] }; //instant feedback object
     //console.log("p1 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand);
@@ -173,7 +173,7 @@ function gameMessage(data, isBinary, ws) {
     if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs === ws) { //p1 message
         if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p1 turn
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
-            
+
             ///ANTI-CHEAT AGAINST P1/////////////////////////////
             if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand[tempData.cardPlayedIndex - 1] !== tempData.cardPlayed) {
                 console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tempData.gameSessionID);
@@ -202,18 +202,19 @@ function gameMessage(data, isBinary, ws) {
             //console.log("p1 shift index: " + (tempData.cardPlayedIndex - 1));
             //console.log("p1 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand);
             //console.log("p1 deck: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.deck);
-            
-            
-            ///IF PLAYER 1 IS DC & PLAYER 2 IS WAITING
+
+
+            ///IF PLAYER 2 IS DC & PLAYER 1 IS WAITING
             if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.waitingReconec != 0) {
                 console.log("GAMESOCK: gameMessage(fn) --> p1 waiting p2 reconnec --> Session id: " + tempData.gameSessionID);
                 if (ServerModule.CardGameSessionArray[tempData.gameSessionID].roundCheck())
                     return;
-                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify({
+                console.log("reconnec score p1: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1 +"reconnec score p2: "+ ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2+"turn num: "+ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.currTurn);
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify({
                     msgType: 'reconnection',
                     newHand: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand,
                     board: [ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0], ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1]],
-                    myTurn: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
+                    myTurn: !ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
                     scoreP1: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
                     scoreP2: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2,
                     turnNum: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.currTurn
@@ -245,8 +246,8 @@ function gameMessage(data, isBinary, ws) {
             enemyFakeGameState.scoreP1 = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.currTurn;
-            
-            
+
+
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
             feedbackFakeGameState = {
                 msgType: 'instantFeedback',
@@ -262,7 +263,7 @@ function gameMessage(data, isBinary, ws) {
             //sending proccessed message to both players
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify(enemyFakeGameState)); //send message to p2
-        
+
         }
         else {
             ws.send("not your turn, front-end error or cheat");
@@ -271,7 +272,7 @@ function gameMessage(data, isBinary, ws) {
     } else if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn) { //p2 turn
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn = null; //safety, prevent players from playing
-            
+
             ///ANTI-CHEAT AGAINST P2///////////////////////////////
             if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand[tempData.cardPlayedIndex - 1] !== tempData.cardPlayed) {
                 console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tempData.gameSessionID);
@@ -300,18 +301,18 @@ function gameMessage(data, isBinary, ws) {
             //console.log("p2 shift index: " + (tempData.cardPlayedIndex - 1));
             //console.log("p2 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand);
             //console.log("p2 deck: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.deck);
-            
-            
-            ///IF PLAYER 2 IS DC & PLAYER 1 IS WAITING////////////////////
+
+
+            ///IF PLAYER 1 IS DC & PLAYER 2 IS WAITING////////////////////
             if (ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.waitingReconec != 0) {
                 console.log("GAMESOCK: gameMessage(fn) --> p1 waiting p2 reconnec --> Session id: " + tempData.gameSessionID);
                 if (ServerModule.CardGameSessionArray[tempData.gameSessionID].roundCheck())
                     return;
-                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify({
+                ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify({
                     msgType: 'reconnection',
                     newHand: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.hand,
                     board: [ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[1], ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.board[0]],
-                    myTurn: !ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
+                    myTurn: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1turn,
                     scoreP1: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1,
                     scoreP2: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2,
                     turnNum: ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.currTurn
@@ -343,7 +344,7 @@ function gameMessage(data, isBinary, ws) {
             enemyFakeGameState.scoreP1 = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.gameState.currTurn;
-            
+
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
             feedbackFakeGameState = {
                 msgType: 'instantFeedback',
@@ -358,7 +359,7 @@ function gameMessage(data, isBinary, ws) {
             //sending proccessed message to both players
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.send(JSON.stringify(enemyFakeGameState));
-        
+
         } else {
             ws.send("not your turn, front-end error or cheat");
             console.log("ERROR: GAMESOCK: gameMessage(fn) --> wrong player message");
