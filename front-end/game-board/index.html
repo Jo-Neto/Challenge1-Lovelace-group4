@@ -25,7 +25,7 @@
             <ul>
                 <li onclick="openModal('modal-rules')">Consultar regras</li>
                 <li><a href="https://www.alphaedtech.org.br/" target="_blank">Sobre o Edtech</a></li>
-                <li>Desenvolvedores</li>
+                <li onclick="openModal('modal-devs')">Desenvolvedores</li>
                 <li onclick="openModal('modal-logoff')">Sair</li>
             </ul>
         </nav>
@@ -79,15 +79,7 @@
                     </div>
                 </div>
             </div> 
-            <!-- elementos para teste abaixo-->
-                    <!-- <div id="player2-test">
-                            <button class="btn-elements" id="btn-fire" onclick="showCard('f')">Fogo</button>
-                            <button class="btn-elements" id="btn-water" onclick="showCard('w')">Agua</button>
-                            <button class="btn-elements" id="btn-plant" onclick="showCard('p')">Planta</button>
-                            <button class="btn-elements" id="btn-eter" onclick="showCard('e')">Eter</button>
-                        </div>
-                        -->
-            <!-- elementos para teste acima-->
+            
             <div class="container-cards-from-hand" id="container-card-player2"></div>
         </div>
 
@@ -163,7 +155,7 @@
                </a>
             </div>
         </div>
-
+        
         <div id="modal-unknow-error" class="modal">
             <h3>Ocorreu algum erro, volte para a home</h3>
             <div class="row-direction">
@@ -174,7 +166,7 @@
         </div>
 
         <div id="modal-rules">
-            <img onclick="closeModal('modal-rules')" src="./assets/close_white_24dp.svg">
+            <img onclick="closeModal('modal-rules')" src="./assets/close_white_24dp.svg" id="rules-close">
             <h2>Regras do jogo</h2>
             <p>Elemental Clash é um jogo de cartas dividido em turnos e composto por dois baralhos de elementos. Cada jogador recebe um baralho de 14 cartas, sendo 4 cartas do elemento água, 4 do fogo, 4 de planta e 2 de éter. Dessas 14 cartas, 3 são sorteadas e colocadas na mão do jogador.</p>
             <p>Para jogá-lo, um jogador deve jogar uma carta e aguardar o oponente jogar a carta dele, ao jogar, verifica-se qual das cartas venceram e então o jogador que venceu ganha 1 ponto e será o primeiro a jogar na rodada seguinte. O jogador que ganhar 5 pontos primeiro vence o duelo.</p>
@@ -183,6 +175,53 @@
             <p>Caso os dois jogadores joguem um mesmo elemento, isso causará um empate e ninguém irá pontuar na rodada, então o jogador que foi o primeiro a jogar na rodada anterior será o primeiro a jogar novamente.
                 <br />
                 Divirta-se!!!</p>
+        </div>
+
+        <div id="modal-devs">
+            <img onclick="closeModal('modal-devs')" id="devs-close" src="./assets/close_white_24dp.svg">
+            <h2>Nossos Desenvolvedores</h2>
+            <table id="social-media">
+                <tbody>
+                    <tr>
+                        <td>Fabrício Rodrigues</td>
+                        <td>
+                            <a href="https://www.linkedin.com/in/fabr%C3%ADcio-rodrigues-pereira-68b844227/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <br />
+                            <a href="https://github.com/SkyvengerLL" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fernando Ribeiro</td>
+                        <td>
+                            <a href="https://www.linkedin.com/in/fernando-ribeiro-b28342143/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <br />
+                            <a href="https://github.com/Ferr50" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                        </td>
+                    <tr>
+                        <td>Flávia Souza</td>
+                        <td>
+                            <a href="https://www.linkedin.com/in/ridailda/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <br />
+                            <a href="https://github.com/flaaaaaavis" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                        </td>
+                    <tr>
+                        <td>José Neto</td>
+                        <td>
+                            <!-- <a href="" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <br /> -->
+                            <a href="https://github.com/Jo-Neto" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vinícius Noronha</td>
+                        <td>
+                            <a href="https://www.linkedin.com/in/vinicius-noronha-1540b2184/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <br />
+                            <a href="https://github.com/viniciusna" target="_blank"><img class="linkedin-logo"  src="assets/github.png"> GitHub</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
