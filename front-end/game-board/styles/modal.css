@@ -30,24 +30,10 @@
 }
 
 
-#modal-logoff {
+#modal-logoff, #modal-victory, #modal-defeat, #modal-disconnected, #modal-give-up, #modal-opponent-cheat, #modal-no-match, #modal-cheat {
     visibility: hidden;
 }
 
-#modal-victory {
-    visibility: hidden;
-}
-
-#modal-defeat {
-    visibility: hidden;
-}
-
-#modal-disconnected {
-    visibility: hidden;
-}
-#modal-give-up {
-    visibility: hidden;
-}
 #btn-modal-logoff {
     /* background-color: #DB1C1C; */
     margin-right: 2vw;
@@ -56,14 +42,6 @@
 #btn-modal-logoff {
     background-color: #1AE316;
     margin-left: 2vw;
-}
-
-#modal-loading {
-    visibility: hidden;
-}
-
-#modal-loading img {
-    width: 80%;
 }
 
 #modal-rules {

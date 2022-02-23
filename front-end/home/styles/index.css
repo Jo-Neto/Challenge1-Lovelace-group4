@@ -152,6 +152,13 @@ section img {
     visibility: hidden;
 }
 
+#modal-timeout {
+    visibility: hidden;
+    width: 40vw;
+    height: 65vh;
+    min-height: 380px;
+}
+
 #modal-loading img {
     width: 80%;
 }
