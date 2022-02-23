@@ -4,7 +4,7 @@
 //+------------------------------------------------------------------+and methods for storing the matches in the database
 const fs = require('fs');
 
-const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e'];
+const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e']; //unshuffled deck
 
 class CardGameSession {
    constructor(currSessionID) {
@@ -35,6 +35,7 @@ class CardGameSession {
             hasCheated: false
          },
          player1: {  //server side only, data about player 1
+            name: 'non-named player',
             hand: [],
             indexToReplace: null,
             deck: null,
@@ -45,6 +46,7 @@ class CardGameSession {
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
          },
          player2: {  //server side only, data about player 2
+            name: 'non-named player',
             hand: [],
             indexToReplace: null,
             deck: null,
@@ -149,13 +151,15 @@ class CardGameSession {
       this.serverSide.player2.gameWs = null;
       this.serverSide.player2.chatWs = null;
       fs.readFile('./database/game-sessions.json', (err, readData) => {
-         if (err) throw console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on reading database: " + err);
+         if (err) { console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on reading database: "); throw console.log(err);}
          let dataBase = JSON.parse(readData);
          dataBase.push({
             gameSessionID: this.serverSide.gameState.gameSessionID,
             turnNum: this.serverSide.gameState.currTurn,
             disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
+            nameP1: this.serverSide.player1.name,
+            nameP2: this.serverSide.player2.name,
             scoreP1: this.serverSide.gameState.scoreP1,
             scoreP2: this.serverSide.gameState.scoreP2,
             hasCheated: this.serverSide.gameState.hasCheated,
@@ -163,7 +167,7 @@ class CardGameSession {
          });
          let toWrite = JSON.stringify(dataBase);
          fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {
-            if (err) throw console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on writing database: " + err);
+            if (err) { console.log("ERROR: SessionNum:" + this.serverSide.gameState.gameSessionID + "on writing database: "); throw console.log(err) };
          });
          console.log("game session num: " + this.serverSide.gameState.gameSessionID + ' registered on database');
       });
@@ -183,4 +187,10 @@ function shuffle(array) {
    return arrCpy;
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                            EXPORTS                               |
+//+------------------------------------------------------------------+
 module.exports = CardGameSession;
