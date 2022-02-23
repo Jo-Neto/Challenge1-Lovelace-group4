@@ -16,8 +16,7 @@ let gameState = {
     hand: null,
     board: ['', ''],  //me, enemy
     scoreP1: 0,
-    scoreP2: 0,
-    turnNum: 0
+    scoreP2: 0 
 }
 
 /*
@@ -58,10 +57,6 @@ gameSocket.onmessage = (event) => {
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
             openModal("modal-defeat")
-        } else if ( event.code === 4000 ) {
-            console.log("O oponente desconectou")
-        } else if ( event.code === 4200 ) {
-            console.log("O oponente desistiu")
         }
 
         return console.log(event.data)
@@ -79,7 +74,6 @@ gameSocket.onmessage = (event) => {
         gameState.myTurn = obj.myTurn;
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
         // console.log("RECEIVED DATA: ");
@@ -98,7 +92,6 @@ gameSocket.onmessage = (event) => {
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
     } else if(obj.msgType === 'reconnection') { //carta comprada, recebe a nova mão logo depois de jogar...
@@ -112,13 +105,9 @@ gameSocket.onmessage = (event) => {
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
         gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
     }
 
     else {
@@ -127,7 +116,6 @@ gameSocket.onmessage = (event) => {
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
-        gameState.turnNum = 0;
         document.getElementById("score-player1").innerHTML = '0';
         document.getElementById("score-player2").innerHTML = '0';
 
@@ -177,8 +165,6 @@ gameSocket.onclose = (event) => {
     } else if ( event.code === 1008 ) {
         console.log("Você trapaceou")
         openModal("modal-cheat")
-    } else {
-        openModal("modal-unknow-error")
     }
 }
 
