@@ -3,6 +3,10 @@ const url = window.location.href.slice(7, -6);
 const port = 80;
 const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
 
+$(document).ready( () => {
+    $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+})
+
 //código 1000 ou vc tá indo pro socket da partida ou acaba a partida
 //Se não é sua partida, o código é 4004, e o socket fecha
 
@@ -50,7 +54,7 @@ gameSocket.onmessage = (event) => {
         obj = JSON.parse(event.data)
     } catch {
 
-        $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+        // $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
@@ -161,7 +165,7 @@ gameSocket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
-    $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+    //$(".btn-back-to-home").attr("href", `http://${url}:${port}`)
 
     if ( event.code === 4000 || event.code === 4200 ) {
         console.log("O oponente desconectou")
@@ -232,8 +236,6 @@ function noCardsOnHand(){
         }
     }
 }
-
-
 
 function verifyIfHaveTwoCardsInTheField() {
     if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
