@@ -4,7 +4,7 @@
 //+------------------------------------------------------------------+and methods for storing the matches in the database
 const fs = require('fs');
 
-const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e'];
+const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e']; //unshuffled deck
 
 class CardGameSession {
    constructor(currSessionID) {
@@ -35,7 +35,7 @@ class CardGameSession {
             hasCheated: false
          },
          player1: {  //server side only, data about player 1
-            name: 'non-named players',
+            name: 'non-named player',
             hand: [],
             indexToReplace: null,
             deck: null,
@@ -46,7 +46,7 @@ class CardGameSession {
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
          },
          player2: {  //server side only, data about player 2
-            name: 'non-named players',
+            name: 'non-named player',
             hand: [],
             indexToReplace: null,
             deck: null,
@@ -158,8 +158,8 @@ class CardGameSession {
             turnNum: this.serverSide.gameState.currTurn,
             disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
-            nameP1: this.serverSide.gameState.player1.name,
-            nameP2: this.serverSide.gameState.player2.name,
+            nameP1: this.serverSide.player1.name,
+            nameP2: this.serverSide.player2.name,
             scoreP1: this.serverSide.gameState.scoreP1,
             scoreP2: this.serverSide.gameState.scoreP2,
             hasCheated: this.serverSide.gameState.hasCheated,
@@ -187,4 +187,10 @@ function shuffle(array) {
    return arrCpy;
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                            EXPORTS                               |
+//+------------------------------------------------------------------+
 module.exports = CardGameSession;

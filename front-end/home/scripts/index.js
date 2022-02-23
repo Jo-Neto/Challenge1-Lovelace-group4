@@ -23,7 +23,12 @@ document.getElementById('play-now-button').addEventListener('click', () => {
   socket.onopen = (event) => {
     sendName();
   }
-  
+
+  socket.onmessage = (event) => {
+    console.log(event.data);
+  }
+
+
   socket.addEventListener('close', (event) => {
     if (event.code === 1000 || event.code === 4000) {
       //Pedir a página game-board

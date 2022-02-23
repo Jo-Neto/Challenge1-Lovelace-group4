@@ -9,8 +9,7 @@ const url = require('url');
 //|                       ARBITRATY PORTS                            |
 //+------------------------------------------------------------------+
 const frontPort = 80;
-const restAPIPort = null; //currently unused;
-const envPort = process.env.PORT; //environment port, currently unused;
+const restPort = null; //currently unused;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
@@ -19,7 +18,7 @@ const envPort = process.env.PORT; //environment port, currently unused;
 const app = express();
 app.use(express.json());
 app.use('/', express.static('front-end/home'));
-app.use('/game', express.static('front-end/game-board'));
+app.use('/game', express.static('front-end/game-board')); //TODO: deny if no session
 //app.use('/game', express.static('front-end/game-board'));
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
@@ -43,4 +42,9 @@ HTTPserver.on('upgrade', function upgrade(request, socket, head) {
 });
 
 let CardGameSessionArray = [];  //Arr to store card game sessions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                            EXPORTS                               |
+//+------------------------------------------------------------------+
 exports.CardGameSessionArray = CardGameSessionArray;
