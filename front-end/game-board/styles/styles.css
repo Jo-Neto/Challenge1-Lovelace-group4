@@ -20,6 +20,7 @@ body {
 
 .cards-in-hand {
     cursor: pointer;
+    z-index: 4;
 }
 
 .card img {
