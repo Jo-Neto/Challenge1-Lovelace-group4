@@ -161,6 +161,8 @@ gameSocket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
+    $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+
     if ( event.code === 4000 || event.code === 4200 ) {
         console.log("O oponente desconectou")
         openModal("modal-disconnected")
