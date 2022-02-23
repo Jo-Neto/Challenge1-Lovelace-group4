@@ -13,12 +13,6 @@ const CardGameSessionClass = require('../back-end-objects/card-game-session');
 //+------------------------------------------------------------------+
 //|                  SOCKET SERVERS INITIALIZERS                     |
 //+------------------------------------------------------------------+
-fs.readFile('./database/game-sessions.json', getnextSessionID); //access database to get available session ID
-function getnextSessionID(err, readData) {
-    let dataBase = JSON.parse(readData);
-    nextSessionID = dataBase.length;
-}
-
 const waitSockServ = new WebSocket.Server({ noServer: true, clientTracking: true }); //create serverless socket for multisocket server
 waitSockServ.on('error', (error) => { console.log('WAITSOCK: waitSockServ error: '); console.log(error); }); //SocketServer error print
 waitSockServ.on('connection', (ws, req) => { //called at socket creation, when players start looking for a match
@@ -26,9 +20,22 @@ waitSockServ.on('connection', (ws, req) => { //called at socket creation, when p
     ws.on('close', () => waitClose(ws));
     ws.isAlive = true;  //create property is alive for this socket
     ws.on('pong', () => { ws.isAlive = true }); //pong received = connection alive
+    ws.on('message', (data, isBinary) => waitMessage(data, isBinary, ws));
     lineConnec(ws);
 });  //called at socket creation, when players start looking for a match
 waitSockServ.on('close', () => { console.log("WAITSOCK: closed waitSockServ"); clearInterval(sockServInterval); }); //clear connection checker 
+
+let nextSessionID;
+function updateSessionID() { //access database to get available session ID
+    console.log( "updateSessionID(fn) running" );
+    fs.readFile('./database/game-sessions.json', (err, readData) => {
+        if (err) { console.log("ERROR: WAITSOCK: updateSessionID(fn), reading file:" + err); throw console.log(err); }
+        let dataBase = JSON.parse(readData);
+        console.log("updateSessionID(fn) --> DBlength = "+ dataBase.length );
+        nextSessionID = dataBase.length;
+        console.log("updateSessionID(fn) --> nextSessionID = "+nextSessionID );
+    });
+}
 
 
 
@@ -103,13 +110,17 @@ function lineConnecNew() {  //called if player is not reconnecting to a match
             if (count === 2) {
                 waitSockServ.clients.forEach(client => { //loops trough all open sockets on this socket server and...
                     if (!p1done) { //get a first player
+                        updateSessionID();
+                        console.log("WAITSOCK: lineConnecNew(fn) --> nextSessionID: " +nextSessionID);
                         ServerModule.CardGameSessionArray[nextSessionID] = new CardGameSessionClass(nextSessionID); //create a game session
                         ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.ip = client._socket.remoteAddress; //assing ip for safety
                         ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.lineWs = client; //assing socket, for future implementations
+                        ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.name = client.playerName;
                         p1done = true;
                     } else { //get a second player
                         ServerModule.CardGameSessionArray[nextSessionID].serverSide.player2.ip = client._socket.remoteAddress; //assing ip for safety
                         ServerModule.CardGameSessionArray[nextSessionID].serverSide.player2.lineWs = client; //assing socket, for future implementations
+                        ServerModule.CardGameSessionArray[nextSessionID].serverSide.player2.name = client.playerName;
                         nextSessionID++; //next session
                         p1done = false;
                     }
@@ -121,6 +132,15 @@ function lineConnecNew() {  //called if player is not reconnecting to a match
             }
         });
     }
+}
+
+function waitMessage(data, isBinary, ws) {
+    console.log("WAITSOCK: waitMessage(fn) --> received binary data");
+    tempData = {};
+    try { tempData = JSON.parse(data); console.log("tried --> " + tempData); }
+    catch (e) { console.log("WAITSOCK: waitMessage(fn) --> received non-parsable DATA --> " + e); return; }
+    ws.playerName = tempData;
+    console.log(ws.playerName);
 }
 
 module.exports.waitSockServ = waitSockServ;

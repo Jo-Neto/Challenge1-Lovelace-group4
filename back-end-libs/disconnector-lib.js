@@ -21,7 +21,7 @@ module.exports = {
     connectCheckerGame: (CardGameSessionArray) => {
         console.log("SERVER-LIB: connectCheckerGame(fn) -STARTING");
         CardGameSessionArray.forEach((Session) => { //loops trough all active game sessions
-            //console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
+            console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
             if (!Session.isFinished) {  //don't check finished games
                 if (Session.serverSide.player1.gameWs === null || Session.serverSide.player2.gameWs === null) {
                     console.log("SERVER-LIB: connectCheckerGame(fn) ---> calling --> lineHangChecker(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);

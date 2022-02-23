@@ -9,10 +9,7 @@ const url = require('url');
 //|                       ARBITRATY PORTS                            |
 //+------------------------------------------------------------------+
 const frontPort = 80;
-const gameSocketPort = null; //currently unused;
-const waitLineSocketPort = null; //currently unused;
-const chatSocketPort = null; //currently unused;
-const restPort = null; //currently unused;
+const restAPIPort = null; //currently unused;
 const envPort = process.env.PORT; //environment port, currently unused;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +19,8 @@ const envPort = process.env.PORT; //environment port, currently unused;
 const app = express();
 app.use(express.json());
 app.use('/', express.static('front-end/home'));
-app.use('/game', express.static('front-end/game-board')); //TODO: deny if no session
+app.use('/game', express.static('front-end/game-board'));
+//app.use('/game', express.static('front-end/game-board'));
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 

@@ -70,8 +70,11 @@ const lineHangChecker = setInterval(() => { //check if someone disconnected
 function gameOpen(ws) {
     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress);
     ServerModule.CardGameSessionArray.forEach((Session) => {  //loops trough all active games
+        console.log("GAMESOCK: gameOpen(fn) --> starting");
         if (!Session.isFinished) {
+            console.log("GAMESOCK: gameOpen(fn) --> active session found");
             if ((ws._socket.remoteAddress === Session.serverSide.player1.ip)) { //player 1 waiting handshake or reconnecting
+                console.log("GAMESOCK: gameOpen(fn) --> checking P1");
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1
                 if (Session.serverSide.player1.waitingReconec != 0) { //reconnecting
                     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P1 - reconnecting");
@@ -91,6 +94,7 @@ function gameOpen(ws) {
                     ws.send(JSON.stringify(Session.player1Handshake));  //send first match data
                 console.log("GAMESOCK: sent gamesession to p1, ws address: " + ws._socket.remoteAddress);
             } else if ((ws._socket.remoteAddress === Session.serverSide.player2.ip)) { //player 2 waiting handshake or reconnecting
+                console.log("GAMESOCK: gameOpen(fn) --> checking P2");
                 Session.serverSide.player2.gameWs = ws;  //assign socket to P2
                 if (Session.serverSide.player2.waitingReconec != 0) { //reconnecting
                     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " - P2 - reconnecting");
@@ -131,7 +135,11 @@ function gameMessage(data, isBinary, ws) {
     cardPlayed: ui.draggable.attr('value'),
     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
     */
-    let tempData = JSON.parse(data); //data received from player
+    let tempData = {};  //data received from player
+    try { tempData = JSON.parse(data) }
+    catch (e) { console.log("GAMESOCK: gameMessage(fn) --> received non-parsable DATA --> " + e); return; }
+    console.log(tempData);
+    console.log("GAMESOCK: gameMessage(fn) --> going on");
     let enemyFakeGameState = { board: [] }; //safety obj clean
     let feedbackFakeGameState = { board: [] }; //instant feedback object
     //console.log("p1 hand: " + ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.hand);
@@ -153,7 +161,7 @@ function gameMessage(data, isBinary, ws) {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player2.gameWs.terminate();
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p2');
                     return;
-                } else { 
+                } else {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p2');
                     return;
                 }
@@ -232,7 +240,7 @@ function gameMessage(data, isBinary, ws) {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].serverSide.player1.gameWs.terminate();
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p1');
                     return;
-                } else { 
+                } else {
                     ServerModule.CardGameSessionArray[tempData.gameSessionID].storeOnDatabase('p1');
                     return;
                 }
