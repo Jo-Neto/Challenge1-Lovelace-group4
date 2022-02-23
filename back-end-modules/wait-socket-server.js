@@ -19,7 +19,7 @@ waitSockServ.on('connection', (ws, req) => { //called at socket creation, when p
     ws.on('error', (error) => { console.log('WAITSOCK: waitWebSock error: '); console.log(error); }); //WebSocket error print
     ws.on('close', () => waitClose(ws));
     ws.isAlive = true;  //create property is alive for this socket
-    ws.timeoutCount = 20;
+    ws.timeoutCount = 10;
     ws.on('pong', () => { ws.isAlive = true }); //pong received = connection alive
     ws.on('message', (data, isBinary) => waitMessage(data, isBinary, ws));
     lineConnec(ws);
@@ -45,10 +45,13 @@ const sockServInterval = setInterval(() => {
     console.log("WAITSOCK: waitSockServ.client num -->> " + waitSockServ.clients.size);
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
-        waitSockServ.clients.forEach((ws, index) => {
-            console.log("ws.playerName-->>" + ws.playerName);
-            console.log("wfutureP1-->>" + futureP1);
+        waitSockServ.clients.forEach((ws) => {
+            console.log('LOOP START: nextSessionID = '+nextSessionID);
+            //console.log("ws.playerName-->>" + ws.playerName);
+            //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
+                console.log('BEFORE CREATION nextSessionID = '+nextSessionID);
+
                 if (futureP1) {
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
                     ws.timeoutCount = 20;
@@ -59,22 +62,29 @@ const sockServInterval = setInterval(() => {
                     ws.send("partida encontrada");
                     ws.close(1000, 'redirect to game streaming socket');
                     ws.terminate(); //safety
+                    console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P2");
                     futureP1.timeoutCount = 20;
                     console.log("WAITSOCK: waitSockServ(fn) --> STORING P1 INFO");
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
                     ServerModule.CardGameSessionArray[nextSessionID].serverSide.player1.name = futureP1.playerName;
+                    console.log('nextSessionID = '+nextSessionID);
                     nextSessionID++;
+                    console.log('nextSessionID = '+nextSessionID);
                     futureP1.send("partida encontrada");
                     futureP1.close(1000, 'redirect to game streaming socket');
                     futureP1.terminate(); //safety
+                    futureP1 = null;
+                    console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P1 -- future = null");
                     return;
                 } else
                     futureP1 = ws;
             } else if (ws.readyState === WebSocket.OPEN && !ws.playerName) {
+                console.log("WAITSOCK: waitSockServ --> decrementing timer for address: "+ws._socket.remoteAddress);
                 ws.send('Escolha um nome ou faça seu login');
                 ws.timeoutCount--;
             } else if (ws.timeoutCount === 0) {
+                console.log("WAITSOCK: waitSockServ --> time out-ing address: "+ws._socket.remoteAddress);
                 ws.send("Não há outros jogadores ativos no momento");
                 ws.close(4100, 'not enough player right now');
                 ws.terminate(); //safety

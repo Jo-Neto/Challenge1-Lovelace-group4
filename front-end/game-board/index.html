@@ -70,13 +70,12 @@
             <div class="cheap" id="second-cheap">
                 <img id="img-second-cheap" class="cheap" src="./assets/cheap.svg">
                 
-                <div class="flip-card">
+                <!-- <div class="flip-card">
                     <div class="flip-card-inner">
                         <img id="pickable-verso" class="card flip-card-front" src="./assets/verso.svg" onclick="flipCard()">
-                        <!-- Arrastar esse lado -->
                         <img id="pickable-card" class="card flip-card-back" src="./assets/card-ether.svg">
                     </div>
-                </div>
+                </div> -->
             </div> 
             
             <div class="container-cards-from-hand" id="container-card-player2"></div>
@@ -86,7 +85,9 @@
         <div id="modal-logoff" class="modal">
             <h3>Deseja mesmo sair?</h3>
             <div class="row-direction">
-                <button id="btn-modal-logoff" class="btn-modal">Sair</button>
+                <a class="btn-back-to-home">
+                    <button id="btn-modal-logoff" class="btn-modal">Sair</button>
+                </a>
                 <button id="btn-modal-cancel" class="btn-modal" onclick="closeModal('modal-logoff')">Cancelar</button>
             </div>
         </div>
