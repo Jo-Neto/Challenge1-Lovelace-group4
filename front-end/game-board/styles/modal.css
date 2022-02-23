@@ -27,6 +27,8 @@
 
 .btn-modal {
     width: 8vw;
+    height: 4vh;
+    border-radius: 50px;
 }
 
 #modal-logoff, #modal-victory, #modal-defeat, #modal-disconnected, #modal-give-up, #modal-opponent-cheat, #modal-no-match, #modal-cheat, #modal-unknow-error {
