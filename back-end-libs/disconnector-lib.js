@@ -21,7 +21,7 @@ module.exports = {
     connectCheckerGame: (CardGameSessionArray) => {
         console.log("SERVER-LIB: connectCheckerGame(fn) -STARTING");
         CardGameSessionArray.forEach((Session) => { //loops trough all active game sessions
-            console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
+            //console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
             if (!Session.isFinished) {  //don't check finished games
                 if (Session.serverSide.player1.gameWs === null || Session.serverSide.player2.gameWs === null) {
                     console.log("SERVER-LIB: connectCheckerGame(fn) ---> calling --> lineHangChecker(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
@@ -52,7 +52,7 @@ module.exports = {
         console.log("SERVER-LIB: lineHangChecker(fn) -STARTING");
         CardGameSessionArray.forEach((Session) => {
             if (!Session.isFinished) { //don't check finished games
-                console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
+                //console.log("SERVER-LIB: lineHangChecker(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
                 if (Session.serverSide.player1.gameWs !== null) { //p1 exists on game
                     console.log("SERVER-LIB: lineHangChecker(fn) --> CHECK 1 - 1, Session Num: " + Session.serverSide.gameState.gameSessionID);
                     if (Session.serverSide.player1.gameWs.readyState === WebSocket.OPEN) { //p1 is in the game
@@ -100,6 +100,13 @@ module.exports = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     finishWinOneDC: (Session, ws, winString) => {
         console.log("SERVER-LIB: finishWinOneDC(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
+        if (winString === 'p2' && Session.serverSide.player1.waitingReconec < 2) { //p2 is the future winner, when it gets to 2
+            Session.serverSide.player1.waitingReconec++;
+            return;
+        } else if (winString === 'p1' && Session.serverSide.player2.waitingReconec < 2) { //p1 is the future winner, when it gets to 2
+            Session.serverSide.player2.waitingReconec++;
+            return;
+        }
         ws.send("Voce Ganhou! O oponenete desconectou");
         ws.close(4000, 'the other player disconnected');
         ws.terminate();
