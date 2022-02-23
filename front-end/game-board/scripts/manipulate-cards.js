@@ -169,6 +169,7 @@ gameSocket.onclose = (event) => {
 }
 
 function showEnemyCard(cardString) {
+
     switch (cardString) {
         case 'f':
             $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.svg" alt="">');
@@ -197,12 +198,39 @@ function showEnemyCard(cardString) {
 
 }
 
+function verifyCardOnTop() {
+
+    if((gameState.board[0] == '') && (gameState.board[1] =='')){
+        
+    }else if((gameState.board[0] != '') && (gameState.board[1] !='')){
+        //turnForDeck --;                
+    }else if((gameState.board[0] =='') && (gameState.board[1] != '')){
+        $("#container-card-player2").css('zIndex',5);
+    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+        $("#container-card-player2").css('zIndex',3);
+    }
+}
+
+function noCardsOnHand(){
+    if(turnForDeck < 7) {//mudar para -3 quando certo
+        if(gameState.scoreP1 > gameState.scoreP2) {
+            openModal("modal-victory");
+        }else if(gameState.scoreP2 > gameState.scoreP1){
+            openModal("modal-defeat");
+        }else{
+            // openModal("modal-draw");
+        }
+    }
+}
+
+
+
 function verifyIfHaveTwoCardsInTheField() {
     if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-
+            hideCheap();
             $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
             $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
             $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
@@ -233,8 +261,6 @@ function gameStart() {
     verifyIfHaveTwoCardsInTheField()
     
     if (gameState.myTurn) {
-        hideCheap();
-        turnForDeck --;
         $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
 
         $("#playing-card-field").droppable({
@@ -252,7 +278,7 @@ function gameStart() {
                 }),
                 {},
                 );
-
+                verifyCardOnTop()
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   

@@ -20,6 +20,7 @@ body {
 
 .cards-in-hand {
     cursor: pointer;
+    z-index: 4;
 }
 
 .card img {
@@ -55,7 +56,7 @@ body {
 }
 
 #playing-card-field {
-    width: 14.5%;
+    width: 15%;
     align-self: center;
     margin: 3vh 0 3vh 0;
 }
