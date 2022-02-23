@@ -319,36 +319,45 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-let nameOfSoundArchive;
+let waterSound = new Audio('assets/sounds/waterCardSound.mp3');
+let fireSound = new Audio('assets/sounds/fireCardSound.mp3');
+let plantSound = new Audio('assets/sounds/plantCardSound.mp3');
+let etherSound = new Audio('assets/sounds/etherCardSound.mp3');
+
+let winnerSound = new Audio('assets/sounds/winnerRound.mp3');
+let loserSound = new Audio('assets/sounds/roundLoser.mp3');
+
+let cardDrawSound = new Audio('assets/sounds/cardDrawSound.mp3');
+let backgroundMusic = new Audio('assets/sounds/backgroundSound.mp3');
+
 
 function playCardSound(card) {
-
     switch (card) {
-        case "w": nameOfSoundArchive = new Audio('assets/sounds/waterCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "w":
+            waterSound.play();
             break;
-        case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
-            nameOfSoundArchive.play();
-            nameOfSoundArchive.volume = 0.15;
+        case "f": 
+            fireSound.play();
+            fireSound.volume = 0.15;
             break;
-        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "p": 
+            plantSound.play();
             break;
-        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "e":
+            etherSound.play();
             break;
-        case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
-            nameOfSoundArchive.play();
+        case "cardDraw":
+            cardDrawSound.play();
             break;
-        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/winnerRound.mp3');
-            nameOfSoundArchive.play();
+        case "roundWinner":
+            winnerSound.play();
             break;
-        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
-            nameOfSoundArchive.play();
-        case "backgroundSound": nameOfSoundArchive = new Audio('assets/sounds/backgroundSound.mp3');
-            nameOfSoundArchive.loop = true;
-            nameOfSoundArchive.volume = 0.08;
-            nameOfSoundArchive.play();
+        case "roundLoser":
+            loserSound.play();
+        case "backgroundSound":
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.08;
+            backgroundMusic.play();
             break;
     }
 }
@@ -360,13 +369,26 @@ function changeSoundConf() {
     if(count%2 == 0) {
         button.setAttribute('src', '');
         button.setAttribute('src', './assets/music_off_white_24dp.svg');
-        nameOfSoundArchive.pause();
+        waterSound.src = "";
+        fireSound.src = "";
+        plantSound.src = "";
+        etherSound.src = "";
+        cardDrawSound.src = "";
+        backgroundMusic.src = "";
     } else {
         button.setAttribute('src', '');
         button.setAttribute('src', './assets/music_note_white_24dp.svg');
-        nameOfSoundArchive.play();
+        waterSound.src = 'assets/sounds/waterCardSound.mp3';
+        fireSound.src = 'assets/sounds/fireCardSound.mp3';
+        plantSound.src = 'assets/sounds/plantCardSound.mp3';
+        etherSound.src = 'assets/sounds/etherCardSound.mp3';
+        cardDrawSound.src = 'assets/sounds/cardDrawSound.mp3';
+        backgroundMusic.src = 'assets/sounds/backgroundSound.mp3';
+        backgroundMusic.play();
     }
 }
+
+
 
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
