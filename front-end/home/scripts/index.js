@@ -12,7 +12,7 @@ const url = window.location.href.slice(7, -1);
 const port = 80;
 
 document.getElementById('play-now-button').addEventListener('click', () => {
-  var socket = new WebSocket(`ws://${url}:${port}/line`);
+  const socket = new WebSocket(`ws://${url}:${port}/line`);
   
   const playerName = 'myName';
 
