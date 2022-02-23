@@ -43,6 +43,10 @@ main {
     align-self: center;
 }
 
+section img {
+    margin: 20px 0;
+}
+
 #play-now-button {
     background: #232323;
     color: #f5f5f5;
@@ -95,12 +99,20 @@ main {
     text-align: justify;
 }
 
+#info-section ol {
+    font-size: 21px;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-indent: 30px;
+    text-align: justify;
+}
+
 #img-rules {
     width: 80%;
     height: 40%;
 }
 
-#gif {
+.imagens {
     width: 80%;
 }
 
