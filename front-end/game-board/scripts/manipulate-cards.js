@@ -57,6 +57,10 @@ gameSocket.onmessage = (event) => {
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
             openModal("modal-defeat")
+        } else if ( event.code === 4000 ) {
+            console.log("O oponente desconectou")
+        } else if ( event.code === 4200 ) {
+            console.log("O oponente desistiu")
         }
 
         return console.log(event.data)
