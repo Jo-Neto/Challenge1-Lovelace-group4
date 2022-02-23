@@ -62,14 +62,19 @@ body {
 }
 
 #container-card-player2 {
+    width: fit-content;
+    height: fit-content;
+
     position: fixed;
     left: 46%;
     top: 41%;
 }
 
 #container-card-player2 img {
+    width: 7.65vw;
+    height: auto;
+
     position: relative;
-    width: 40%;
 }
 
 #container-hand-cards-and-second-cheap {

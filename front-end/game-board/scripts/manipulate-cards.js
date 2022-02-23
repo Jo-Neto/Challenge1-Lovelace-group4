@@ -182,22 +182,22 @@ function showEnemyCard(cardString) {
 
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.svg">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.svg">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.svg">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
