@@ -1,28 +1,28 @@
-<svg width="146" height="218" viewBox="0 0 146 218" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect x="2.5" y="20.5" width="123" height="195" rx="17.5" fill="#F8F0F0"/>
-<rect x="2.5" y="20.5" width="123" height="195" rx="17.5" fill="url(#paint0_diamond_109_119)" fill-opacity="0.2"/>
-<rect x="2.5" y="20.5" width="123" height="195" rx="17.5" stroke="#00632D" stroke-width="5"/>
-<path d="M12.1719 194.188L28.8359 187.695V183.219L8.82031 192.078V194.82L12.1719 194.188ZM28.8359 199.906L12.125 193.273L8.82031 192.781V195.5L28.8359 204.383V199.906Z" fill="#00632D" fill-opacity="0.66"/>
-<path d="M97.8188 44.1875L114.483 37.6953V33.2188L94.4673 42.0781V44.8203L97.8188 44.1875ZM114.483 49.9062L97.772 43.2734L94.4673 42.7812V45.5L114.483 54.3828V49.9062Z" fill="#00632D" fill-opacity="0.66"/>
-<rect x="16" y="80" width="96" height="77" rx="20" fill="url(#pattern0)"/>
-<rect x="8.5" y="14.5" width="123" height="195" rx="17.5" fill="#F8F0F0"/>
-<rect x="8.5" y="14.5" width="123" height="195" rx="17.5" fill="url(#paint1_diamond_109_119)" fill-opacity="0.2"/>
-<rect x="8.5" y="14.5" width="123" height="195" rx="17.5" stroke="#00632D" stroke-width="5"/>
-<path d="M18.1719 188.188L34.8359 181.695V177.219L14.8203 186.078V188.82L18.1719 188.188ZM34.8359 193.906L18.125 187.273L14.8203 186.781V189.5L34.8359 198.383V193.906Z" fill="#00632D" fill-opacity="0.66"/>
-<path d="M103.819 38.1875L120.483 31.6953V27.2188L100.467 36.0781V38.8203L103.819 38.1875ZM120.483 43.9062L103.772 37.2734L100.467 36.7812V39.5L120.483 48.3828V43.9062Z" fill="#00632D" fill-opacity="0.66"/>
-<rect x="22" y="74" width="96" height="77" rx="20" fill="url(#pattern1)"/>
-<rect x="14.5" y="8.5" width="123" height="195" rx="17.5" fill="#F8F0F0"/>
-<rect x="14.5" y="8.5" width="123" height="195" rx="17.5" fill="url(#paint2_diamond_109_119)" fill-opacity="0.2"/>
-<rect x="14.5" y="8.5" width="123" height="195" rx="17.5" stroke="#00632D" stroke-width="5"/>
-<path d="M24.1719 182.188L40.8359 175.695V171.219L20.8203 180.078V182.82L24.1719 182.188ZM40.8359 187.906L24.125 181.273L20.8203 180.781V183.5L40.8359 192.383V187.906Z" fill="#00632D" fill-opacity="0.66"/>
-<path d="M109.819 32.1875L126.483 25.6953V21.2188L106.467 30.0781V32.8203L109.819 32.1875ZM126.483 37.9062L109.772 31.2734L106.467 30.7812V33.5L126.483 42.3828V37.9062Z" fill="#00632D" fill-opacity="0.66"/>
-<rect x="28" y="68" width="96" height="77" rx="20" fill="url(#pattern2)"/>
-<rect x="20.5" y="2.5" width="123" height="195" rx="17.5" fill="#F8F0F0"/>
-<rect x="20.5" y="2.5" width="123" height="195" rx="17.5" fill="url(#paint3_diamond_109_119)" fill-opacity="0.2"/>
-<rect x="20.5" y="2.5" width="123" height="195" rx="17.5" stroke="#00632D" stroke-width="5"/>
-<path d="M30.1719 176.188L46.8359 169.695V165.219L26.8203 174.078V176.82L30.1719 176.188ZM46.8359 181.906L30.125 175.273L26.8203 174.781V177.5L46.8359 186.383V181.906Z" fill="#00632D" fill-opacity="0.66"/>
-<path d="M115.819 26.1875L132.483 19.6953V15.2188L112.467 24.0781V26.8203L115.819 26.1875ZM132.483 31.9062L115.772 25.2734L112.467 24.7812V27.5L132.483 36.3828V31.9062Z" fill="#00632D" fill-opacity="0.66"/>
-<rect x="34" y="62" width="96" height="77" rx="20" fill="url(#pattern3)"/>
+<svg width="147" height="220" viewBox="0 0 147 220" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect x="2.5" y="20.6651" width="123.877" height="196.835" rx="17.5" fill="#F8F0F0"/>
+<rect x="2.5" y="20.6651" width="123.877" height="196.835" rx="17.5" fill="url(#paint0_diamond_109_119)" fill-opacity="0.2"/>
+<rect x="2.5" y="20.6651" width="123.877" height="196.835" rx="17.5" stroke="#00632D" stroke-width="5"/>
+<path d="M12.1719 194.353L28.8359 187.86V183.384L8.82031 192.243V194.985L12.1719 194.353ZM28.8359 200.071L12.125 193.439L8.82031 192.946V195.665L28.8359 204.548V200.071Z" fill="#00632D" fill-opacity="0.66"/>
+<path d="M97.8188 44.3526L114.483 37.8604V33.3839L94.4673 42.2432V44.9854L97.8188 44.3526ZM114.483 50.0714L97.772 43.4385L94.4673 42.9464V45.6651L114.483 54.5479V50.0714Z" fill="#00632D" fill-opacity="0.66"/>
+<rect x="16" y="80.1651" width="96" height="77" rx="20" fill="url(#pattern0)"/>
+<rect x="8.54102" y="14.61" width="123.877" height="196.835" rx="17.5" fill="#F8F0F0"/>
+<rect x="8.54102" y="14.61" width="123.877" height="196.835" rx="17.5" fill="url(#paint1_diamond_109_119)" fill-opacity="0.2"/>
+<rect x="8.54102" y="14.61" width="123.877" height="196.835" rx="17.5" stroke="#00632D" stroke-width="5"/>
+<path d="M18.2129 188.298L34.877 181.805V177.329L14.8613 186.188V188.93L18.2129 188.298ZM34.877 194.016L18.166 187.383L14.8613 186.891V189.61L34.877 198.493V194.016Z" fill="#00632D" fill-opacity="0.66"/>
+<path d="M103.86 38.2975L120.524 31.8054V27.3288L100.508 36.1882V38.9304L103.86 38.2975ZM120.524 44.0163L103.813 37.3835L100.508 36.8913V39.61L120.524 48.4929V44.0163Z" fill="#00632D" fill-opacity="0.66"/>
+<rect x="22.041" y="74.11" width="96" height="77" rx="20" fill="url(#pattern1)"/>
+<rect x="14.5823" y="8.55505" width="123.877" height="196.835" rx="17.5" fill="#F8F0F0"/>
+<rect x="14.5823" y="8.55505" width="123.877" height="196.835" rx="17.5" fill="url(#paint2_diamond_109_119)" fill-opacity="0.2"/>
+<rect x="14.5823" y="8.55505" width="123.877" height="196.835" rx="17.5" stroke="#00632D" stroke-width="5"/>
+<path d="M24.2542 182.243L40.9182 175.75V171.274L20.9026 180.133V182.875L24.2542 182.243ZM40.9182 187.961L24.2073 181.328L20.9026 180.836V183.555L40.9182 192.438V187.961Z" fill="#00632D" fill-opacity="0.66"/>
+<path d="M109.901 32.2426L126.565 25.7504V21.2738L106.55 30.1332V32.8754L109.901 32.2426ZM126.565 37.9613L109.854 31.3285L106.55 30.8363V33.5551L126.565 42.4379V37.9613Z" fill="#00632D" fill-opacity="0.66"/>
+<rect x="28.0823" y="68.0551" width="96" height="77" rx="20" fill="url(#pattern2)"/>
+<rect x="20.6233" y="2.5" width="123.877" height="196.835" rx="17.5" fill="#F8F0F0"/>
+<rect x="20.6233" y="2.5" width="123.877" height="196.835" rx="17.5" fill="url(#paint3_diamond_109_119)" fill-opacity="0.2"/>
+<rect x="20.6233" y="2.5" width="123.877" height="196.835" rx="17.5" stroke="#00632D" stroke-width="5"/>
+<path d="M30.2952 176.188L46.9592 169.695V165.219L26.9436 174.078V176.82L30.2952 176.188ZM46.9592 181.906L30.2483 175.273L26.9436 174.781V177.5L46.9592 186.383V181.906Z" fill="#00632D" fill-opacity="0.66"/>
+<path d="M115.942 26.1875L132.606 19.6953V15.2188L112.591 24.0781V26.8203L115.942 26.1875ZM132.606 31.9062L115.895 25.2734L112.591 24.7812V27.5L132.606 36.3828V31.9062Z" fill="#00632D" fill-opacity="0.66"/>
+<rect x="34.1233" y="62" width="96" height="77" rx="20" fill="url(#pattern3)"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_109_119" transform="translate(-0.0347222) scale(0.00356481 0.00444444)"/>
@@ -36,19 +36,19 @@
 <pattern id="pattern3" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_109_119" transform="translate(-0.0347222) scale(0.00356481 0.00444444)"/>
 </pattern>
-<radialGradient id="paint0_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64 118) rotate(90) scale(100 64)">
+<radialGradient id="paint0_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64.4384 119.083) rotate(90) scale(100.917 64.4384)">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </radialGradient>
-<radialGradient id="paint1_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70 112) rotate(90) scale(100 64)">
+<radialGradient id="paint1_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70.4794 113.027) rotate(90) scale(100.917 64.4384)">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </radialGradient>
-<radialGradient id="paint2_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(76 106) rotate(90) scale(100 64)">
+<radialGradient id="paint2_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(76.5206 106.972) rotate(90) scale(100.917 64.4384)">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </radialGradient>
-<radialGradient id="paint3_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(82 100) rotate(90) scale(100 64)">
+<radialGradient id="paint3_diamond_109_119" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(82.5616 100.917) rotate(90) scale(100.917 64.4384)">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </radialGradient>
