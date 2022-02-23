@@ -13,6 +13,19 @@
 * kebab-case for HTML attributes, this-is-kebab-case
 * camelCase case for Javascript, thisIsCamelCase
 * english language on the code
+## Socket Close Errors:
+
+1. ### Erros na /Home
+    * **4100**, não há players o suficiente (acontece depois de um tempo na fila)
+    * **4000**, reconexão, favor redirecionar para /game
+    * **1000**, partida criada, favor redirecionar para /game
+2. ### Erros na /Game
+    * **4200**, partida estava pronta, mas oponente saiu, ninguém ganhou
+    * **4008**, inimigo cheatou
+    * **4004**, voce não esta em nenhuma partida
+    * **4000**, inimigo desconectou, vitória
+    * **1008**, voce cheatou
+    * **1000**, partida acabou normalmente
 
 ## Projetos Restantes
 https://github.com/Jo-Neto/Challenge1-Lovelace-group4/projects

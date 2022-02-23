@@ -32,13 +32,14 @@ class CardGameSession {
             scoreP2: 0,
             enemyGaveUp: false,
             disconnec: false,
+            hasCheated: false
          },
          player1: {  //server side only, data about player 1
             hand: [],
             indexToReplace: null,
             deck: null,
             ip: null,
-            waitingReconec: false,
+            waitingReconec: 0,
             lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
@@ -48,7 +49,7 @@ class CardGameSession {
             indexToReplace: null,
             deck: null,
             ip: null,
-            waitingReconec: false,
+            waitingReconec: 0,
             lineWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             gameWs: null,  //CAREFULL WITH RECONNECTIONS!!!
             chatWs: null  //CAREFULL WITH RECONNECTIONS!!!
@@ -152,11 +153,12 @@ class CardGameSession {
          let dataBase = JSON.parse(readData);
          dataBase.push({
             gameSessionID: this.serverSide.gameState.gameSessionID,
-            tunrNum: this.serverSide.gameState.currTurn,
+            turnNum: this.serverSide.gameState.currTurn,
             disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
             scoreP1: this.serverSide.gameState.scoreP1,
             scoreP2: this.serverSide.gameState.scoreP2,
+            hasCheated: this.serverSide.gameState.hasCheated,
             winner: winner
          });
          let toWrite = JSON.stringify(dataBase);

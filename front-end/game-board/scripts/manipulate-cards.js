@@ -102,11 +102,10 @@ gameSocket.onmessage = (event) => {
         // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
-        // console.log("instantFeedback");
+        console.log("reconnection");
         gameState.gameSessionID = obj.gameSessionID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
@@ -134,9 +133,9 @@ gameSocket.onmessage = (event) => {
         // console.log("SERV HANDSHAKE OBJECT: ");
         // console.log(obj);
         // console.log("=======================================");
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
     }
 
     if (gameState.myTurn) {
@@ -170,22 +169,22 @@ gameSocket.onclose = (event) => {
 function showEnemyCard(cardString) {
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.svg" alt="">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.svg" alt="">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.svg" alt="">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.png" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg" alt="">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
@@ -202,9 +201,9 @@ function verifyIfHaveTwoCardsInTheField() {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
 
-            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.png" alt="">`);
-            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.png" alt="">`);
-            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.png" alt="">`);
+            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
         }, 2000);
     }
 }
@@ -324,11 +323,11 @@ function changeSoundConf() {
     const button = document.getElementById('btn-sound');
     if(count%2 == 0) {
         button.setAttribute('src', '');
-        button.setAttribute('src', './assets/music_note_white_24dp.svg');
+        button.setAttribute('src', './assets/music_off_white_24dp.svg');
         nameOfSoundArchive.pause();
     } else {
         button.setAttribute('src', '');
-        button.setAttribute('src', './assets/music_off_white_24dp.svg');
+        button.setAttribute('src', './assets/music_note_white_24dp.svg');
         nameOfSoundArchive.play();
     }
 }
