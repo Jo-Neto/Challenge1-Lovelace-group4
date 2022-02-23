@@ -46,7 +46,6 @@ const sockServInterval = setInterval(() => {
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws) => {
-
             console.log('LOOP START: nextSessionID = '+nextSessionID);
             //console.log("ws.playerName-->>" + ws.playerName);
             //console.log("wfutureP1-->>" + futureP1);
