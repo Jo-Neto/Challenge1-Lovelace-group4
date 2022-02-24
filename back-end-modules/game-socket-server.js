@@ -93,7 +93,7 @@ function gameOpen(ws) {
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
                         whichPlayer: 1,
-                        turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
+                        turnNum: Session.serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
@@ -115,7 +115,7 @@ function gameOpen(ws) {
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
                         whichPlayer: 2,
-                        turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
+                        turnNum: Session.serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
