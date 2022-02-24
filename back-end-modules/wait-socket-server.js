@@ -47,7 +47,7 @@ const sockServInterval = setInterval(() => {
     if (waitSockServ.clients.size !== 0) {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws) => {
-            console.log('LOOP START: nextSessionID = '+nextSessionID);
+            //console.log("ws.playerName-->>" + ws.playerName);
             //console.log("ws.playerName-->>" + ws.playerName);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 console.log('BEFORE CREATION nextSessionID = '+nextSessionID);
@@ -64,13 +64,11 @@ const sockServInterval = setInterval(() => {
                     ws.terminate(); //safety
                     //console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P2");
                     futureP1.timeoutCount = 20;
-
                     //console.log("WAITSOCK: waitSockServ(fn) --> STORING P1 INFO");
                     ServMod.SessArr[nID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
                     ServMod.SessArr[nID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
                     ServMod.SessArr[nID].serverSide.player1.name = futureP1.playerName;
                     nID++;
-
                     futureP1.send("partida encontrada");
                     futureP1.close(1000, 'redirect to game streaming socket');
                     futureP1.terminate(); //safety
