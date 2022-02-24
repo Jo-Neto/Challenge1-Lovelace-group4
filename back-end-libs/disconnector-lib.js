@@ -18,14 +18,14 @@ module.exports = {
     //|                BOTH REGULAR DISCONNECTIONS OR...                 | 
     //|         FORCED DISCONNECTIONS TRIGGERED BY PING-PONG             |
     //+------------------------------------------------------------------+
-    connectCheckerGame: (CardGameSessionArray) => {
+    connectCheckerGame: (SessArr) => {
         console.log("SERVER-LIB: connectCheckerGame(fn) -STARTING");
-        CardGameSessionArray.forEach((Session) => { //loops trough all active game sessions
+        SessArr.forEach((Session) => { //loops trough all active game sessions
             //console.log("SERVER-LIB: connectCheckerGame(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
             if (!Session.isFinished) {  //don't check finished games
                 if (Session.serverSide.player1.gameWs === null || Session.serverSide.player2.gameWs === null) {
                     console.log("SERVER-LIB: connectCheckerGame(fn) ---> calling --> lineHangChecker(fn), Session Num: " + Session.serverSide.gameState.gameSessionID);
-                    module.exports.lineHangChecker(CardGameSessionArray);
+                    module.exports.lineHangChecker(SessArr);
                     return;
                 }
                 if (Session.serverSide.player1.gameWs.readyState === WebSocket.OPEN && Session.serverSide.player2.gameWs.readyState === WebSocket.CLOSED) {
@@ -48,9 +48,9 @@ module.exports = {
     //|      THIS FUNCTION HANDLES PLAYERS THAT DISCONNECTED BEFORE      |
     //|    GETTING INTO THE MATCH BUT THE SESSION WAS ALREADY CREATED    |
     //+------------------------------------------------------------------+
-    lineHangChecker: (CardGameSessionArray) => {
+    lineHangChecker: (SessArr) => {
         console.log("SERVER-LIB: lineHangChecker(fn) -STARTING");
-        CardGameSessionArray.forEach((Session) => {
+        SessArr.forEach((Session) => {
             if (!Session.isFinished) { //don't check finished games
                 //console.log("SERVER-LIB: lineHangChecker(fn) is finished --> " + Session.isFinished + ", for Session Num: " + Session.serverSide.gameState.gameSessionID);
                 if (Session.serverSide.player1.gameWs !== null) { //p1 exists on game
