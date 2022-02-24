@@ -33,7 +33,9 @@ let nID = fs.readFile('./database/game-sessions.json', (err, readData) => {
     if (err) { console.log("ERROR: WAITSOCK: updateSessionID(fn), reading file:" + err); throw console.log(err); }
     let dataBase = JSON.parse(readData);
     console.log("WAITSOCK: updateSessionID(fn), dataBase length:" + dataBase.length);
-    return dataBase.length;
+    //console.log("future nID ="+nID);
+    nID = dataBase.length;
+    //console.log("nID now"+nID);
 });
 
 
@@ -52,6 +54,7 @@ const sockServInterval = setInterval(() => {
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 if (futureP1) {
                     //console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
+                    //console.log("nID="+nID);
                     ws.timeoutCount = 20;
                     ServMod.SessArr[nID] = new CardGameSessionClass(nID);
                     ServMod.SessArr[nID].serverSide.player2.ip = ws._socket.remoteAddress; //assing ip for safety
@@ -67,6 +70,7 @@ const sockServInterval = setInterval(() => {
                     ServMod.SessArr[nID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
                     ServMod.SessArr[nID].serverSide.player1.name = futureP1.playerName;
                     nID++;
+                    //console.log("nID="+nID);
                     futureP1.send("partida encontrada");
                     futureP1.close(1000, 'redirect to game streaming socket');
                     futureP1.terminate(); //safety
