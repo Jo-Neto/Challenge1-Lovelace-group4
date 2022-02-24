@@ -81,7 +81,6 @@ function gameOpen(ws) {
                 console.log("GAMESOCK: gameOpen(fn) --> checking P1 on index: " + index);
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1
                 if (Session.serverSide.player1.waitingReconec > 0) { //reconnecting
-
                     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P1-reconnecting,  on index: " + index);
                     Session.serverSide.player1.waitingReconec = 0;
                     console.log("GAMESOCK: gameMessage(fn) P2 reconnecting --> reconnec score p1: " + Session.serverSide.gameState.scoreP1 +"reconnec score p2: "+ Session.serverSide.gameState.scoreP2+"turn num: "+Session.serverSide.gameState.currTurn);
@@ -93,7 +92,8 @@ function gameOpen(ws) {
                         myTurn: Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
-                        whichPlayer: 1
+                        whichPlayer: 1,
+                        turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
@@ -114,7 +114,8 @@ function gameOpen(ws) {
                         myTurn: !Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
-                        whichPlayer: 2
+                        whichPlayer: 2,
+                        turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
