@@ -55,21 +55,32 @@ body {
     justify-content: space-between;
 }
 
+#container-mid-screen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 #playing-card-field {
     width: 15%;
     align-self: center;
     margin: 3vh 0 3vh 0;
+    z-index: 0;
+    position: relative;
 }
 
 #container-card-player2 {
-    position: fixed;
-    left: 46%;
-    top: 41%;
+    z-index: 1;
+    position: absolute;
 }
 
 #container-card-player2 img {
+    width: 7.65vw;
+    height: auto;
+
     position: relative;
-    width: 40%;
 }
 
 #container-hand-cards-and-second-cheap {
