@@ -80,7 +80,7 @@ function gameOpen(ws) {
             if (ws._socket.remoteAddress === Session.serverSide.player1.ip) { //player 1 waiting handshake or reconnecting
                 console.log("GAMESOCK: gameOpen(fn) --> checking P1 on index: " + index);
                 Session.serverSide.player1.gameWs = ws; //assign socket to P1
-                if (Session.serverSide.player1.waitingReconec > 1) { //reconnecting
+                if (Session.serverSide.player1.waitingReconec > 0) { //reconnecting
                     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P1-reconnecting,  on index: " + index);
                     Session.serverSide.player1.waitingReconec = 0;
                     console.log("GAMESOCK: gameMessage(fn) P2 reconnecting --> reconnec score p1: " + Session.serverSide.gameState.scoreP1 +"reconnec score p2: "+ Session.serverSide.gameState.scoreP2+"turn num: "+Session.serverSide.gameState.currTurn);
@@ -101,7 +101,7 @@ function gameOpen(ws) {
             } else if (ws._socket.remoteAddress === Session.serverSide.player2.ip) { //player 2 waiting handshake or reconnecting
                 console.log("GAMESOCK: gameOpen(fn) --> checking P2 on index: " + index);
                 Session.serverSide.player2.gameWs = ws;  //assign socket to P2
-                if (Session.serverSide.player2.waitingReconec > 1) { //reconnecting
+                if (Session.serverSide.player2.waitingReconec > 0) { //reconnecting
                     console.log("GAMESOCK: gameOpen(fn) --> socket ip: " + ws._socket.remoteAddress + " -P2-reconnecting,  on index: " + index);
                     Session.serverSide.player2.waitingReconec = 0;
                     console.log("GAMESOCK: gameMessage(fn) P2 reconnecting --> reconnec score p1: " + Session.serverSide.gameState.scoreP1 +"reconnec score p2: "+ Session.serverSide.gameState.scoreP2+"turn num: "+Session.serverSide.gameState.currTurn);
@@ -137,6 +137,10 @@ function gameMessage(data, isBinary, ws) {
     cardPlayed: ui.draggable.attr('value'),
     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
     */
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                      READING IF MSG IS VALID                     | 
+//+------------------------------------------------------------------+ 
     let tData = {};  //data received from player
     try { tData = JSON.parse(data); }
     catch (e) { console.log("GAMESOCK: gameMessage(fn) --> received non-parsable DATA --> " + e); return; }
@@ -162,27 +166,19 @@ function gameMessage(data, isBinary, ws) {
 
     let enemyFakeGameState = { board: [] }; //safety obj clean
     let feedbackFakeGameState = { board: [] }; //instant feedback object
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    if ( ServMod.SessArr[tData.sID].serverSide.player1.gameWs === ws || ServMod.SessArr[tData.sID].serverSide.player2.gameWs === ws ) {
-    
-    }else if (ServMod.SessArr[tData.sID].serverSide.player2.gameWs === ws) {
-            if (ServMod.SessArr[tData.sID].serverSide.player1turn)
-    */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //console.log("p1 hand: " + ServMod.SessArr[tData.sID].serverSide.player1.hand);
-    //console.log("p1 deck: " + ServMod.SessArr[tData.sID].serverSide.player1.deck);
-    //console.log("p2 hand: " + ServMod.SessArr[tData.sID].serverSide.player2.hand);
-    //console.log("p2 deck: " + ServMod.SessArr[tData.sID].serverSide.player2.deck);
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                          PLAYER 1 LOGIC                          | 
+//+------------------------------------------------------------------+ 
     if (ServMod.SessArr[tData.sID].serverSide.player1.gameWs === ws) { //p1 message
         if (ServMod.SessArr[tData.sID].serverSide.player1turn) { //p1 turn
             ServMod.SessArr[tData.sID].serverSide.player1turn = null; //safety, prevent players from playing
 
-            ///ANTI-CHEAT AGAINST P1/////////////////////////////
+
+            /////--------ANTI-CHEAT FOR P1-----/////////////////////////////
             if (ServMod.SessArr[tData.sID].serverSide.player1.hand[tData.cardPlayedIndex - 1] !== tData.cardPlayed) {
                 console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tData.sID);
                 ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send("cheat detected, you lost");
@@ -203,7 +199,7 @@ function gameMessage(data, isBinary, ws) {
             ///////////////////////////////////////////////////////////
 
 
-            ///SAVING P1 MOVE IN SERVER
+            //////------SAVING P1 MOVE IN SERVER---//////
             ServMod.SessArr[tData.sID].serverSide.lastPlayed = 1;
             ServMod.SessArr[tData.sID].serverSide.gameState.board[0] = tData.cardPlayed;
             ServMod.SessArr[tData.sID].serverSide.player1.hand[tData.cardPlayedIndex - 1] = ServMod.SessArr[tData.sID].serverSide.player1.deck.shift();
@@ -212,28 +208,34 @@ function gameMessage(data, isBinary, ws) {
             //console.log("p1 deck: " + ServMod.SessArr[tData.sID].serverSide.player1.deck);
 
 
-            ///IF PLAYER 2 IS DC & PLAYER 1 IS WAITING
-            if (ServMod.SessArr[tData.sID].serverSide.player2.waitingReconec != 0) {
+            ////------IF PLAYER 2 IS DC & PLAYER 1 IS WAITING, INSTANT FEEDBACK FOR P1---//////////
+            if (ServMod.SessArr[tData.sID].serverSide.player2.waitingReconec != 0) { //p2 DC
                 console.log("GAMESOCK: gameMessage(fn) --> p1 waiting p2 reconnec --> Session id: " + tData.sID);
-                if (ServMod.SessArr[tData.sID].roundCheck())
+                if (ServMod.SessArr[tData.sID].roundCheck()) //premature calc
                     return;
-                console.log("GAMESOCK: gameMessage(fn) P2 reconnecting --> reconnec score p1: " + ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1 +"reconnec score p2: "+ ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2+"turn num: "+ServMod.SessArr[tData.sID].serverSide.gameState.currTurn);
-                ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify({
-                    msgType: 'reconnection',
+                console.log("GAMESOCK: gameMessage(fn) P1 reconnec message stored ");
+                ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify({ //send p1 feedback
+                    msgType: 'instantFeedback',
                     newHand: ServMod.SessArr[tData.sID].serverSide.player1.hand,
-                    board: [ServMod.SessArr[tData.sID].serverSide.gameState.board[0], ServMod.SessArr[tData.sID].serverSide.gameState.board[1]],
-                    myTurn: !ServMod.SessArr[tData.sID].serverSide.player1turn,
+                    board: [ServMod.SessArr[tData.sID].serverSide.gameState.board[0], ServMod.SessArr[tData.sID].serverSide.gameState.board[1]], //regular boaar for p1
+                    myTurn: ServMod.SessArr[tData.sID].serverSide.player1turn, //p2 turn
                     scoreP1: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1,
                     scoreP2: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2,
                     turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
                 }));
                 return;
             }
-            //////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////
 
+
+            /////----PREPARE REPETITIVE DATA-----//////////////
             enemyFakeGameState.msgType = 'waitingFeedback';
             enemyFakeGameState.sID = tData.sID;
             enemyFakeGameState.hand = [...ServMod.SessArr[tData.sID].serverSide.player2.hand];
+            ///////////////////////////////////////////////////////////////////////////////////
+            
+
+            ////////////---------SETTING-DEPENDANT-DATA-------/////////////////
             if (ServMod.SessArr[tData.sID].serverSide.gameState.board[0] !== '' && ServMod.SessArr[tData.sID].serverSide.gameState.board[1] !== '') { //makeshift for front-end, both players have cards in board
                 enemyFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
                 enemyFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
@@ -250,10 +252,15 @@ function gameMessage(data, isBinary, ws) {
                 feedbackFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
                 feedbackFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
             }
+            ///////////////////////////////////////////////////////////////////////////////////
+
+
+            ///////////////-----SETTING-SIMULTANEOUS-PLAYER-INFO----//////////////////////////////////
             enemyFakeGameState.myTurn = !ServMod.SessArr[tData.sID].serverSide.player1turn;
             enemyFakeGameState.scoreP1 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServMod.SessArr[tData.sID].serverSide.gameState.currTurn;
+            ///////////////////////////////////////////////////////////////////////////////////
 
 
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
@@ -267,21 +274,28 @@ function gameMessage(data, isBinary, ws) {
                 turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
             };
             ////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////
+
+
             //sending proccessed message to both players
             ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify(enemyFakeGameState)); //send message to p2
-
         }
         else {
             ws.send("not your turn, front-end error or cheat");
             console.log("ERROR: GAMESOCK: gameMessage(fn) --> wrong player message");
         }
+
+
+ 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//+------------------------------------------------------------------+
+//|                          PLAYER 2 LOGIC                          | 
+//+------------------------------------------------------------------+ 
     } else if (ServMod.SessArr[tData.sID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServMod.SessArr[tData.sID].serverSide.player1turn) { //p2 turn
             ServMod.SessArr[tData.sID].serverSide.player1turn = null; //safety, prevent players from playing
 
-            ///ANTI-CHEAT AGAINST P2///////////////////////////////
+            ///----ANTI-CHEAT AGAINST P2-----///////////////////////////////
             if (ServMod.SessArr[tData.sID].serverSide.player2.hand[tData.cardPlayedIndex - 1] !== tData.cardPlayed) {
                 console.log("GAMESOCK: gameMessage(fn) --> p2 cheated --> Session id: " + tData.sID);
                 ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send("cheat detected, you lost");
@@ -302,7 +316,7 @@ function gameMessage(data, isBinary, ws) {
             /////////////////////////////////////////////////////////////
 
 
-            ///SAVING P2 MOVE IN SERVER
+            ///-----SAVING P2 MOVE IN SERVER----/////
             ServMod.SessArr[tData.sID].serverSide.lastPlayed = 2;
             ServMod.SessArr[tData.sID].serverSide.gameState.board[1] = tData.cardPlayed;
             ServMod.SessArr[tData.sID].serverSide.player2.hand[tData.cardPlayedIndex - 1] = ServMod.SessArr[tData.sID].serverSide.player2.deck.shift();
@@ -311,16 +325,16 @@ function gameMessage(data, isBinary, ws) {
             //console.log("p2 deck: " + ServMod.SessArr[tData.sID].serverSide.player2.deck);
 
 
-            ///IF PLAYER 1 IS DC & PLAYER 2 IS WAITING////////////////////
+            /////------IF PLAYER 1 IS DC & PLAYER 2 IS WAITING, INSTANT FEEDBACK FOR P2----//////
             if (ServMod.SessArr[tData.sID].serverSide.player1.waitingReconec != 0) {
-                console.log("GAMESOCK: gameMessage(fn) P1 reconnecting --> reconnec score p1: " + ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1 +"reconnec score p2: "+ ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2+"turn num: "+ServMod.SessArr[tData.sID].serverSide.gameState.currTurn);
-                if (ServMod.SessArr[tData.sID].roundCheck())
+                console.log("GAMESOCK: gameMessage(fn) P2 reconnec message stored ");
+                if (ServMod.SessArr[tData.sID].roundCheck()) //premature calc
                     return;
-                ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify({
-                    msgType: 'reconnection',
+                ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify({ //send instant feedback for p2
+                    msgType: 'instantFeedback',
                     newHand: ServMod.SessArr[tData.sID].serverSide.player2.hand,
-                    board: [ServMod.SessArr[tData.sID].serverSide.gameState.board[1], ServMod.SessArr[tData.sID].serverSide.gameState.board[0]],
-                    myTurn: ServMod.SessArr[tData.sID].serverSide.player1turn,
+                    board: [ServMod.SessArr[tData.sID].serverSide.gameState.board[1], ServMod.SessArr[tData.sID].serverSide.gameState.board[0]], //inverse board
+                    myTurn: !ServMod.SessArr[tData.sID].serverSide.player1turn,
                     scoreP1: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1,
                     scoreP2: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2,
                     turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
@@ -329,9 +343,15 @@ function gameMessage(data, isBinary, ws) {
             }
             ////////////////////////////////////////////////////////////////
 
+            
+            ////----PREPARE REPETITIVE DATA----//////////////
             enemyFakeGameState.msgType = 'waitingFeedback';
             enemyFakeGameState.sID = tData.sID;
             enemyFakeGameState.hand = [...ServMod.SessArr[tData.sID].serverSide.player1.hand];
+            ///////////////////////////////////////////////////////////////////////////////////
+            
+
+            ////////////---------SETTING-DEPENDANT-DATA-------/////////////////
             if (ServMod.SessArr[tData.sID].serverSide.gameState.board[0] !== '' && ServMod.SessArr[tData.sID].serverSide.gameState.board[1] !== '') { //makeshift for front-end, both players have cards in board
                 enemyFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
                 enemyFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
@@ -348,10 +368,16 @@ function gameMessage(data, isBinary, ws) {
                 feedbackFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
                 feedbackFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
             }
+            ///////////////////////////////////////////////////////////////////////////////////
+
+
+            ///////////////--SETTING-SIMULTANEOUS-PLAYER-INFO//////////////////////////////////
             enemyFakeGameState.myTurn = ServMod.SessArr[tData.sID].serverSide.player1turn;
             enemyFakeGameState.scoreP1 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServMod.SessArr[tData.sID].serverSide.gameState.currTurn;
+            ////////////////////////////////////////////////////////////////////////////////
+
 
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
             feedbackFakeGameState = {
@@ -364,6 +390,8 @@ function gameMessage(data, isBinary, ws) {
                 turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
             };
             //////////////////////////////////////////
+            
+            
             //sending proccessed message to both players
             ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify(enemyFakeGameState));
