@@ -75,10 +75,6 @@ class CardGameSession {
       this.serverSide.player2.deck = shuffle(unordDeck);
    }
    roundCheck() {
-      console.log("===================================================================");
-      console.log("turn"+this.serverSide.gameState.currTurn);
-      console.log("score p1"+this.serverSide.gameState.scoreP1);
-      console.log("score p2"+this.serverSide.gameState.scoreP2);
       if ((this.serverSide.gameState.board[0] === '') || (this.serverSide.gameState.board[1] === '')) //p1 não jogou ou p2 não jogou ainda
          if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) { //mas ambos não jogaram ainda
             if (this.serverSide.gameState.board[0] === '') { //p2 jogou
@@ -153,6 +149,7 @@ class CardGameSession {
          this.serverSide.player1.gameWs.terminate();
          this.storeOnDatabase('draw');
          return true;
+
       }
       this.serverSide.gameState.currTurn++;
       this.serverSide.gameState.board[0] = '';
