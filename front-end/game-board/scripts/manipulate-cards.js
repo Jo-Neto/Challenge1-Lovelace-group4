@@ -14,7 +14,7 @@ let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta qu
 let turnForDeck = 11;
 
 let gameState = {
-    gameSessionID: null,
+    sID: null,
     player: null,
     myTurn: null,
     hand: null,
@@ -71,7 +71,7 @@ gameSocket.onmessage = (event) => {
     //console.log("=======================================");
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         // console.log("waitingFeedback");
-        gameState.gameSessionID = obj.gameSessionID; //safety
+        gameState.sID = obj.sID; //safety
         gameState.board = obj.board;
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
@@ -104,7 +104,7 @@ gameSocket.onmessage = (event) => {
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
         console.log("reconnection");
-        gameState.gameSessionID = obj.gameSessionID; 
+        gameState.sID = obj.sID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -121,7 +121,7 @@ gameSocket.onmessage = (event) => {
 
     else {
         // console.log("message else");
-        gameState.gameSessionID = obj.gameSessionID;
+        gameState.sID = obj.sID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
@@ -182,22 +182,22 @@ function showEnemyCard(cardString) {
 
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-fire.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.svg">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-water.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.svg">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-plant.svg" alt="">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.svg">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg" alt="">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
@@ -206,31 +206,6 @@ function showEnemyCard(cardString) {
     }
     
 
-}
-
-function verifyCardOnTop() {
-
-    if((gameState.board[0] == '') && (gameState.board[1] =='')){
-        
-    }else if((gameState.board[0] != '') && (gameState.board[1] !='')){
-        //turnForDeck --;                
-    }else if((gameState.board[0] =='') && (gameState.board[1] != '')){
-        $("#container-card-player2").css('zIndex',5);
-    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
-        $("#container-card-player2").css('zIndex',3);
-    }
-}
-
-function noCardsOnHand(){
-    if(turnForDeck < 7) {//mudar para -3 quando certo
-        if(gameState.scoreP1 > gameState.scoreP2) {
-            openModal("modal-victory");
-        }else if(gameState.scoreP2 > gameState.scoreP1){
-            openModal("modal-defeat");
-        }else{
-            // openModal("modal-draw");
-        }
-    }
 }
 
 function verifyIfHaveTwoCardsInTheField() {
@@ -280,13 +255,13 @@ function gameStart() {
                 showWhosTurn();
 
                 gameSocket.send(JSON.stringify({
-                    gameSessionID: gameState.gameSessionID,
+                    sID: gameState.sID,
                     cardPlayed: ui.draggable.attr('value'),
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
                 );
-                verifyCardOnTop()
+                //verifyCardOnTop()
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   
@@ -388,8 +363,6 @@ function changeSoundConf() {
     }
 }
 
-
-
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
     if (typeof myAudio.loop == 'boolean') {
@@ -422,8 +395,28 @@ function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
 
+function verifyCardOnTop() {
+    console.log("board "+ gameState.board)
+    if((gameState.board[0] =='') && (gameState.board[1] != '')){
+        $("#container-card-player2").css('zIndex',3);
+    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+        $("#container-card-player2").css('zIndex',5);
+    }
+}
+
+function noCardsOnHand(){
+    console.log("entrouu: "+ gameState.turnNum)
+    if(gameState.turnNum == 14){
+        if(gameState.scoreP1 > gameState.scoreP2){
+            openModal("modal-victory");
+        }else if(gameState.scoreP2 > gameState.scoreP1){
+            openModal("modal-defeat");
+        }
+    }
+}
+
 function hideCheap() {
-    if(turnForDeck == 0){
+    if(gameState.turnNum == 11){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){

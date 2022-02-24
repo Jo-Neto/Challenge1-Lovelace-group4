@@ -41,10 +41,10 @@ HTTPserver.on('upgrade', function upgrade(request, socket, head) {
    } 
 });
 
-let CardGameSessionArray = [];  //Arr to store card game sessions
+let SessArr = [];  //Arr to store card game sessions
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
 //|                            EXPORTS                               |
 //+------------------------------------------------------------------+
-exports.CardGameSessionArray = CardGameSessionArray;
+exports.SessArr = SessArr;
