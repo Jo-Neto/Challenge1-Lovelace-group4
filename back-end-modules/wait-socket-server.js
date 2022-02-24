@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 const fs = require('fs');
 
 const ServMod = require('../server.js');
-const CardGameSessionClass = require('../back-end-objects/card-game-session');
+const CardGameSessionClass = require('../back-end-objects/card-game-session.js');
 
 
 
@@ -29,14 +29,14 @@ waitSockServ.on('close', () => { console.log("WAITSOCK: closed waitSockServ"); c
 
 //access database to get available session ID
 //next ID
-let nID = fs.readFile('./database/game-sessions.json', (err, readData) => {
-    if (err) { console.log("ERROR: WAITSOCK: updateSessionID(fn), reading file:" + err); throw console.log(err); }
+let nextID = fs.readFile('./database/game-sessions.json', (err, readData) => {
+    if (err) { console.log("ERROR: WAITSOCK: updateSessionextID(fn), reading file:" + err); throw console.log(err); }
     let dataBase = JSON.parse(readData);
-    console.log("WAITSOCK: updateSessionID(fn), dataBase length:" + dataBase.length);
-    console.log("future nID ="+nID);
-    nID = dataBase.length;
-    console.log("nID now"+nID);
-    return nID;
+    console.log("WAITSOCK: updateSessionextID(fn), dataBase length:" + dataBase.length);
+    console.log("future nextID ="+nextID);
+    nextID = dataBase.length;
+    console.log("nextID now"+nextID);
+    return nextID;
 });
 
 
@@ -55,23 +55,23 @@ const sockServInterval = setInterval(() => {
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 if (futureP1) {
                     //console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
-                    //console.log("nID="+nID);
+                    //console.log("nextID="+nextID);
                     ws.timeoutCount = 20;
-                    ServMod.SessArr[nID] = new CardGameSessionClass(nID);
-                    ServMod.SessArr[nID].serverSide.player2.ip = ws._socket.remoteAddress; //assing ip for safety
-                    ServMod.SessArr[nID].serverSide.player2.lineWs = ws; //assing socket, for future implementations
-                    ServMod.SessArr[nID].serverSide.player2.name = ws.playerName;
+                    ServMod.SessArr[nextID] = new CardGameSessionClass(nextID);
+                    ServMod.SessArr[nextID].serverSide.player2.ip = ws._socket.remoteAddress; //assing ip for safety
+                    ServMod.SessArr[nextID].serverSide.player2.lineWs = ws; //assing socket, for future implementations
+                    ServMod.SessArr[nextID].serverSide.player2.name = ws.playerName;
                     ws.send("partida encontrada");
                     ws.close(1000, 'redirect to game streaming socket');
                     ws.terminate(); //safety
                     //console.log("WAITSOCK: waitSockServ(fn) --> INFO SENT TO P2");
                     futureP1.timeoutCount = 20;
                     //console.log("WAITSOCK: waitSockServ(fn) --> STORING P1 INFO");
-                    ServMod.SessArr[nID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
-                    ServMod.SessArr[nID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
-                    ServMod.SessArr[nID].serverSide.player1.name = futureP1.playerName;
-                    nID++;
-                    //console.log("nID="+nID);
+                    ServMod.SessArr[nextID].serverSide.player1.ip = futureP1._socket.remoteAddress; //assing ip for safety
+                    ServMod.SessArr[nextID].serverSide.player1.lineWs = futureP1; //assing socket, for future implementations
+                    ServMod.SessArr[nextID].serverSide.player1.name = futureP1.playerName;
+                    nextID++;
+                    //console.log("nextID="+nextID);
                     futureP1.send("partida encontrada");
                     futureP1.close(1000, 'redirect to game streaming socket');
                     futureP1.terminate(); //safety

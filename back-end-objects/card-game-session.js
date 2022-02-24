@@ -7,16 +7,16 @@ const fs = require('fs');
 const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e']; //unshuffled deck
 
 class CardGameSession {
-   constructor(nID) {
+   constructor(nextID) {
       this.isFinished = false;
       this.player1Handshake = {  //first object sent to player 1, sent only once
-         sID: Number(nID),
+         sID: Number(nextID),
          whichPlayer: 1,
          firstToPlay: null,
          hand: []
       };
       this.player2Handshake = { //first object sent to player 2, sent only once
-         sID: Number(nID),
+         sID: Number(nextID),
          whichPlayer: 2,
          firstToPlay: null,
          hand: []
@@ -25,7 +25,7 @@ class CardGameSession {
          player1turn: null,
          lastPlayed: null,
          gameState: {
-            sID: Number(nID),
+            sID: Number(nextID),
             currTurn: 0,
             board: ['', ''],  // [player1, player2]
             scoreP1: 0,
@@ -154,7 +154,7 @@ class CardGameSession {
          if (err) { console.log("ERROR: SessionNum:" + this.serverSide.gameState.sID + "on reading database: "); throw console.log(err);}
          let dataBase = JSON.parse(readData);
          dataBase.push({
-            sessionID: this.serverSide.gameState.sID,
+            sessionextID: this.serverSide.gameState.sID,
             turnNum: this.serverSide.gameState.currTurn,
             disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
