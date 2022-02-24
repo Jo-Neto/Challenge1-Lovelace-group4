@@ -87,7 +87,7 @@ const sockServInterval = setInterval(() => {
                 if (ws.timeoutCount === 0) {
                     console.log("WAITSOCK: waitSockServ --> killing client, timeout, addres: "+ws._socket.remoteAddress);
                     ws.send("Não há outros jogadores ativos no momento");
-                    ws.close(4100, 'not enough player right now');
+                    ws.close(4100, 'not enough players right now');
                     ws.terminate(); //safety
                 }
             } else {
