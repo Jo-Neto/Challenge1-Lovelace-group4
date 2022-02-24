@@ -119,6 +119,7 @@ function gameOpen(ws) {
                 else //waiting handshake
                     ws.send(JSON.stringify(Session.player2Handshake)); //send first match data
                 console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress + ",  on index: " + index);
+
             } 
         }
     });
@@ -137,8 +138,10 @@ function gameMessage(data, isBinary, ws) {
     cardPlayed: ui.draggable.attr('value'),
     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
     */
+
     let tData = {};  //data received from player
     try { tData = JSON.parse(data); }
+
     catch (e) { console.log("GAMESOCK: gameMessage(fn) --> received non-parsable DATA --> " + e); return; }
     try {
         if (ServMod.SessArr[tData.sID] === undefined) {
@@ -204,6 +207,7 @@ function gameMessage(data, isBinary, ws) {
 
 
             ///SAVING P1 MOVE IN SERVER
+
             ServMod.SessArr[tData.sID].serverSide.lastPlayed = 1;
             ServMod.SessArr[tData.sID].serverSide.gameState.board[0] = tData.cardPlayed;
             ServMod.SessArr[tData.sID].serverSide.player1.hand[tData.cardPlayedIndex - 1] = ServMod.SessArr[tData.sID].serverSide.player1.deck.shift();
@@ -226,6 +230,8 @@ function gameMessage(data, isBinary, ws) {
                     scoreP1: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1,
                     scoreP2: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2,
                     turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
+
+                  
                 }));
                 return;
             }
@@ -250,10 +256,13 @@ function gameMessage(data, isBinary, ws) {
                 feedbackFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
                 feedbackFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
             }
+
+          
             enemyFakeGameState.myTurn = !ServMod.SessArr[tData.sID].serverSide.player1turn;
             enemyFakeGameState.scoreP1 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServMod.SessArr[tData.sID].serverSide.gameState.currTurn;
+
 
 
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
@@ -269,14 +278,17 @@ function gameMessage(data, isBinary, ws) {
             ////////////////////////////////////////////////////////////////
             //////////////////////////////////////////
             //sending proccessed message to both players
+
             ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify(enemyFakeGameState)); //send message to p2
+
 
         }
         else {
             ws.send("not your turn, front-end error or cheat");
             console.log("ERROR: GAMESOCK: gameMessage(fn) --> wrong player message");
         }
+
     } else if (ServMod.SessArr[tData.sID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServMod.SessArr[tData.sID].serverSide.player1turn) { //p2 turn
             ServMod.SessArr[tData.sID].serverSide.player1turn = null; //safety, prevent players from playing
@@ -303,6 +315,7 @@ function gameMessage(data, isBinary, ws) {
 
 
             ///SAVING P2 MOVE IN SERVER
+
             ServMod.SessArr[tData.sID].serverSide.lastPlayed = 2;
             ServMod.SessArr[tData.sID].serverSide.gameState.board[1] = tData.cardPlayed;
             ServMod.SessArr[tData.sID].serverSide.player2.hand[tData.cardPlayedIndex - 1] = ServMod.SessArr[tData.sID].serverSide.player2.deck.shift();
@@ -324,6 +337,7 @@ function gameMessage(data, isBinary, ws) {
                     scoreP1: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1,
                     scoreP2: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2,
                     turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
+
                 }));
                 return;
             }
@@ -348,10 +362,12 @@ function gameMessage(data, isBinary, ws) {
                 feedbackFakeGameState.board[0] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
                 feedbackFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[0];
             }
+
             enemyFakeGameState.myTurn = ServMod.SessArr[tData.sID].serverSide.player1turn;
             enemyFakeGameState.scoreP1 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2;
             enemyFakeGameState.turnNum = ServMod.SessArr[tData.sID].serverSide.gameState.currTurn;
+
 
             //////////---INSTANT FEEDBACK OBJECT---////////////////////
             feedbackFakeGameState = {
@@ -365,8 +381,10 @@ function gameMessage(data, isBinary, ws) {
             };
             //////////////////////////////////////////
             //sending proccessed message to both players
+
             ServMod.SessArr[tData.sID].serverSide.player2.gameWs.send(JSON.stringify(feedbackFakeGameState));
             ServMod.SessArr[tData.sID].serverSide.player1.gameWs.send(JSON.stringify(enemyFakeGameState));
+
 
         } else {
             ws.send("not your turn, front-end error or cheat");
