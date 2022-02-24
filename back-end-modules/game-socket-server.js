@@ -121,7 +121,6 @@ function gameOpen(ws) {
                 console.log("GAMESOCK: sent gamesession to p2, ws address: " + ws._socket.remoteAddress + ",  on index: " + index);
 
             } 
-
         }
     });
 }
@@ -162,7 +161,6 @@ function gameMessage(data, isBinary, ws) {
             return;
         }
     }
-
     catch (e) { console.log("GAMESOCK: gameMessage(fn) --> non comparable tData --> " + e); return; }
 
     let enemyFakeGameState = { board: [] }; //safety obj clean
@@ -233,6 +231,7 @@ function gameMessage(data, isBinary, ws) {
                     scoreP2: ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2,
                     turnNum: ServMod.SessArr[tData.sID].serverSide.gameState.currTurn
 
+                  
                 }));
                 return;
             }
@@ -258,6 +257,7 @@ function gameMessage(data, isBinary, ws) {
                 feedbackFakeGameState.board[1] = ServMod.SessArr[tData.sID].serverSide.gameState.board[1];
             }
 
+          
             enemyFakeGameState.myTurn = !ServMod.SessArr[tData.sID].serverSide.player1turn;
             enemyFakeGameState.scoreP1 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP1;
             enemyFakeGameState.scoreP2 = ServMod.SessArr[tData.sID].serverSide.gameState.scoreP2;
@@ -292,7 +292,6 @@ function gameMessage(data, isBinary, ws) {
     } else if (ServMod.SessArr[tData.sID].serverSide.player2.gameWs === ws) { //p2 message
         if (!ServMod.SessArr[tData.sID].serverSide.player1turn) { //p2 turn
             ServMod.SessArr[tData.sID].serverSide.player1turn = null; //safety, prevent players from playing
-
 
             ///ANTI-CHEAT AGAINST P2///////////////////////////////
             if (ServMod.SessArr[tData.sID].serverSide.player2.hand[tData.cardPlayedIndex - 1] !== tData.cardPlayed) {
