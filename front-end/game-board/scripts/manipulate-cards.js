@@ -14,7 +14,7 @@ let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta qu
 let turnForDeck = 11;
 
 let gameState = {
-    gameSessionID: null,
+    sID: null,
     player: null,
     myTurn: null,
     hand: null,
@@ -71,7 +71,7 @@ gameSocket.onmessage = (event) => {
     //console.log("=======================================");
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         // console.log("waitingFeedback");
-        gameState.gameSessionID = obj.gameSessionID; //safety
+        gameState.sID = obj.sID; //safety
         gameState.board = obj.board;
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
@@ -104,7 +104,7 @@ gameSocket.onmessage = (event) => {
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
         console.log("reconnection");
-        gameState.gameSessionID = obj.gameSessionID; 
+        gameState.sID = obj.sID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -121,7 +121,7 @@ gameSocket.onmessage = (event) => {
 
     else {
         // console.log("message else");
-        gameState.gameSessionID = obj.gameSessionID;
+        gameState.sID = obj.sID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
@@ -280,7 +280,7 @@ function gameStart() {
                 showWhosTurn();
 
                 gameSocket.send(JSON.stringify({
-                    gameSessionID: gameState.gameSessionID,
+                    sID: gameState.sID,
                     cardPlayed: ui.draggable.attr('value'),
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
