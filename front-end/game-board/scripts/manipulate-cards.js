@@ -208,31 +208,6 @@ function showEnemyCard(cardString) {
 
 }
 
-function verifyCardOnTop() {
-
-    if((gameState.board[0] == '') && (gameState.board[1] =='')){
-        
-    }else if((gameState.board[0] != '') && (gameState.board[1] !='')){
-        //turnForDeck --;                
-    }else if((gameState.board[0] =='') && (gameState.board[1] != '')){
-        $("#container-card-player2").css('zIndex',5);
-    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
-        $("#container-card-player2").css('zIndex',3);
-    }
-}
-
-function noCardsOnHand(){
-    if(turnForDeck < 7) {//mudar para -3 quando certo
-        if(gameState.scoreP1 > gameState.scoreP2) {
-            openModal("modal-victory");
-        }else if(gameState.scoreP2 > gameState.scoreP1){
-            openModal("modal-defeat");
-        }else{
-            // openModal("modal-draw");
-        }
-    }
-}
-
 function verifyIfHaveTwoCardsInTheField() {
     if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
         setTimeout(() => {
@@ -286,7 +261,7 @@ function gameStart() {
                 }),
                 {},
                 );
-                verifyCardOnTop()
+                //verifyCardOnTop()
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   
@@ -388,8 +363,6 @@ function changeSoundConf() {
     }
 }
 
-
-
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
     if (typeof myAudio.loop == 'boolean') {
@@ -422,8 +395,28 @@ function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
 
+function verifyCardOnTop() {
+    console.log("board "+ gameState.board)
+    if((gameState.board[0] =='') && (gameState.board[1] != '')){
+        $("#container-card-player2").css('zIndex',3);
+    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+        $("#container-card-player2").css('zIndex',5);
+    }
+}
+
+function noCardsOnHand(){
+    console.log("entrouu: "+ gameState.turnNum)
+    if(gameState.turnNum == 14){
+        if(gameState.scoreP1 > gameState.scoreP2){
+            openModal("modal-victory");
+        }else if(gameState.scoreP2 > gameState.scoreP1){
+            openModal("modal-defeat");
+        }
+    }
+}
+
 function hideCheap() {
-    if(turnForDeck == 0){
+    if(gameState.turnNum == 11){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){
