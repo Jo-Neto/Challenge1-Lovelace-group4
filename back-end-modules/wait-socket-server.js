@@ -48,7 +48,6 @@ const sockServInterval = setInterval(() => {
         let futureP1 = null;
         waitSockServ.clients.forEach((ws) => {
             //console.log("ws.playerName-->>" + ws.playerName);
-            //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 if (futureP1) {
                     //console.log("WAITSOCK: waitSockServ(fn) --> STORING P2 INFO");
