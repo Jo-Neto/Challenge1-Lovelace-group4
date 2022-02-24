@@ -33,9 +33,10 @@ let nID = fs.readFile('./database/game-sessions.json', (err, readData) => {
     if (err) { console.log("ERROR: WAITSOCK: updateSessionID(fn), reading file:" + err); throw console.log(err); }
     let dataBase = JSON.parse(readData);
     console.log("WAITSOCK: updateSessionID(fn), dataBase length:" + dataBase.length);
-    //console.log("future nID ="+nID);
+    console.log("future nID ="+nID);
     nID = dataBase.length;
-    //console.log("nID now"+nID);
+    console.log("nID now"+nID);
+    return nID;
 });
 
 
