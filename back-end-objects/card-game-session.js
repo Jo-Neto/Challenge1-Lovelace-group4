@@ -75,10 +75,10 @@ class CardGameSession {
       this.serverSide.player2.deck = shuffle(unordDeck);
    }
    roundCheck() {
-      if (this.serverSide.gameState.currTurn === 14) {
-         console.log("CardGameSession object --> roundCheck(fn) --> ROUND 14 DRAW");
-         this.storeOnDatabase('p1');
-      }
+      console.log("===================================================================");
+      console.log("turn"+this.serverSide.gameState.currTurn);
+      console.log("score p1"+this.serverSide.gameState.scoreP1);
+      console.log("score p2"+this.serverSide.gameState.scoreP2);
       if ((this.serverSide.gameState.board[0] === '') || (this.serverSide.gameState.board[1] === '')) //p1 não jogou ou p2 não jogou ainda
          if (!(this.serverSide.gameState.board[0] === this.serverSide.gameState.board[1])) { //mas ambos não jogaram ainda
             if (this.serverSide.gameState.board[0] === '') { //p2 jogou
@@ -122,7 +122,11 @@ class CardGameSession {
          this.serverSide.player1turn = false;
       } else
          console.log("CardGameSession object --> logical error, CardGameSession -> roundCheck method, final else condition");
-      if ( this.serverSide.gameState.scoreP1 === 5 || (this.serverSide.gameState.currTurn === 14 && (this.serverSide.gameState.scoreP1 > this.serverSide.gameState.scoreP2))) {
+      if ( this.serverSide.gameState.scoreP1 === 5 || ( this.serverSide.gameState.currTurn === 13 && (this.serverSide.gameState.scoreP1 > this.serverSide.gameState.scoreP2))) {
+         console.log("===================================================================");
+         console.log("turn"+this.serverSide.gameState.currTurn);
+         console.log("score p1"+this.serverSide.gameState.scoreP1);
+         console.log("score p2"+this.serverSide.gameState.scoreP2);
          this.serverSide.player1.gameWs.send("Voce ganhou!");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
          this.serverSide.player2.gameWs.send("Voce perdeu");
@@ -131,7 +135,7 @@ class CardGameSession {
          this.serverSide.player2.gameWs.terminate();
          this.storeOnDatabase('p1');
          return true;
-      } else if ( this.serverSide.gameState.scoreP2 === 5 || (this.serverSide.gameState.currTurn === 14 && (this.serverSide.gameState.scoreP2 > this.serverSide.gameState.scoreP1))) {
+      } else if ( this.serverSide.gameState.scoreP2 === 5 || ( this.serverSide.gameState.currTurn === 13 && (this.serverSide.gameState.scoreP2 > this.serverSide.gameState.scoreP1))) {
          this.serverSide.player2.gameWs.send("Voce ganhou!");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
          this.serverSide.player1.gameWs.send("Voce perdeu");
@@ -140,14 +144,15 @@ class CardGameSession {
          this.serverSide.player1.gameWs.terminate();
          this.storeOnDatabase('p2');
          return true;
-      } else if (this.serverSide.gameState.currTurn === 14 && (this.serverSide.gameState.scoreP1 === this.serverSide.gameState.scoreP2)) {
+      } else if ( this.serverSide.gameState.currTurn === 13 && ( this.serverSide.gameState.scoreP1 === this.serverSide.gameState.scoreP2)) {
          this.serverSide.player2.gameWs.send("Empate!");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
-         this.serverSide.player1.gameWs.send("Voce perdeu");
+         this.serverSide.player1.gameWs.send("Empate!");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
          this.serverSide.player2.gameWs.terminate();
          this.serverSide.player1.gameWs.terminate();
          this.storeOnDatabase('draw');
+         return true;
       }
       this.serverSide.gameState.currTurn++;
       this.serverSide.gameState.board[0] = '';
