@@ -49,7 +49,6 @@ const sockServInterval = setInterval(() => {
         waitSockServ.clients.forEach((ws) => {
             console.log('LOOP START: nextSessionID = '+nextSessionID);
             //console.log("ws.playerName-->>" + ws.playerName);
-            //console.log("wfutureP1-->>" + futureP1);
             if (ws.readyState === WebSocket.OPEN && ws.playerName) {
                 console.log('BEFORE CREATION nextSessionID = '+nextSessionID);
 
