@@ -93,7 +93,8 @@ function gameOpen(ws) {
                         myTurn: Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
-                        whichPlayer: 1
+                        whichPlayer: 1,
+                        turnNum: Session.serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
@@ -113,7 +114,8 @@ function gameOpen(ws) {
                         myTurn: !Session.serverSide.player1turn,  //recebe feedback de acordo com resultado do round
                         scoreP1: Session.serverSide.gameState.scoreP1,
                         scoreP2: Session.serverSide.gameState.scoreP2,
-                        whichPlayer: 2
+                        whichPlayer: 2,
+                        turnNum: Session.serverSide.gameState.currTurn
                     }));
                 }
                 else //waiting handshake
