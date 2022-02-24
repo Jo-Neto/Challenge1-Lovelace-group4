@@ -32,8 +32,8 @@ waitSockServ.on('close', () => { console.log("WAITSOCK: closed waitSockServ"); c
 let nID = fs.readFile('./database/game-sessions.json', (err, readData) => {
     if (err) { console.log("ERROR: WAITSOCK: updateSessionID(fn), reading file:" + err); throw console.log(err); }
     let dataBase = JSON.parse(readData);
-    //console.log("WAITSOCK: updateSessionID(fn), dataBase length:" + dataBase.length);
-    nID = dataBase.length;
+    console.log("WAITSOCK: updateSessionID(fn), dataBase length:" + dataBase.length);
+    return dataBase.length;
 });
 
 
