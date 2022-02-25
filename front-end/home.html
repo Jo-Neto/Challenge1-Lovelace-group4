@@ -7,21 +7,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+        <link rel="shortcut icon" href="./home-assets/favicon.png" type="image/x-icon">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="./styles/index.css">
-        <link rel="stylesheet" href="./styles/reset.css"> <!--Esse evita as modificações do navegador-->
+        <link rel="stylesheet" href="./home-styles/index.css">
+        <link rel="stylesheet" href="./home-styles/reset.css"> <!--Esse evita as modificações do navegador-->
 
         <title>Elemental Clash</title>
 
         <!-- Scripts -->
-        <script defer src="./scripts/index.js"></script>
+        <script defer src="./home-scripts/index.js"></script>
     </head>
 
     <body>
         <main>
-            <img id="image-logo" src="./assets/logo.svg" alt="Logo do Elemental Clash">
+            <img id="image-logo" src="./home-assets/logo.svg" alt="Logo do Elemental Clash">
             <button type="button" id="play-now-button" onclick="openModal('modal-loading')">Jogar agora</button>
             <p>Role para baixo para ver as regras</p>
         </main>
@@ -44,7 +44,7 @@
                 A ordem de qual elemento ganha de qual outro elemento é mostrado na imagem abaixo, fogo vence planta, planta vence água e água vence fogo e por fim, o éter vence todos os outros elementos (use-o com sabedoria).
             </p>
 
-            <img class="imagens" id="img-rules" src="./assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
+            <img class="imagens" id="img-rules" src="./home-assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
 
             <p>
                 Caso os dois jogadores joguem um mesmo elemento, isso causará um empate e ninguém irá pontuar na rodada, então o jogador que foi o primeiro a jogar na rodada anterior será o primeiro a jogar novamente.
@@ -56,14 +56,14 @@
             </p>
 
             <br>
-            <img class="imagens" id="gif" src="./assets/demonstration.gif" alt="GIF para demonstrar como joga as cartas no campo">
+            <img class="imagens" id="gif" src="./home-assets/demonstration.gif" alt="GIF para demonstrar como joga as cartas no campo">
 
             <p>
                 A seguir uma breve descrição dos elementos da página
             </p>
 
             <br>
-            <img class="imagens" src="./assets/elements-from-page.png" alt="">
+            <img class="imagens" src="./home-assets/elements-from-page.png" alt="">
 
             <p>
                 <ol>
@@ -82,7 +82,7 @@
 
         <div id="modal-loading" class="modal">
             <h3>Buscando adversário digno</h3>
-            <img src="./assets/loading.gif">
+            <img src="./home-assets/loading.gif">
         </div>
 
         <div id="modal-timeout" class="modal">
