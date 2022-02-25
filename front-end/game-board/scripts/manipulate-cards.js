@@ -269,7 +269,7 @@ function gameStart() {
     verifyIfHaveTwoCardsInTheField()
     
     if (gameState.myTurn) {
-        $("#show-if-is-your-myTurn").text("É sua vez de jogar!");
+        $("#show-if-is-your-myTurn").text("Sua vez!");
 
         $("#playing-card-field").droppable({
             drop: function (event, ui) {
@@ -298,7 +298,7 @@ function getCardImage(card) {
     let nameOfImageArchive;
 
     switch (card) {
-        case "w": 
+        case "w":
             nameOfImageArchive = 'card-water';
             break;
         case "f": 

@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+
 * {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Chewy', cursive;
 }
 
 body {
@@ -71,7 +73,7 @@ body {
 }
 
 #container-card-player2 img {
-    width: 7.65vw;
+    width: 7.2vw;
     height: auto;
 
     position: relative;
