@@ -1,3 +1,23 @@
+let boardDocument = '';
+let leaderDocument = ' ';
+let homeDocument = '';
+
+fetch('/board').then( resp => {
+  return resp.text();
+}).then( boardHTML =>{
+  boardDocument = boardHTML;
+}).catch( err => {
+  console.log(err);
+});
+
+fetch('/leader').then( resp => {
+  return resp.text();
+}).then( leaderHTML =>{
+  leaderDocument = leaderHTML;
+}).catch( err => {
+  console.log(err);
+});
+
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   modal.style.visibility = "visible";
@@ -11,11 +31,14 @@ function closeModal(modalId) {
 const url = window.location.href.slice(7, -1);
 const port = 80;
 
-let socket = null;
+let socket = {};
 
 document.getElementById('play-now-button').addEventListener('click', () => {
-  socket = new WebSocket(`ws://${url}:${port}/line`);
   
+  document.documentElement.innerHTML = boardDocument; //this will be removed
+
+  socket = new WebSocket(`ws://${url}:${port}`);
+
   const playerName = 'myName';
 
   function sendName() {
@@ -41,4 +64,12 @@ document.getElementById('play-now-button').addEventListener('click', () => {
       location.replace(`/game`);
     }
   })
-})
+});
+
+fetch('/').then( resp => {
+  return resp.text();
+}).then( leaderHTML =>{
+  homeDocument = leaderHTML;
+}).catch( err => {
+  console.log(err);
+});
