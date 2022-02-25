@@ -17,8 +17,13 @@
         <link rel="stylesheet" href="styles/cheap-flip.css">
         <link rel="stylesheet" href="styles/sidebar-menu.css">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
         <title>Elemental Clash</title>
     </head>
+
     <body>
         <nav id="menu">
             <img src="./assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out">
@@ -40,7 +45,7 @@
                     <span id="span-player1">Player 1</span>
                     <span> 
                         <span class="score-numbers" id="score-player1">0</span>
-                        X
+                        x
                         <span class="score-numbers" id="score-player2">0</span> 
                     </span>
                     <span id="span-player2">Player 2</span>
@@ -79,7 +84,9 @@
                         <img id="pickable-card" class="card flip-card-back" src="./assets/card-ether.svg">
                     </div>
                 </div> -->
-            </div> 
+            </div>
+
+            <div class="container-cards-from-hand" id="container-card-player2"></div>
         </div>
 
     <!-- Modais -->
