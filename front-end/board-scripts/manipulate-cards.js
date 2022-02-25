@@ -56,10 +56,12 @@ gameSocket.onmessage = (event) => {
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            openModal("modal-victory")
+            $("#description-modal").text("Vitória!")
+            openModal("modal-general")
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            openModal("modal-defeat")
+            $("#description-modal").text("Derrota!")
+            openModal("modal-general")
         }
 
         return console.log(event.data)
