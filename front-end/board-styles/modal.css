@@ -31,7 +31,7 @@
     border-radius: 50px;
 }
 
-#modal-logoff, #modal-victory, #modal-defeat, #modal-disconnected, #modal-give-up, #modal-opponent-cheat, #modal-no-match, #modal-cheat, #modal-unknow-error {
+#modal-logoff, #modal-general {
     visibility: hidden;
 }
 
