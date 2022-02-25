@@ -14,7 +14,7 @@ let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta qu
 let turnForDeck = 11;
 
 let gameState = {
-    gameSessionID: null,
+    sID: null,
     player: null,
     myTurn: null,
     hand: null,
@@ -71,7 +71,7 @@ gameSocket.onmessage = (event) => {
     //console.log("=======================================");
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         // console.log("waitingFeedback");
-        gameState.gameSessionID = obj.gameSessionID; //safety
+        gameState.sID = obj.sID; //safety
         gameState.board = obj.board;
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
@@ -104,7 +104,7 @@ gameSocket.onmessage = (event) => {
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
         console.log("reconnection");
-        gameState.gameSessionID = obj.gameSessionID; 
+        gameState.sID = obj.sID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -121,7 +121,7 @@ gameSocket.onmessage = (event) => {
 
     else {
         // console.log("message else");
-        gameState.gameSessionID = obj.gameSessionID;
+        gameState.sID = obj.sID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
@@ -208,31 +208,6 @@ function showEnemyCard(cardString) {
 
 }
 
-function verifyCardOnTop() {
-
-    if((gameState.board[0] == '') && (gameState.board[1] =='')){
-        
-    }else if((gameState.board[0] != '') && (gameState.board[1] !='')){
-        //turnForDeck --;                
-    }else if((gameState.board[0] =='') && (gameState.board[1] != '')){
-        $("#container-card-player2").css('zIndex',5);
-    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
-        $("#container-card-player2").css('zIndex',3);
-    }
-}
-
-function noCardsOnHand(){
-    if(turnForDeck < 7) {//mudar para -3 quando certo
-        if(gameState.scoreP1 > gameState.scoreP2) {
-            openModal("modal-victory");
-        }else if(gameState.scoreP2 > gameState.scoreP1){
-            openModal("modal-defeat");
-        }else{
-            // openModal("modal-draw");
-        }
-    }
-}
-
 function verifyIfHaveTwoCardsInTheField() {
     if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
         setTimeout(() => {
@@ -280,13 +255,13 @@ function gameStart() {
                 showWhosTurn();
 
                 gameSocket.send(JSON.stringify({
-                    gameSessionID: gameState.gameSessionID,
+                    sID: gameState.sID,
                     cardPlayed: ui.draggable.attr('value'),
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
                 );
-                verifyCardOnTop()
+                //verifyCardOnTop()
                 verifyIfHaveTwoCardsInTheField()
             }
         }); //passa o myTurno para o outro player   
@@ -319,36 +294,45 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-let nameOfSoundArchive;
+let waterSound = new Audio('assets/sounds/waterCardSound.mp3');
+let fireSound = new Audio('assets/sounds/fireCardSound.mp3');
+let plantSound = new Audio('assets/sounds/plantCardSound.mp3');
+let etherSound = new Audio('assets/sounds/etherCardSound.mp3');
+
+let winnerSound = new Audio('assets/sounds/winnerRound.mp3');
+let loserSound = new Audio('assets/sounds/roundLoser.mp3');
+
+let cardDrawSound = new Audio('assets/sounds/cardDrawSound.mp3');
+let backgroundMusic = new Audio('assets/sounds/backgroundSound.mp3');
+
 
 function playCardSound(card) {
-
     switch (card) {
-        case "w": nameOfSoundArchive = new Audio('assets/sounds/waterCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "w":
+            waterSound.play();
             break;
-        case "f": nameOfSoundArchive = new Audio('assets/sounds/fireCardSound.mp3');
-            nameOfSoundArchive.play();
-            nameOfSoundArchive.volume = 0.15;
+        case "f": 
+            fireSound.play();
+            fireSound.volume = 0.15;
             break;
-        case "p": nameOfSoundArchive = new Audio('assets/sounds/plantCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "p": 
+            plantSound.play();
             break;
-        case "e": nameOfSoundArchive = new Audio('assets/sounds/etherCardSound.mp3');
-            nameOfSoundArchive.play();
+        case "e":
+            etherSound.play();
             break;
-        case "cardDraw": nameOfSoundArchive = new Audio('assets/sounds/cardDrawSound.mp3');
-            nameOfSoundArchive.play();
+        case "cardDraw":
+            cardDrawSound.play();
             break;
-        case "roundWinner": nameOfSoundArchive = new Audio('assets/sounds/winnerRound.mp3');
-            nameOfSoundArchive.play();
+        case "roundWinner":
+            winnerSound.play();
             break;
-        case "roundLoser": nameOfSoundArchive = new Audio('assets/sounds/roundLoser.mp3');
-            nameOfSoundArchive.play();
-        case "backgroundSound": nameOfSoundArchive = new Audio('assets/sounds/backgroundSound.mp3');
-            nameOfSoundArchive.loop = true;
-            nameOfSoundArchive.volume = 0.08;
-            nameOfSoundArchive.play();
+        case "roundLoser":
+            loserSound.play();
+        case "backgroundSound":
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.08;
+            backgroundMusic.play();
             break;
     }
 }
@@ -360,11 +344,22 @@ function changeSoundConf() {
     if(count%2 == 0) {
         button.setAttribute('src', '');
         button.setAttribute('src', './assets/music_off_white_24dp.svg');
-        nameOfSoundArchive.pause();
+        waterSound.src = "";
+        fireSound.src = "";
+        plantSound.src = "";
+        etherSound.src = "";
+        cardDrawSound.src = "";
+        backgroundMusic.src = "";
     } else {
         button.setAttribute('src', '');
         button.setAttribute('src', './assets/music_note_white_24dp.svg');
-        nameOfSoundArchive.play();
+        waterSound.src = 'assets/sounds/waterCardSound.mp3';
+        fireSound.src = 'assets/sounds/fireCardSound.mp3';
+        plantSound.src = 'assets/sounds/plantCardSound.mp3';
+        etherSound.src = 'assets/sounds/etherCardSound.mp3';
+        cardDrawSound.src = 'assets/sounds/cardDrawSound.mp3';
+        backgroundMusic.src = 'assets/sounds/backgroundSound.mp3';
+        backgroundMusic.play();
     }
 }
 
@@ -400,8 +395,28 @@ function showWhosTurn() {
     gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
 }
 
+function verifyCardOnTop() {
+    console.log("board "+ gameState.board)
+    if((gameState.board[0] =='') && (gameState.board[1] != '')){
+        $("#container-card-player2").css('zIndex',3);
+    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+        $("#container-card-player2").css('zIndex',5);
+    }
+}
+
+function noCardsOnHand(){
+    console.log("entrouu: "+ gameState.turnNum)
+    if(gameState.turnNum == 14){
+        if(gameState.scoreP1 > gameState.scoreP2){
+            openModal("modal-victory");
+        }else if(gameState.scoreP2 > gameState.scoreP1){
+            openModal("modal-defeat");
+        }
+    }
+}
+
 function hideCheap() {
-    if(turnForDeck == 0){
+    if(gameState.turnNum == 11){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){

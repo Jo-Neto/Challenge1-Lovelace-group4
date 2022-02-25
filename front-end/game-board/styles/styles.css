@@ -57,10 +57,20 @@ body {
     justify-content: space-between;
 }
 
+#container-mid-screen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 #playing-card-field {
     width: 15%;
     align-self: center;
     margin: 3vh 0 3vh 0;
+    z-index: 0;
+    position: relative;
 }
 
 #container-card-player2 {
