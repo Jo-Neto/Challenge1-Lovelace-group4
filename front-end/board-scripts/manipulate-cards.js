@@ -166,17 +166,17 @@ gameSocket.onclose = (event) => {
     console.log("CLOSE REASON: " + event.reason);
 
     if ( event.code === 4000 || event.code === 4200 ) {
-        console.log("O oponente desconectou")
-        openModal("modal-disconnected")
+        $("#description-modal").text("O oponente desconectou")
+        openModal("modal-general")
     } else if ( event.code === 4008 ) {
-        console.log("O oponente trapaceou")
-        openModal("modal-opponent-cheat")
+        $("#description-modal").text("O oponente trapaceou")
+        openModal("modal-general")
     } else if ( event.code === 4004 ) {
-        console.log("Você não esta em nenhuma partida")
-        openModal("modal-no-match")
+        $("#description-modal").text("Você não esta em nenhuma partida")
+        openModal("modal-general")
     } else if ( event.code === 1008 ) {
-        console.log("Você trapaceou")
-        openModal("modal-cheat")
+        $("#description-modal").text("Você trapaceou")
+        openModal("modal-general")
     }
 }
 
