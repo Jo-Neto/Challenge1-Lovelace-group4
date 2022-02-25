@@ -7,21 +7,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+        <link rel="shortcut icon" href="./board-assets/favicon.png" type="image/x-icon">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="styles/reset.css">
-        <link rel="stylesheet" href="styles/styles.css">
-        <link rel="stylesheet" href="styles/top.css">
-        <link rel="stylesheet" href="styles/modal.css">
-        <link rel="stylesheet" href="styles/cheap-flip.css">
-        <link rel="stylesheet" href="styles/sidebar-menu.css">
+        <link rel="stylesheet" href="./board-styles/reset.css">
+        <link rel="stylesheet" href="./board-styles/styles.css">
+        <link rel="stylesheet" href="./board-styles/top.css">
+        <link rel="stylesheet" href="./board-styles/modal.css">
+        <link rel="stylesheet" href="./board-styles/cheap-flip.css">
+        <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
         <title>Elemental Clash</title>
     </head>
+
     <body>
         <nav id="menu">
-            <img src="./assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out">
+            <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out">
             <ul>
                 <li onclick="openModal('modal-rules')">Consultar regras</li>
                 <li><a href="https://www.alphaedtech.org.br/" target="_blank">Sobre o Edtech</a></li>
@@ -31,8 +36,8 @@
         </nav>
         <header>
             <span id="header-buttons">
-                <img src="./assets/menu_white_24dp.svg" onclick="openModal('menu')" id="btn-menu-in">
-                <img id="btn-sound" src="./assets/music_note_white_24dp.svg" onclick="changeSoundConf()">
+                <img src="./board-assets/menu_white_24dp.svg" onclick="openModal('menu')" id="btn-menu-in">
+                <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()">
             </span>
             <span id="right-side">
                <span id="show-if-is-your-turn"></span>
@@ -40,7 +45,7 @@
                     <span id="span-player1">Player 1</span>
                     <span> 
                         <span class="score-numbers" id="score-player1">0</span>
-                        X
+                        x
                         <span class="score-numbers" id="score-player2">0</span> 
                     </span>
                     <span id="span-player2">Player 2</span>
@@ -50,16 +55,16 @@
         </header>
 
         <div id="container-opponents-cheap-and-cards">
-            <img id="first-cheap" class="cheap" src="./assets/cheap.svg">
+            <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg">
             <span id="container-opponents-cards">
-                <img class="card" id="first-opponents-card" src="assets/verso.svg">
-                <img class="card" id="second-opponents-card" src="assets/verso.svg">
-                <img class="card" id="third-opponents-card" src="assets/verso.svg">
+                <img class="card" id="first-opponents-card" src="./board-assets/verso.svg">
+                <img class="card" id="second-opponents-card" src="./board-assets/verso.svg">
+                <img class="card" id="third-opponents-card" src="./board-assets/verso.svg">
             </span>
         </div>
 
         <div id="container-mid-screen">
-            <img id="playing-card-field" src="./assets/playing-card-field.svg">
+            <img id="playing-card-field" src="./board-assets/playing-card-field.svg">
             <div class="container-cards-from-hand" id="container-card-player2"></div>
         </div>
 
@@ -71,15 +76,17 @@
             </div>
 
             <div class="cheap" id="second-cheap">
-                <img id="img-second-cheap" class="cheap" src="./assets/cheap.svg">
+                <img id="img-second-cheap" class="cheap" src="./board-assets/cheap.svg">
                 
                 <!-- <div class="flip-card">
                     <div class="flip-card-inner">
-                        <img id="pickable-verso" class="card flip-card-front" src="./assets/verso.svg" onclick="flipCard()">
-                        <img id="pickable-card" class="card flip-card-back" src="./assets/card-ether.svg">
+                        <img id="pickable-verso" class="card flip-card-front" src="./board-assets/verso.svg" onclick="flipCard()">
+                        <img id="pickable-card" class="card flip-card-back" src="./board-assets/card-ether.svg">
                     </div>
                 </div> -->
-            </div> 
+            </div>
+
+            <div class="container-cards-from-hand" id="container-card-player2"></div>
         </div>
 
     <!-- Modais -->
@@ -167,58 +174,58 @@
         </div>
 
         <div id="modal-rules">
-            <img onclick="closeModal('modal-rules')" src="./assets/close_white_24dp.svg" id="rules-close">
+            <img onclick="closeModal('modal-rules')" src="./board-assets/close_white_24dp.svg" id="rules-close">
             <h2>Regras do jogo</h2>
             <p>Elemental Clash é um jogo de cartas dividido em turnos e composto por dois baralhos de elementos. Cada jogador recebe um baralho de 14 cartas, sendo 4 cartas do elemento água, 4 do fogo, 4 de planta e 2 de éter. Dessas 14 cartas, 3 são sorteadas e colocadas na mão do jogador.</p>
             <p>Para jogá-lo, um jogador deve jogar uma carta e aguardar o oponente jogar a carta dele, ao jogar, verifica-se qual das cartas venceram e então o jogador que venceu ganha 1 ponto e será o primeiro a jogar na rodada seguinte. O jogador que ganhar 5 pontos primeiro vence o duelo.</p>
             <p>A ordem de qual elemento ganha de qual outro elemento é mostrado na imagem abaixo, fogo vence planta, planta vence água e água vence fogo e por fim, o éter vence todos os outros elementos (use-o com sabedoria).</p>
-            <img id="img-rules" src="assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
+            <img id="img-rules" src="./board-assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
             <p>Caso os dois jogadores joguem um mesmo elemento, isso causará um empate e ninguém irá pontuar na rodada, então o jogador que foi o primeiro a jogar na rodada anterior será o primeiro a jogar novamente.
                 <br />
                 Divirta-se!!!</p>
         </div>
 
         <div id="modal-devs">
-            <img onclick="closeModal('modal-devs')" id="devs-close" src="./assets/close_white_24dp.svg">
+            <img onclick="closeModal('modal-devs')" id="devs-close" src="./board-assets/close_white_24dp.svg">
             <h2>Nossos Desenvolvedores</h2>
             <table id="social-media">
                 <tbody>
                     <tr>
                         <td>Fabrício Rodrigues</td>
                         <td>
-                            <a href="https://www.linkedin.com/in/fabr%C3%ADcio-rodrigues-pereira-68b844227/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <a href="https://www.linkedin.com/in/fabr%C3%ADcio-rodrigues-pereira-68b844227/" target="_blank"><img class="linkedin-logo" src="./board-assets/linkedin.png"> Linkedin</a>
                             <br />
-                            <a href="https://github.com/SkyvengerLL" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                            <a href="https://github.com/SkyvengerLL" target="_blank"><img class="linkedin-logo" src="./board-assets/github.png"> GitHub</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Fernando Ribeiro</td>
                         <td>
-                            <a href="https://www.linkedin.com/in/fernando-ribeiro-b28342143/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <a href="https://www.linkedin.com/in/fernando-ribeiro-b28342143/" target="_blank"><img class="linkedin-logo" src="./board-assets/linkedin.png"> Linkedin</a>
                             <br />
-                            <a href="https://github.com/Ferr50" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                            <a href="https://github.com/Ferr50" target="_blank"><img class="linkedin-logo" src="./board-assets/github.png"> GitHub</a>
                         </td>
                     <tr>
                         <td>Flávia Souza</td>
                         <td>
-                            <a href="https://www.linkedin.com/in/ridailda/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <a href="https://www.linkedin.com/in/ridailda/" target="_blank"><img class="linkedin-logo" src="./board-assets/linkedin.png"> Linkedin</a>
                             <br />
-                            <a href="https://github.com/flaaaaaavis" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                            <a href="https://github.com/flaaaaaavis" target="_blank"><img class="linkedin-logo" src="./board-assets/github.png"> GitHub</a>
                         </td>
                     <tr>
                         <td>José Neto</td>
                         <td>
-                            <!-- <a href="" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <!-- <a href="" target="_blank"><img class="linkedin-logo" src="./board-assets/linkedin.png"> Linkedin</a>
                             <br /> -->
-                            <a href="https://github.com/Jo-Neto" target="_blank"><img class="linkedin-logo" src="assets/github.png"> GitHub</a>
+                            <a href="https://github.com/Jo-Neto" target="_blank"><img class="linkedin-logo" src="./board-assets/github.png"> GitHub</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Vinícius Noronha</td>
                         <td>
-                            <a href="https://www.linkedin.com/in/vinicius-noronha-1540b2184/" target="_blank"><img class="linkedin-logo" src="assets/linkedin.png"> Linkedin</a>
+                            <a href="https://www.linkedin.com/in/vinicius-noronha-1540b2184/" target="_blank"><img class="linkedin-logo" src="./board-assets/linkedin.png"> Linkedin</a>
                             <br />
-                            <a href="https://github.com/viniciusna" target="_blank"><img class="linkedin-logo"  src="assets/github.png"> GitHub</a>
+                            <a href="https://github.com/viniciusna" target="_blank"><img class="linkedin-logo"  src="./board-assets/github.png"> GitHub</a>
                         </td>
                     </tr>
                 </tbody>
@@ -227,7 +234,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-        <script src="./scripts/scripts.js"></script>
-        <script src="./scripts/manipulate-cards.js"></script>
+        <script src="./board-scripts/scripts.js"></script>
+        <script src="./board-scripts/manipulate-cards.js"></script>
     </body>
 </html>

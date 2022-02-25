@@ -7,16 +7,16 @@ const fs = require('fs');
 const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e']; //unshuffled deck
 
 class CardGameSession {
-   constructor(nID) {
+   constructor(nextID) {
       this.isFinished = false;
       this.player1Handshake = {  //first object sent to player 1, sent only once
-         sID: Number(nID),
+         sID: Number(nextID),
          whichPlayer: 1,
          firstToPlay: null,
          hand: []
       };
       this.player2Handshake = { //first object sent to player 2, sent only once
-         sID: Number(nID),
+         sID: Number(nextID),
          whichPlayer: 2,
          firstToPlay: null,
          hand: []
@@ -25,7 +25,7 @@ class CardGameSession {
          player1turn: null,
          lastPlayed: null,
          gameState: {
-            sID: Number(nID),
+            sID: Number(nextID),
             currTurn: 0,
             board: ['', ''],  // [player1, player2]
             scoreP1: 0,
@@ -118,24 +118,38 @@ class CardGameSession {
          this.serverSide.player1turn = false;
       } else
          console.log("CardGameSession object --> logical error, CardGameSession -> roundCheck method, final else condition");
-      if (this.serverSide.gameState.scoreP1 === 5) {
-         this.serverSide.player1.gameWs.send("voce ganhou");
+      if ( this.serverSide.gameState.scoreP1 === 5 || ( this.serverSide.gameState.currTurn === 13 && (this.serverSide.gameState.scoreP1 > this.serverSide.gameState.scoreP2))) {
+         console.log("===================================================================");
+         console.log("turn"+this.serverSide.gameState.currTurn);
+         console.log("score p1"+this.serverSide.gameState.scoreP1);
+         console.log("score p2"+this.serverSide.gameState.scoreP2);
+         this.serverSide.player1.gameWs.send("Voce ganhou!");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
-         this.serverSide.player2.gameWs.send("voce perdeu");
+         this.serverSide.player2.gameWs.send("Voce perdeu");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
          this.serverSide.player1.gameWs.terminate();
          this.serverSide.player2.gameWs.terminate();
          this.storeOnDatabase('p1');
          return true;
-      } else if (this.serverSide.gameState.scoreP2 === 5) {
-         this.serverSide.player2.gameWs.send("voce ganhou");
+      } else if ( this.serverSide.gameState.scoreP2 === 5 || ( this.serverSide.gameState.currTurn === 13 && (this.serverSide.gameState.scoreP2 > this.serverSide.gameState.scoreP1))) {
+         this.serverSide.player2.gameWs.send("Voce ganhou!");
          this.serverSide.player2.gameWs.close(1000, 'match has finished');
-         this.serverSide.player1.gameWs.send("voce perdeu");
+         this.serverSide.player1.gameWs.send("Voce perdeu");
          this.serverSide.player1.gameWs.close(1000, 'match has finished');
          this.serverSide.player2.gameWs.terminate();
          this.serverSide.player1.gameWs.terminate();
          this.storeOnDatabase('p2');
          return true;
+      } else if ( this.serverSide.gameState.currTurn === 13 && ( this.serverSide.gameState.scoreP1 === this.serverSide.gameState.scoreP2)) {
+         this.serverSide.player2.gameWs.send("Empate!");
+         this.serverSide.player2.gameWs.close(1000, 'match has finished');
+         this.serverSide.player1.gameWs.send("Empate!");
+         this.serverSide.player1.gameWs.close(1000, 'match has finished');
+         this.serverSide.player2.gameWs.terminate();
+         this.serverSide.player1.gameWs.terminate();
+         this.storeOnDatabase('draw');
+         return true;
+
       }
       this.serverSide.gameState.currTurn++;
       this.serverSide.gameState.board[0] = '';
@@ -154,7 +168,7 @@ class CardGameSession {
          if (err) { console.log("ERROR: SessionNum:" + this.serverSide.gameState.sID + "on reading database: "); throw console.log(err);}
          let dataBase = JSON.parse(readData);
          dataBase.push({
-            sessionID: this.serverSide.gameState.sID,
+            sessionextID: this.serverSide.gameState.sID,
             turnNum: this.serverSide.gameState.currTurn,
             disconnec: this.serverSide.gameState.disconnec, 
             hasGivenUp: this.serverSide.gameState.enemyGaveUp,
