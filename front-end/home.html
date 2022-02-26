@@ -11,6 +11,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="./home-styles/index.css">
+        <link rel="stylesheet" href="general-styles/modal.css">
         <link rel="stylesheet" href="./home-styles/reset.css"> <!--Esse evita as modificações do navegador-->
 
         <title>Elemental Clash</title>
@@ -80,14 +81,7 @@
 
         </section>
 
-        <div id="modal-loading" class="modal">
-            <h3>Buscando adversário digno</h3>
-            <img src="./home-assets/loading.gif">
-        </div>
-
-        <div id="modal-timeout" class="modal">
-            <h3>Nenhum player encontrado</h3>
-            <span>Recarregue a página e busque novamente</span>
+        <div class="container-modais">
         </div>
 
         <footer>
@@ -108,5 +102,7 @@
             </section>
             
         </footer>
+
+        <script src="./general-scripts/scripts.js"></script>
     </body>
 </html>

@@ -1,12 +1,22 @@
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  modal.style.visibility = "visible";
-}
+let boardDocument = '';
+let leaderDocument = ' ';
+let homeDocument = '';
 
-function closeModal(modalId) {
-  let modal = document.getElementById(modalId);
-  modal.style.visibility = "hidden";
-}
+fetch('/board').then( resp => {
+  return resp.text();
+}).then( boardHTML =>{
+  boardDocument = boardHTML;
+}).catch( err => {
+  console.log(err);
+});
+
+fetch('/leader').then( resp => {
+  return resp.text();
+}).then( leaderHTML =>{
+  leaderDocument = leaderHTML;
+}).catch( err => {
+  console.log(err);
+});
 
 const url = window.location.href.slice(7, -1);
 const port = 80;
