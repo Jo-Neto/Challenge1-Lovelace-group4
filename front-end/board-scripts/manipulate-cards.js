@@ -56,10 +56,14 @@ gameSocket.onmessage = (event) => {
 
         if ( event.data === "voce ganhou" ) {
             gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            openModal("modal-victory")
+
+            $("#description-modal").text("Vitória!")
+            openModal("modal-general")
         } else if (event.data === "voce perdeu") {
             gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            openModal("modal-defeat")
+            $("#description-modal").text("Derrota!")
+            openModal("modal-general")
+
         }
 
         return console.log(event.data)
@@ -162,19 +166,19 @@ gameSocket.onclose = (event) => {
     console.log(event);
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
-
     if ( event.code === 4000 || event.code === 4200 ) {
-        console.log("O oponente desconectou")
-        openModal("modal-disconnected")
+
+        $("#description-modal").text("O oponente desconectou")
+        openModal("modal-general")
     } else if ( event.code === 4008 ) {
-        console.log("O oponente trapaceou")
-        openModal("modal-opponent-cheat")
+        $("#description-modal").text("O oponente trapaceou")
+        openModal("modal-general")
     } else if ( event.code === 4004 ) {
-        console.log("Você não esta em nenhuma partida")
-        openModal("modal-no-match")
+        $("#description-modal").text("Você não esta em nenhuma partida")
+        openModal("modal-general")
     } else if ( event.code === 1008 ) {
-        console.log("Você trapaceou")
-        openModal("modal-cheat")
+        $("#description-modal").text("Você trapaceou")
+        openModal("modal-general")
     }
 }
 

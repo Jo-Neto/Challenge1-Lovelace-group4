@@ -26,6 +26,7 @@ let socket = null;
 document.getElementById('play-now-button').addEventListener('click', () => {
   socket = new WebSocket(`ws://${url}:${port}/line`);
   
+
   const playerName = 'myName';
 
   function sendName() {
@@ -51,4 +52,12 @@ document.getElementById('play-now-button').addEventListener('click', () => {
       location.replace(`/game`);
     }
   })
-})
+});
+
+fetch('/').then( resp => {
+  return resp.text();
+}).then( homeHTML =>{
+  homeDocument = homeHTML;
+}).catch( err => {
+  console.log(err);
+});
