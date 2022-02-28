@@ -15,6 +15,10 @@
     visibility: hidden;
 }
 
+.modal-div {
+    background-color: #4d4b4b;
+}
+
 .modal {
     /* Sizing */
     width: 30vw;
@@ -23,7 +27,6 @@
     z-index: 1000;
     position: fixed;
     
-    background-color: #DB1C1C; /* Só para visualizar melhor */
     border-radius: 20px;
 
     /* Align */
