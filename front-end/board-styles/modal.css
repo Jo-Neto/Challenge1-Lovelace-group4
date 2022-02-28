@@ -1,3 +1,20 @@
+#container-modais {
+    /* Sizing */
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    position: fixed;
+
+    /* Align */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(31, 31, 31, 0.657);
+
+    visibility: hidden;
+}
+
 .modal {
     /* Sizing */
     width: 30vw;
