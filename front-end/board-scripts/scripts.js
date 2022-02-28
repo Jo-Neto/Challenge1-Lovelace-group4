@@ -2,6 +2,8 @@ function openModal(modalId) {
     const container = document.getElementById('container-modais');
     container.style.visibility = "visible";
 
+    $('body').css('overflowY', "hidden");
+
     $('.modal-div').css('visibility', 'hidden');
 
     const modal = document.getElementById(modalId);
@@ -11,6 +13,8 @@ function openModal(modalId) {
 function closeModal(modalId) {
     const container = document.getElementById('container-modais');
     container.style.visibility = "hidden";
+
+    $('body').css('overflowY', "visible");
 
     const modal = document.getElementById(modalId);
     modal.style.visibility = "hidden";
