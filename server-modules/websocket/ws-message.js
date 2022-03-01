@@ -11,7 +11,7 @@ function message(data, isBinary, ws) {
     //+------------------------------------------------------------------+ 
     
     if (ws.aID === undefined) //deny messages from socket that do not belong to any session
-    return;
+      return;
     
     try { parsedData = JSON.parse(data); }
     catch (e) { console.log("WS-MESSAGE ERROR: message(fn) --> received non-parsable DATA --> " + e); return; }
