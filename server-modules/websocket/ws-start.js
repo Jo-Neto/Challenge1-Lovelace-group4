@@ -10,7 +10,7 @@ function wsStart(ws) {
 }
 
 function isClientReconnecting(ws) {
-    if (ws.sID) //if client belongs to an active session, finish logic here
+    if (ws.aID) //if client belongs to an active session, finish logic here
         return;
     waitSockArr.push(ws); //goes to end of waiting line and...
     waitLineChecker();  //is passed to the function below
@@ -36,10 +36,10 @@ function waitLineChecker() {
             sessionIndex = Active.sessArr.length - 1;
         }
 
-        Active.sessArr[sessionIndex].player1.ws.aID = Active.sessArr.length - 1; //assign the sockets the access index for faster performance
-        Active.sessArr[sessionIndex].player2.ws.aID = Active.sessArr.length - 1;
+        console.log("sessionIndex = "+sessionIndex);
         
-        console.log(Active.sessArr[sessionIndex]);
+        Active.sessArr[sessionIndex].player1.ws.aID = sessionIndex; //assign the sockets the access index for faster performance
+        Active.sessArr[sessionIndex].player2.ws.aID = sessionIndex;
         
         Active.sessArr[sessionIndex].player1.ws.send("p1"); //tell front-end game is ready
         Active.sessArr[sessionIndex].player2.ws.send("p2");
