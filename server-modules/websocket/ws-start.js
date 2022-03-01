@@ -44,7 +44,7 @@ function waitLineChecker() {
         Active.sessArr[sessionIndex].player1.ws.send("p1"); //tell front-end game is ready
         Active.sessArr[sessionIndex].player2.ws.send("p2");
 
-        console.log(Active.sessArr[sessionIndex]);
+        console.log(Active.sessArr[sessionIndex].gameState);
         
         waitLineChecker(); //try again in case there's more players
 
