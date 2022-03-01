@@ -17,9 +17,7 @@ const restPort = null; //currently unused;
 //+------------------------------------------------------------------+
 const app = express();
 app.use(express.json());
-app.use('/', express.static('front-end/home'));
-app.use('/game', express.static('front-end/game-board')); //TODO: deny if no session
-//app.use('/game', express.static('front-end/game-board'));
+app.use('/', express.static('front-end/'));
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 
@@ -27,24 +25,13 @@ const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on p
 //+------------------------------------------------------------------+
 //|                      SOCKET PATH RESOLVER                        |
 //+------------------------------------------------------------------+
-const waitSockServModule = require('./back-end-modules/wait-socket-server');
-const gameSockServModule = require('./back-end-modules/game-socket-server');
+const wss = require('./socket-server.js');
 
-HTTPserver.on('upgrade', function upgrade(request, socket, head) {
-   const { pathname } = url.parse(request.url);
-   if (pathname === '/line') {
-      waitSockServModule.waitSockServ.handleUpgrade(request, socket, head, (ws) => { waitSockServModule.waitSockServ.emit('connection', ws) });
-   } else if (pathname === '/gamestream') {
-      gameSockServModule.gameSockServ.handleUpgrade(request, socket, head, (ws) => { gameSockServModule.gameSockServ.emit('connection', ws) });
-   } else if (pathname === '/chat') {
-      socket.destroy();
+HTTPserver.on('upgrade', (request, socket, head) => {
+   const { pathname } = url.parse(request.url); 
+   if (pathname === '/') {
+      wss.handleUpgrade(request, socket, head, (ws) => { 
+         wss.emit('connection', ws);
+      });
    } 
 });
-
-let SessArr = [];  //Arr to store card game sessions
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//+------------------------------------------------------------------+
-//|                            EXPORTS                               |
-//+------------------------------------------------------------------+
-exports.SessArr = SessArr;
