@@ -1,7 +1,11 @@
+import {socket} from './index.js'
+
+console.log(socket)
+
 $("#playing-card-field").droppable({ disabled: true });  //impossibilita o jogador de jogar até que....
-const url = window.location.href.slice(7, -6);
-const port = 80;
-const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
+//const url = window.location.href.slice(7, -6);
+//const port = 80;
+//const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
 
 $(document).ready( () => {
     $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
@@ -36,14 +40,14 @@ let gameState = {
         então talvez tirar as 4 cartas fixas, ou distinguir melhor as cartas de "verdade"
 */
 
-gameSocket.onopen = (event) => {
+socketGame.onopen = (event) => {
     playCardSound("backgroundSound");
-    //console.log("GAME SOCKET OPEN, SOCKET DATA: ");
-    // console.log(event);
-    // console.log("=======================================");
+    console.log("GAME SOCKET OPEN, SOCKET DATA: ");
+    console.log(event);
+    console.log("=======================================");
 }
 
-gameSocket.onmessage = (event) => {
+socketGame.onmessage = (event) => {
     // console.log("==============================================================================================================================================================================================================================================================================================================================");
     // console.log("SERV MSG ==> "+ event.data);
     // console.log("=======================================");
@@ -159,7 +163,7 @@ gameSocket.onmessage = (event) => {
     gameStart();
 }
 
-gameSocket.onclose = (event) => {
+socketGame.onclose = (event) => {
     console.log("SOCKET CLOSE: ");
     console.log(event);
     console.log("CLOSE CODE: " + event.code);
@@ -266,9 +270,9 @@ function gameStart() {
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosTurn();
 
-                gameSocket.send(JSON.stringify({
-                    sID: gameState.sID,
-                    cardPlayed: ui.draggable.attr('value'),
+                socketGame.send(JSON.stringify({
+                    // sID: gameState.sID,
+                    // cardPlayed: ui.draggable.attr('value'),
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},

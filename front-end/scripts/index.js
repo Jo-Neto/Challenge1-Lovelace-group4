@@ -2,12 +2,12 @@ let boardDocument = '';
 let leaderDocument = '';
 let homeDocument = '';
 
-function openModal(modalId) {
+function openModalHome(modalId) {
   const modal = document.getElementById(modalId);
   modal.style.visibility = "visible";
 }
 
-function closeModal(modalId) {
+function closeModalHome(modalId) {
   let modal = document.getElementById(modalId);
   modal.style.visibility = "hidden";
 }
@@ -62,3 +62,5 @@ fetch('/index.html').then( resp => {
 }).catch( err => {
   console.log(err);
 });
+
+export {socket}
