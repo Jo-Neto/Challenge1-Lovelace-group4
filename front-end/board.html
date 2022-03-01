@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="./board-styles/top.css">
         <link rel="stylesheet" href="./board-styles/modal.css">
         <link rel="stylesheet" href="./board-styles/cheap-flip.css">
+        <link rel="stylesheet" href="./board-styles/sidebar-help.css">
         <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
         <link rel="stylesheet" href="./board-styles/shine.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- import JQuery -->
@@ -55,7 +56,7 @@
 
         <header>
             <span id="header-buttons">
-                <img id="btn-menu" src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" id="btn-menu-in" title="Abrir o menu">
+                <img id="btn-menu-in" src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" title="Abrir o menu">
                 <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()" title="Desativar o som">
                 <img id="btn-guide" src="./board-assets/subtitles_white_24dp.svg" title="Desativar balões guia">
             </span>
@@ -106,6 +107,7 @@
 
                 <div class="container-cards-from-hand" id="container-card-player2"></div>
             </div>
+            <img id="btn-help" src="./board-assets/help_guide.svg" onclick="openHelp('help')" title="Abrir Ajuda">
         </main>
         
 <!------------------------Modais------------------------>
@@ -185,6 +187,11 @@
                 </table>
             </div>
         </div>
+
+        <nav id="help" onclick="closeModal('help')">
+            <p>REGRAS</p>
+            <img class="diagram-rules" src="./board-assets/diagram.svg" alt="">
+        </nav>
         
     <!------------------------Scripts------------------------>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->

@@ -17,11 +17,11 @@ header {
         align-items: center;
 }
 
-#btn-menu-in, #btn-menu-out, #btn-menu, #btn-sound, #btn-guide {
+#btn-menu-in, #btn-menu-out, #btn-sound, #btn-guide, #btn-help {
     cursor: pointer;
 }
 
-#btn-menu, #btn-sound, #btn-guide {
+#btn-menu-in, #btn-sound, #btn-guide, #btn-help {
     background-color: rgb(56, 54, 54);
     border-radius: 25px;
     padding: 6px;
@@ -32,6 +32,13 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: end;
+}
+
+#btn-help {
+    position: absolute;
+    height: 50px;
+    right: 20px;
+    bottom: 20px;
 }
 
 
