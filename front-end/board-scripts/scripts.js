@@ -20,6 +20,15 @@ function closeModal(modalId) {
     modal.style.visibility = "hidden";
 }
 
+function openMenu(modalId) {
+    $('body').css('overflowY', "hidden");
+
+    $('.modal-div').css('visibility', 'hidden');
+    
+    const modal = document.getElementById(modalId);
+    modal.style.visibility = "visible";
+}
+
 function flipCard() {
     const card = document.querySelector(".flip-card .flip-card-inner");
     card.style.transform = "rotateY(180deg)";

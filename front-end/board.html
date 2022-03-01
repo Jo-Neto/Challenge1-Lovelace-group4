@@ -17,96 +17,112 @@
         <link rel="stylesheet" href="./board-styles/cheap-flip.css">
         <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
         <link rel="stylesheet" href="./board-styles/shine.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- import JQuery -->
+        <link rel="stylesheet" href="/resources/demos/style.css"> <!-- import JQuery -->
+        <style>
+            label {
+                display: inline-block;
+                width: 5em;
+            }
+        </style>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
-        <title>Elemental Clash</title>
+        <!-- Jquery Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        <script>
+            $( function() {
+                $( document ).tooltip();
+            } );
+        </script>
+
+        <title>ELEMENTAL CLASH</title>
     </head>
 
     <body>
         <nav id="menu">
-            <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out">
+            <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out" title="Fechar o menu">
             <ul>
-                <li onclick="openModal('modal-rules')">Consultar regras</li>
-                <li><a href="https://www.alphaedtech.org.br/" target="_blank">Sobre o Edtech</a></li>
-                <li onclick="openModal('modal-devs')">Desenvolvedores</li>
-                <li onclick="openModal('modal-logoff')">Sair</li>
+                <li onclick="openModal('modal-rules')">REGRAS</li>
+                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O  EDTECH</a></li>
+                <li onclick="openModal('modal-devs')">DEVS</li>
+                <li onclick="openModal('modal-logoff')">SAIR</li>
             </ul>
         </nav>
 
         <header>
             <span id="header-buttons">
-                <img src="./board-assets/menu_white_24dp.svg" onclick="openModal('menu')" id="btn-menu-in">
-                <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()">
+                <img src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" id="btn-menu-in" title="Abrir o menu">
+                <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()" title="Desativar o som">
             </span>
             <span id="right-side">
-               <!-- <span id="show-if-is-your-turn"></span> -->
                 <div id="game-score">
-                    <span id="span-player1">Player 1</span>
+                    <span id="span-player1">PLAYER 1</span>
                     <span> 
                         <span class="score-numbers" id="score-player1">0</span>
                         x
                         <span class="score-numbers" id="score-player2">0</span> 
                     </span>
-                    <span id="span-player2">Player 2</span>
-                </div> 
+                    <span id="span-player2">PLAYER 2</span>
+                </div>
             </span>
             
         </header>
 
-        <div id="container-opponents-cheap-and-cards">
-            <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg">
-            <span id="container-opponents-cards">
-                <img class="card red-shine" id="first-opponents-card" src="./board-assets/verso.svg">
-                <img class="card" id="second-opponents-card" src="./board-assets/verso.svg">
-                <img class="card green-shine" id="third-opponents-card" src="./board-assets/verso.svg">
-            </span>
-        </div>
-
-        <div id="container-mid-screen">
-            <img id="playing-card-field" src="./board-assets/playing-card-field.svg">
-            <div class="container-cards-from-hand" id="container-card-player2"></div>
-        </div>
-
-        <div id="container-hand-cards-and-second-cheap">
-            <div id="player-cards">
-                <div class="container-cards-from-hand card" id="container-first-hand-card"></div>
-                <div class="container-cards-from-hand card" id="container-second-hand-card"></div>
-                <div class="container-cards-from-hand card" id="container-third-hand-card"></div>
+        <main>
+            <div id="container-opponents-cheap-and-cards">
+                <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg">
+                <span id="container-opponents-cards">
+                    <img class="card" id="first-opponents-card" src="./board-assets/verso.svg">
+                    <img class="card" id="second-opponents-card" src="./board-assets/verso.svg">
+                    <img class="card" id="third-opponents-card" src="./board-assets/verso.svg">
+                </span>
             </div>
-
-            <div class="cheap" id="second-cheap">
-                <img id="img-second-cheap" class="cheap" src="./board-assets/cheap.svg">
-                
-                <!-- <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <img id="pickable-verso" class="card flip-card-front" src="./board-assets/verso.svg" onclick="flipCard()">
-                        <img id="pickable-card" class="card flip-card-back" src="./board-assets/card-ether.svg">
-                    </div>
-                </div> -->
+            <div id="container-mid-screen">
+                <img id="playing-card-field" src="./board-assets/playing-card-field.svg">
+                <div class="container-cards-from-hand" id="container-card-player2"></div>
             </div>
+            <div id="container-hand-cards-and-second-cheap">
+                <div id="player-cards">
+                    <div class="container-cards-from-hand card" id="container-first-hand-card"></div>
+                    <div class="container-cards-from-hand card" id="container-second-hand-card"></div>
+                    <div class="container-cards-from-hand card" id="container-third-hand-card"></div>
+                </div>
 
-            <div class="container-cards-from-hand" id="container-card-player2"></div>
-        </div>
+                <div class="cheap" id="second-cheap">
+                    <img id="img-second-cheap" class="cheap" src="./board-assets/cheap.svg">
+                    
+                    <!-- <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <img id="pickable-verso" class="card flip-card-front" src="./board-assets/verso.svg" onclick="flipCard()">
+                            <img id="pickable-card" class="card flip-card-back" src="./board-assets/card-ether.svg">
+                        </div>
+                    </div> -->
+                </div>
 
-    <!------------------------Modais------------------------>
+                <div class="container-cards-from-hand" id="container-card-player2"></div>
+            </div>
+        </main>
+        
+<!------------------------Modais------------------------>
         <div id="container-modais">
             <div id="modal-logoff" class="modal modal-div">
-                <h3>Deseja mesmo sair?</h3>
+                <h3>DESEJA SAIR?</h3>
                 <div class="row-direction">
                     <a class="btn-back-to-home">
-                        <button id="btn-modal-logoff" class="btn-modal">Sair</button>
+                        <button id="btn-modal-logoff" class="btn-modal">SAIR</button>
                     </a>
-                    <button id="btn-modal-cancel" class="btn-modal" onclick="closeModal('modal-logoff')">Cancelar</button>
+                    <button id="btn-modal-cancel" class="btn-modal" onclick="closeModal('modal-logoff')">VOLTAR</button>
                 </div>
             </div>
             <div id="modal-general" class="modal modal-div">
                 <h3 id="description-modal"></h3>
                 <div class="row-direction">
                 <a class="btn-back-to-home">
-                        <button id="btn-modal-logoff" class="btn-modal">Home</button>
+                        <button id="btn-modal-logoff" class="btn-modal">HOME</button>
                 </a>
                 </div>
             </div>
