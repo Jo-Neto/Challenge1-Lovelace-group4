@@ -345,7 +345,7 @@ function changeSoundConf() {
     const button = document.getElementById('btn-sound');
     if(count%2 == 0) {
         button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_off_white_24dp.svg');
+        button.setAttribute('src', 'board-assets/music_off_white_24dp.svg');
         waterSound.src = "";
         fireSound.src = "";
         plantSound.src = "";
@@ -354,7 +354,7 @@ function changeSoundConf() {
         backgroundMusic.src = "";
     } else {
         button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_note_white_24dp.svg');
+        button.setAttribute('src', 'board-assets/music_note_white_24dp.svg');
         waterSound.src = 'board-assets/sounds/waterCardSound.mp3';
         fireSound.src = 'board-assets/sounds/fireCardSound.mp3';
         plantSound.src = 'board-assets/sounds/plantCardSound.mp3';
