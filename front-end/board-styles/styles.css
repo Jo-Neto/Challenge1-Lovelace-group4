@@ -4,21 +4,10 @@
     font-family: 'Chewy', cursive;
 }
 
-html {
-    height: 100%;
-    width: 100vw;
-
-    background: radial-gradient(circle at right, rgba(233, 241, 223, 0) 0.3333333333em, #E9F1DF 0.3333333333em, #E9F1DF 0.4888888889em, rgba(233, 241, 223, 0) 0.4888888889em, rgba(233, 241, 223, 0) 0.8222222222em, #E9F1DF 0.8222222222em, #E9F1DF 0.9777777778em, rgba(233, 241, 223, 0) 0.9777777778em, rgba(233, 241, 223, 0) 1.3111111111em, #E9F1DF 1.3111111111em, #E9F1DF 1.4666666667em, rgba(233, 241, 223, 0) 1.4666666667em) 0 0, radial-gradient(circle at left, rgba(233, 241, 223, 0) 0.5777777778em, #E9F1DF 0.5777777778em, #E9F1DF 0.7333333333em, rgba(233, 241, 223, 0) 0.7333333333em, rgba(233, 241, 223, 0) 1.0666666667em, #E9F1DF 1.0666666667em, #E9F1DF 1.2222222222em, rgba(233, 241, 223, 0) 1.2222222222em) 0 3.0514619883em, linear-gradient(to right top, #E9F1DF 0.1555555556em, rgba(233, 241, 223, 0) 0.1555555556em) 1.2222222222em 0.1555555556em, linear-gradient(to left top, #E9F1DF 0.1555555556em, rgba(233, 241, 223, 0) 0.1555555556em) 1.2222222222em 0.1555555556em, linear-gradient(to right bottom, #E9F1DF 0.1555555556em, rgba(233, 241, 223, 0) 0.1555555556em) 1.2222222222em 0.1555555556em, linear-gradient(to left bottom, #E9F1DF 0.1555555556em, rgba(233, 241, 223, 0) 0.1555555556em) 1.2222222222em 0.1555555556em;
-    background-size: 2.8em 2.8em;
-    background-color: #19475F;
-}
 
 body {
     width: 100vw;
     max-height: 100vh;
-
-    background-size: cover;
-
     display: flex;
     flex-direction: column;
 }
@@ -26,6 +15,7 @@ body {
 .card {
     width: 6.7vw;
     height: auto;
+    border-radius: 13px;
 }
 
 .cards-in-hand {

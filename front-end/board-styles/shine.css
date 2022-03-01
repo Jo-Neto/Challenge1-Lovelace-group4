@@ -1,19 +1,35 @@
-.shine {
-	animation: glow 800ms ease-out infinite alternate;
-	background: #222922;
-	background: linear-gradient(#333933, #222922);
-	border-color: #393;
-	box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 2px 0 #000;
+.green-shine {
+	animation: green-glow 800ms ease-out infinite alternate;
+	border-color: rgb(40, 221, 40);
+	box-shadow: 0 0 10px rgba(0,255,0,2), inset 0 0 10px rgba(0,255,0,1.5);
 	outline: none;
 }
 
-@keyframes glow {
+@keyframes green-glow {
     0% {
-		border-color: #393;
-		box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 2px 0 #000;
+		border-color: rgb(40, 221, 40);
+		box-shadow: 0 0 10px rgba(0,255,0,2), inset 0 0 10px rgba(0,255,0,1.5);
     }	
     100% {
-		border-color: #6f6;
-		box-shadow: 0 0 20px rgba(0,255,0,.6), inset 0 0 10px rgba(0,255,0,.4), 0 2px 0 #000;
+		border-color: rgb(0,255,0);
+		box-shadow: 0 0 30px rgba(0,255,0,3), inset 0 0 10px rgba(0,255,0,2.5);
+    }
+}
+
+.red-shine {
+	animation: red-glow 800ms ease-out infinite alternate;
+	border-color: rgb(221, 40, 40);
+	box-shadow: 0 0 10px rgba(255,0,0,2), inset 0 0 10px rgba(255,0,0,1.5);
+	outline: none;
+}
+
+@keyframes red-glow {
+    0% {
+		border-color: rgb(221, 40, 40);
+		box-shadow: 0 0 10px rgba(255,0,0,2), inset 0 0 10px rgba(255,0,0,1.5);
+    }	
+    100% {
+		border-color: rgb(255, 0, 0);
+		box-shadow: 0 0 30px rgba(255,0,0,3), inset 0 0 10px rgba(255,0,0,2.5);
     }
 }
