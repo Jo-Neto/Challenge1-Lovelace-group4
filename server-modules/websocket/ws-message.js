@@ -11,25 +11,33 @@ function message(data, isBinary, ws) {
     //+------------------------------------------------------------------+ 
     
     if (ws.aID === undefined) //deny messages from socket that do not belong to any session
-        return;
-
+      return;
     
-        
-    try { playedIndex = JSON.parse(data); }
+    try { parsedData = JSON.parse(data); }
     catch (e) { console.log("WS-MESSAGE ERROR: message(fn) --> received non-parsable DATA --> " + e); return; }
 
-    console.log("typeof data = "+ typeof playedIndex );
-    console.log("data = "+ playedIndex );
+    if ( typeof parsedData !== 'number' ) //deny messages that are not number
+        return;
+    
+    if ( typeof parsedData < 1 || typeof parsedData > 3) //deny invalid card indexes
+        return;
+
+    console.log("typeof parsed data = " + typeof parsedData);
+    console.log("parsed data = " + parsedData);
+
+/*
+    console.log("typeof data = "+ typeof parsedData );
+    console.log("data = "+ parsedData );
     console.log("ws.aID = "+ ws.aID );
 
     console.log("=============================================================================" );
     console.log(SessionArr[ws.aID].gameState);
     console.log("=============================================================================" );
 
-/*
+
     try {
-        if (!(playedIndex >= 1 && playedIndex <= 3)) {
-            console.log("WS-MESSAGE: message(fn) --> nvalid card index");
+        if (!(parsedData >= 1 && parsedData <= 3)) {
+            console.log("WS-MESSAGE: message(fn) --> valid card index");
             ws.close(1008, 'tried playing an invalid card index');
             ws.terminate();
             return;
@@ -39,7 +47,7 @@ function message(data, isBinary, ws) {
 
 
     try {
-        if (typeof playedIndex !== 'number') {
+        if (typeof parsedData !== 'number') {
             console.log("WS-MESSAGE: message(fn) -->  non number type");
             ws.close(1008, 'tried sending a non number type');
             ws.terminate();
@@ -54,17 +62,18 @@ function message(data, isBinary, ws) {
     //+------------------------------------------------------------------+
     //|                            PLAYER 1                              | 
     //+------------------------------------------------------------------+ 
-    if (SessionArr[ws.aID].player1.ws === ws) { //player 1 msg
+    if (SessionArr[ws.aID].player1.ws === ws) { //player 1 msg  
         
         if ( !SessionArr[ws.aID].gameState.player1turn ) //not p1 turn
             return;
         
         else {
-            SessionArr[ws.aID].gameState.board[0] = SessionArr[ws.aID].player1.hand[ playedIndex - 1];
-            SessionArr[ws.aID].player1.hand[ playedIndex - 1] = SessionArr[ws.aID].player1.deck.shift();
+            console.log("p1 played = "+ SessionArr[ws.aID].player1.hand[ parsedData - 1] );
+            SessionArr[ws.aID].gameState.board[0] = SessionArr[ws.aID].player1.hand[ parsedData - 1];
+            SessionArr[ws.aID].player1.hand[ parsedData - 1] = SessionArr[ws.aID].player1.deck.shift();
+            roundChecker(SessionArr[ws.aID]);
         }
 
-        roundChecker(SessionArr[ws.aID]);
         SessionArr[ws.aID].player1.ws.send(SessionArr[ws.aID].player1.hand);
 
     }
@@ -80,11 +89,12 @@ function message(data, isBinary, ws) {
             return;
         
         else {
-            SessionArr[ws.aID].gameState.board[1] = SessionArr[ws.aID].player2.hand[ playedIndex - 1];
-            SessionArr[ws.aID].player2.hand[ playedIndex - 1] = SessionArr[ws.aID].player2.deck.shift();
+            console.log("p2 played = "+ SessionArr[ws.aID].player2.hand[ parsedData - 1] );
+            SessionArr[ws.aID].gameState.board[1] = SessionArr[ws.aID].player2.hand[ parsedData - 1];
+            SessionArr[ws.aID].player2.hand[ parsedData - 1] = SessionArr[ws.aID].player2.deck.shift();
+            roundChecker(SessionArr[ws.aID]);
         }
 
-        roundChecker(SessionArr[ws.aID]);
         SessionArr[ws.aID].player2.ws.send(SessionArr[ws.aID].player2.hand);
     
     }
