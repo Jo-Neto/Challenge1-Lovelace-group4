@@ -5,15 +5,27 @@ const SessionArr = [];  //store ACTIVE game sessions, inactive game sessions go 
 
 function message(data, isBinary, ws) {
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //+------------------------------------------------------------------+
     //|                      READING IF MSG IS VALID                     | 
     //+------------------------------------------------------------------+ 
+    
+    if (ws.aID === undefined) //deny messages from socket that do not belong to any session
+        return;
+
+    
+        
     try { playedIndex = JSON.parse(data); }
     catch (e) { console.log("WS-MESSAGE ERROR: message(fn) --> received non-parsable DATA --> " + e); return; }
 
-    console.log(playedIndex);
+    console.log("typeof data = "+ typeof playedIndex );
+    console.log("data = "+ playedIndex );
+    console.log("ws.aID = "+ ws.aID );
+
+    console.log("=============================================================================" );
+    console.log(SessionArr[ws.aID].gameState);
+    console.log("=============================================================================" );
+
 /*
     try {
         if (!(playedIndex >= 1 && playedIndex <= 3)) {
@@ -52,11 +64,10 @@ function message(data, isBinary, ws) {
             SessionArr[ws.aID].player1.hand[ playedIndex - 1] = SessionArr[ws.aID].player1.deck.shift();
         }
 
-        roundChecker(SessionArr);
+        roundChecker(SessionArr[ws.aID]);
         SessionArr[ws.aID].player1.ws.send(SessionArr[ws.aID].player1.hand);
 
     }
-    
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //+------------------------------------------------------------------+
@@ -73,12 +84,12 @@ function message(data, isBinary, ws) {
             SessionArr[ws.aID].player2.hand[ playedIndex - 1] = SessionArr[ws.aID].player2.deck.shift();
         }
 
-        roundChecker(SessionArr);
+        roundChecker(SessionArr[ws.aID]);
         SessionArr[ws.aID].player2.ws.send(SessionArr[ws.aID].player2.hand);
     
     }
     else
-        console.log("WS-MESSAGE: FATAL ERROR --> message(fn) --> WRONGLY ASSIGNED SOCKET ACCESS ID --> " + e);
+        console.log("WS-MESSAGE: FATAL ERROR --> message(fn) --> WRONGLY ASSIGNED SOCKET ACCESS ID --> ");
 
 }
 
