@@ -17,8 +17,14 @@ header {
         align-items: center;
 }
 
-#btn-menu-in, #btn-sound {
+#btn-menu-in, #btn-menu-out, #btn-menu, #btn-sound, #btn-guide {
     cursor: pointer;
+}
+
+#btn-menu, #btn-sound, #btn-guide {
+    background-color: rgb(56, 54, 54);
+    border-radius: 25px;
+    padding: 6px;
 }
 
 #right-side{
