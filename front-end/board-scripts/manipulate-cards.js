@@ -199,9 +199,19 @@ function showEnemyCard(cardString) {
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./board-assets/card-ether.svg">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-ether.svg">');
             gameState.board[1] = "e";
             playCardSound("e");
+            break;
+        case 'v':
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-void.svg">');
+            gameState.board[1] = "v";
+            //playCardSound("v");
+            break;
+        case 'd':
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-dark-matter.svg">');
+            gameState.board[1] = "d";
+            //playCardSound("d");
             break;
         default:
             break;
@@ -244,7 +254,7 @@ function gameStart() {
     }
 
     verifyIfHaveTwoCardsInTheField()
-    
+
     if (gameState.myTurn) {
         $("#show-if-is-your-myTurn").text("Sua vez!");
 
@@ -278,19 +288,24 @@ function getCardImage(card) {
         case "w":
             nameOfImageArchive = 'card-water';
             break;
-        case "f": 
+        case "f":
             nameOfImageArchive = 'card-fire';
             break;
-        case "p": 
+        case "p":
             nameOfImageArchive = 'card-plant';
             break;
-        case "e": 
+        case "e":
             nameOfImageArchive = 'card-ether';
+            break;
+        case "v":
+            nameOfImageArchive = 'card-void';
+            break;
+        case "d":
+            nameOfImageArchive = 'card-dark-matter';
             break;
         case null:
             nameOfImageArchive = 'null';
             break
-
     }
 
     return nameOfImageArchive;
@@ -407,8 +422,8 @@ function verifyCardOnTop() {
 }
 
 function noCardsOnHand(){
-    console.log("entrouu: "+ gameState.turnNum)
-    if(gameState.turnNum == 14){
+    console.log("entrou: "+ gameState.turnNum)
+    if(gameState.turnNum == 18){
         if(gameState.scoreP1 > gameState.scoreP2){
             openModal("modal-victory");
         }else if(gameState.scoreP2 > gameState.scoreP1){

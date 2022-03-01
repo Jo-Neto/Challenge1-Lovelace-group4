@@ -15,12 +15,13 @@ function closeModal(modalId) {
 const url = window.location.href.slice(7, -1);
 const port = 80;
 
-let socket = {};
+let socket;
 
 document.getElementById('play-now-button').addEventListener('click', () => {
 
   socket = new WebSocket(`ws://${url}:${port}/`);
 
+/*
   const playerName = 'Clasher';
 
   socket.onopen = event => { 
@@ -30,6 +31,7 @@ document.getElementById('play-now-button').addEventListener('click', () => {
   function sendName(playerName) {
     socket.send(JSON.stringify(playerName));
   }
+*/
 
   socket.onmessage = (event) => {
     document.documentElement.innerHTML = boardDocument; //this will be removed
