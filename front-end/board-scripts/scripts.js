@@ -34,6 +34,15 @@ function openMenu(modalId) {
     modal.style.visibility = "visible";
 }
 
+function openHelp(modalId) {
+    $('body').css('overflowY', "hidden");
+
+    $('.modal-div').css('visibility', 'hidden');
+    
+    const modal = document.getElementById(modalId);
+    modal.style.visibility = "visible";
+}
+
 $('#btn-guide').click(function() {
     if ($(this).attr('src') == './board-assets/subtitles_white_24dp.svg') {
         $(this).removeAttr('src');
