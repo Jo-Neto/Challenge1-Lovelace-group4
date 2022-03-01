@@ -22,7 +22,7 @@ header {
 }
 
 #btn-menu, #btn-sound, #btn-guide {
-    background-color: rgb(56, 54, 54);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28) 0%, rgba(233, 21, 21) 100%);
     border-radius: 25px;
     padding: 6px;
 }
@@ -36,12 +36,12 @@ header {
 
 
 #game-score {
-    width: 60vw;
+    width: 55vw;
     min-width: 250px;
     height: 7vh;
     position: absolute;
     color: #f5f5f5;
-    font-size: 20px;
+    font-size: 22px;
 
     display: flex;
     flex-direction: row;
