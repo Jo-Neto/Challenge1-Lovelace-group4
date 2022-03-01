@@ -10,10 +10,17 @@ function message(data, isBinary, ws) {
     //+------------------------------------------------------------------+
     //|                      READING IF MSG IS VALID                     | 
     //+------------------------------------------------------------------+ 
+    if (!ws.aID)
+        return;
+    
+    
+        
     try { playedIndex = JSON.parse(data); }
     catch (e) { console.log("WS-MESSAGE ERROR: message(fn) --> received non-parsable DATA --> " + e); return; }
 
     console.log(playedIndex);
+    console.log(ws.aID);
+    console.log(SessionArr[ws.aID]);
 /*
     try {
         if (!(playedIndex >= 1 && playedIndex <= 3)) {
@@ -78,7 +85,7 @@ function message(data, isBinary, ws) {
     
     }
     else
-        console.log("WS-MESSAGE: FATAL ERROR --> message(fn) --> WRONGLY ASSIGNED SOCKET ACCESS ID --> " + e);
+        console.log("WS-MESSAGE: FATAL ERROR --> message(fn) --> WRONGLY ASSIGNED SOCKET ACCESS ID --> ");
 
 }
 

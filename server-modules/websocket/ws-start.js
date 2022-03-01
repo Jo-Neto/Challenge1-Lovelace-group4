@@ -21,21 +21,28 @@ function waitLineChecker() {
 
         Active.gameArr.push(waitSockArr.shift(), waitSockArr.shift()); //puts first 2 players on the line into the end of the game socket array
         
+        let sessionIndex;
+        
         let replaceableIndex = Active.sessArr.findIndex(session => { //see if there's an available place in the active games array
             return session === null;
         });
 
+
         if (replaceableIndex !== -1) { //if yes, replace the finished match in the array
             Active.sessArr[replaceableIndex] = new CardGameSession(Active.gameArr[Active.gameArr.length - 2], Active.gameArr[Active.gameArr.length - 1]);
+            sessionIndex = replaceableIndex;
         } else {  //if not, push the array with a new session
             Active.sessArr.push(new CardGameSession(Active.gameArr[Active.gameArr.length - 2], Active.gameArr[Active.gameArr.length - 1]));
+            sessionIndex = Active.sessArr.length - 1;
         }
 
-        Active.sessArr[Active.sessArr.length - 1].player1.ws.aID = Active.sessArr.length - 1; //assign the sockets the access index for faster performance
-        Active.sessArr[Active.sessArr.length - 1].player2.ws.aID = Active.sessArr.length - 1;
+        Active.sessArr[sessionIndex].player1.ws.aID = Active.sessArr.length - 1; //assign the sockets the access index for faster performance
+        Active.sessArr[sessionIndex].player2.ws.aID = Active.sessArr.length - 1;
         
-        Active.sessArr[Active.sessArr.length - 1].player1.ws.send("p1"); //tell front-end game is ready
-        Active.sessArr[Active.sessArr.length - 1].player2.ws.send("p2");
+        console.log(Active.sessArr[sessionIndex]);
+        
+        Active.sessArr[sessionIndex].player1.ws.send("p1"); //tell front-end game is ready
+        Active.sessArr[sessionIndex].player2.ws.send("p2");
         
         waitLineChecker(); //try again in case there's more players
 
