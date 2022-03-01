@@ -5,10 +5,6 @@ const dbStore = require('./db-writer.js');
 
 module.exports = function (Session) {
 
-    console.log("round check");
-    console.log(Session.isLocked);
-
-
     if (Session.isLocked) //check if it's locked, maybe unnecessary
         return;
 

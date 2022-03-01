@@ -68,14 +68,18 @@ function message(data, isBinary, ws) {
             return;
         
         else {
+
             console.log("p1 hand before = "+ SessionArr[ws.aID].player1.hand );
             console.log("p1 deck before = "+ SessionArr[ws.aID].player1.deck );
+
             console.log("p1 played = "+ SessionArr[ws.aID].player1.hand[ parsedData - 1] );
             SessionArr[ws.aID].gameState.board[0] = SessionArr[ws.aID].player1.hand[ parsedData - 1];
             SessionArr[ws.aID].player1.hand[ parsedData - 1] = SessionArr[ws.aID].player1.deck.shift();
             roundChecker(SessionArr[ws.aID]);
+
             console.log("p1 hand after = "+ SessionArr[ws.aID].player1.hand );
             console.log("p1 deck after = "+ SessionArr[ws.aID].player1.deck );
+
         }
 
         SessionArr[ws.aID].player1.ws.send(SessionArr[ws.aID].player1.hand);
@@ -93,14 +97,18 @@ function message(data, isBinary, ws) {
             return;
         
         else {
+
             console.log("p2 hand before = "+ SessionArr[ws.aID].player2.hand );
             console.log("p2 deck before = "+ SessionArr[ws.aID].player2.deck );
+
             console.log("p2 played = "+ SessionArr[ws.aID].player2.hand[ parsedData - 1] );
             SessionArr[ws.aID].gameState.board[1] = SessionArr[ws.aID].player2.hand[ parsedData - 1];
             SessionArr[ws.aID].player2.hand[ parsedData - 1] = SessionArr[ws.aID].player2.deck.shift();
             roundChecker(SessionArr[ws.aID]);
+
             console.log("p2 hand after = "+ SessionArr[ws.aID].player2.hand );
             console.log("p2 deck after = "+ SessionArr[ws.aID].player2.deck );
+
         }
 
         SessionArr[ws.aID].player2.ws.send(SessionArr[ws.aID].player2.hand);
