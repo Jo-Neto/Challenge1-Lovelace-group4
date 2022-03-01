@@ -116,9 +116,9 @@ gameSocket.onmessage = (event) => {
         gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
     }
 
     else {
@@ -141,9 +141,9 @@ gameSocket.onmessage = (event) => {
         // console.log("SERV HANDSHAKE OBJECT: ");
         // console.log(obj);
         // console.log("=======================================");
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
+        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
     }
 
     if (gameState.myTurn) {
@@ -184,22 +184,22 @@ function showEnemyCard(cardString) {
 
     switch (cardString) {
         case 'f':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-fire.svg">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-fire.svg">');
             gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-water.svg">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-water.svg">');
             gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
-            $("#container-card-player2").html('<img class="cards-in-hand" src="./assets/card-plant.svg">');
+            $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-plant.svg">');
             gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
-            $("#container-card-player2").html('<img class="card cards-in-hand" src="./assets/card-ether.svg">');
+            $("#container-card-player2").html('<img class="card cards-in-hand" src="./board-assets/card-ether.svg">');
             gameState.board[1] = "e";
             playCardSound("e");
             break;
@@ -216,9 +216,9 @@ function verifyIfHaveTwoCardsInTheField() {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
             hideCheap();
-            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
+            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
         }, 2000);
     }
 }
@@ -296,16 +296,16 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-let waterSound = new Audio('assets/sounds/waterCardSound.mp3');
-let fireSound = new Audio('assets/sounds/fireCardSound.mp3');
-let plantSound = new Audio('assets/sounds/plantCardSound.mp3');
-let etherSound = new Audio('assets/sounds/etherCardSound.mp3');
+let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
+let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
+let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
+let etherSound = new Audio('board-assets/sounds/etherCardSound.mp3');
 
-let winnerSound = new Audio('assets/sounds/winnerRound.mp3');
-let loserSound = new Audio('assets/sounds/roundLoser.mp3');
+let winnerSound = new Audio('board-assets/sounds/winnerRound.mp3');
+let loserSound = new Audio('board-assets/sounds/roundLoser.mp3');
 
-let cardDrawSound = new Audio('assets/sounds/cardDrawSound.mp3');
-let backgroundMusic = new Audio('assets/sounds/backgroundSound.mp3');
+let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
+let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
 
 
 function playCardSound(card) {
@@ -345,7 +345,7 @@ function changeSoundConf() {
     const button = document.getElementById('btn-sound');
     if(count%2 == 0) {
         button.setAttribute('src', '');
-        button.setAttribute('src', './assets/music_off_white_24dp.svg');
+        button.setAttribute('src', './board-assets/music_off_white_24dp.svg');
         waterSound.src = "";
         fireSound.src = "";
         plantSound.src = "";
@@ -354,13 +354,13 @@ function changeSoundConf() {
         backgroundMusic.src = "";
     } else {
         button.setAttribute('src', '');
-        button.setAttribute('src', './assets/music_note_white_24dp.svg');
-        waterSound.src = 'assets/sounds/waterCardSound.mp3';
-        fireSound.src = 'assets/sounds/fireCardSound.mp3';
-        plantSound.src = 'assets/sounds/plantCardSound.mp3';
-        etherSound.src = 'assets/sounds/etherCardSound.mp3';
-        cardDrawSound.src = 'assets/sounds/cardDrawSound.mp3';
-        backgroundMusic.src = 'assets/sounds/backgroundSound.mp3';
+        button.setAttribute('src', './board-assets/music_note_white_24dp.svg');
+        waterSound.src = 'board-assets/sounds/waterCardSound.mp3';
+        fireSound.src = 'board-assets/sounds/fireCardSound.mp3';
+        plantSound.src = 'board-assets/sounds/plantCardSound.mp3';
+        etherSound.src = 'board-assets/sounds/etherCardSound.mp3';
+        cardDrawSound.src = 'board-assets/sounds/cardDrawSound.mp3';
+        backgroundMusic.src = 'board-assets/sounds/backgroundSound.mp3';
         backgroundMusic.play();
     }
 }
@@ -422,6 +422,6 @@ function hideCheap() {
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){
-    //     $("#first-cheap").attr('src','./assets/null.png');
+    //     $("#first-cheap").attr('src','./board-assets/null.png');
     // }
 }

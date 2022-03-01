@@ -28,29 +28,9 @@ header {
     justify-content: end;
 }
 
-#show-if-is-your-turn {
-    width: 25vw;
-    height: 7vh;
-    margin-right: 48vw;
-    padding-left: 4.3vw;
-
-    position: relative;
-    visibility: visible;
-
-    font-size: 1.6vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    color: aliceblue;
-
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(0, 149, 59, 0.8) 0%, rgba(107, 199, 42, 0.8) 100%);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0px 0px 0px 30px;
-}
 
 #game-score {
-    width: 50vw;
+    width: 60vw;
     min-width: 250px;
     height: 7vh;
     position: absolute;
@@ -63,7 +43,7 @@ header {
     align-items: center;
     padding: 0 20px;
 
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28, 0.8) 0%, rgba(233, 21, 21, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28) 0%, rgba(233, 21, 21) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 0px 0px 30px;
 }
