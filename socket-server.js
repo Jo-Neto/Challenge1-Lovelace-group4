@@ -25,14 +25,13 @@ wss.on('close', () => { //clear timer if socket server closes
     clearInterval(wssTimer);
 });
 
-
+/*
 //TODO: use here to check cookies
 wss.on('headers', (headers, req) => {
-    console.log("header server event triggered");
-    //if cookie belongs to session
-    //re-assign socket to player
-    //re-assign socket sID property
-});
+    console.log(headers);
+    console.log(req);
+
+});*/
 
 
 wss.on('connection', (ws, req) => {
