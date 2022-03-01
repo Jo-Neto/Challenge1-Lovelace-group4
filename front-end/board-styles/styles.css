@@ -4,7 +4,6 @@
     font-family: 'Chewy', cursive;
 }
 
-
 body {
     width: 100vw;
     max-height: 100vh;
@@ -105,4 +104,3 @@ body {
 #img-second-cheap {
     z-index: -1;
 }
-
