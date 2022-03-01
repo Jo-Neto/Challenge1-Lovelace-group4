@@ -7,8 +7,8 @@ module.exports = function (Session) {
 
     console.log("round check");
     console.log(Session.isLocked);
-    
-    
+
+
     if (Session.isLocked) //check if it's locked, maybe unnecessary
         return;
 
@@ -44,21 +44,20 @@ module.exports = function (Session) {
     //+------------------------------------------------------------------+
     if (Session.gameState.board[0] === Session.gameState.board[1]) {
         if (Session.gameState.board[0] !== 'm') //if its not dark matter draw
-            Session.gameState.player1turn = !Session.gameState.player1turn; //keep order            
+            Session.gameState.player1turn = !Session.gameState.player1turn; //keep order 
     }
     console.log("round check passed 2");
 
 
     switch (Session.gameState.board[0]) {
-       
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //+------------------------------------------------------------------+
         //|                    DRAW ON BLACK MATTER CARD                     |
         //+------------------------------------------------------------------+
         case 'm':
-
-            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v')  //and enemy draws v or e
+            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v' || Session.gameState.board[1] === 'm')  //and enemy draws v or e
                 Session.gameState.player1turn = true; //player is first to play         
             else  //otherwise is last to play
                 Session.gameState.player1turn = false; //enemy plays first
@@ -232,10 +231,10 @@ module.exports = function (Session) {
     //|                       PREPARING FOR NEXT TURN                    |
     //+------------------------------------------------------------------+
     Session.gameState.turnNum++;  //turn has ended, next turn
-    
+
     Session.gameState.board[0] = ''; //clean board for next round
     Session.gameState.board[1] = '';
-    
+
     Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state for both players
     Session.player2.ws.send(JSON.stringify(Session.gameState));
 
