@@ -21,7 +21,7 @@ header {
     cursor: pointer;
 }
 
-#btn-menu, #btn-sound, #btn-guide, #btn-help {
+#btn-menu-in, #btn-sound, #btn-guide, #btn-help {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28) 0%, rgba(233, 21, 21) 100%);
     border-radius: 25px;
     padding: 6px;
@@ -36,11 +36,10 @@ header {
 
 #btn-help {
     position: absolute;
-    height: 50px;
+    height: calc(7vh - 10px);
     right: 20px;
     bottom: 20px;
 }
-
 
 #game-score {
     width: 55vw;

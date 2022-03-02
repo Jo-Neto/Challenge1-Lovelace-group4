@@ -10,11 +10,6 @@ function openModal(modalId) {
     modal.style.visibility = "visible";
 }
 
-function closeOnClick(className) {
-    $(className).css('visibility', 'hidden');
-    $('#container-modais').css('visibility', 'hidden');
-}
-
 function closeModal(modalId) {
     const container = document.getElementById('container-modais');
     container.style.visibility = "hidden";
