@@ -1,7 +1,7 @@
 //+------------------------------------------------------------------+
 //|                FUNCTION SHUFFLES PLAYERS DECK                    |
 //+------------------------------------------------------------------+
-const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e', 'v', 'v', 'm', 'm']; //unshuffled deck
+const unordDeck = ['w', 'w', 'w', 'w', 'f', 'f', 'f', 'f', 'p', 'p', 'p', 'p', 'e', 'e', 'v', 'v', 'd', 'd']; //unshuffled deck
 
 module.exports = function () {
     let arrCpy = [...unordDeck];  //1 dimension array, spread operator copies 1 level deep copy
