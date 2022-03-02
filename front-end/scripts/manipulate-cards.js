@@ -161,7 +161,9 @@ socket.onmessage = (event) => {
     gameStart();
 }
 
+
 socket.onclose = (event) => {
+
     console.log("SOCKET CLOSE: ");
     console.log(event);
     console.log("CLOSE CODE: " + event.code);
@@ -267,6 +269,7 @@ function gameStart() {
                 playCardSound(gameState.board[0]);
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosTurn();
+
 
                 socketGame.send(JSON.stringify({
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
