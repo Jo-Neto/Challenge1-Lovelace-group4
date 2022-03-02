@@ -17,27 +17,90 @@ const url = window.location.href.slice(7, -1);
 const port = 80;
 
 let socket;
+var youStart = false
+var whichPlayer
 
 document.getElementById('play-now-button').addEventListener('click', () => {
 
   socket = new WebSocket(`ws://${url}:${port}/`);
 
   socket.onmessage = (event) => {
-    document.documentElement.innerHTML = boardDocument;
 
-    $.ajax({
-        url: `/board1`,
-        dataType: "script"
-      });
+    let obj
 
-    $.ajax({
-      url: `/board2`,
-      dataType: "script"
-    });
+    try {
+        obj = JSON.parse(event.data)
 
-    console.log(event.data);
+        if ( obj.hasOwnProperty("board") ) {
+            socket.onmessage = null
+
+            $.ajax({
+                url: `/board1`,
+                dataType: "script"
+            });
+    
+            $.ajax({
+            url: `/board2`,
+            dataType: "script"
+            });
+
+            console.log(obj)
+
+            if ( whichPlayer === 'p1' && obj.player1turn ) {
+                console.log("vc primeiro")
+                youStart = true
+            } else if ( whichPlayer === 'p2' && !obj.player1turn ) {
+                console.log("vc primeiro")
+                youStart = true
+            }
+
+        } else {
+            prepareTheGame(obj)
+        }
+    } catch {
+        document.documentElement.innerHTML = boardDocument;
+        whichPlayer = event.data
+        console.log(event.data)
+    }
+
   }
 });
+
+function prepareTheGame(data) {
+        let obj = data
+
+        $("#container-first-hand-card").html(`<img id="card1" value=${obj[0]} class="cards-in-hand" src="./board-assets/${getCardImage(obj[0])}.svg" alt="">`);
+        $("#container-second-hand-card").html(`<img id="card2" value=${obj[1]} class="cards-in-hand" src="./board-assets/${getCardImage(obj[1])}.svg" alt="">`);
+        $("#container-third-hand-card").html(`<img id="card3" value=${obj[2]} class="cards-in-hand" src="./board-assets/${getCardImage(obj[2])}.svg" alt="">`);
+}
+
+function getCardImage(card) {
+
+    let nameOfImageArchive;
+
+    switch (card) {
+        case "w":
+            nameOfImageArchive = 'card-water';
+            break;
+        case "f":
+            nameOfImageArchive = 'card-fire';
+            break;
+        case "p":
+            nameOfImageArchive = 'card-plant';
+            break;
+        case "e":
+            nameOfImageArchive = 'card-ether';
+            break;
+        case "v":
+            nameOfImageArchive = 'card-void';
+            break;
+        case "d":
+            nameOfImageArchive = 'card-dark-matter';
+            break;
+    }
+
+    return nameOfImageArchive;
+}
 
 fetch('/board.html').then( resp => {
   return resp.text();
