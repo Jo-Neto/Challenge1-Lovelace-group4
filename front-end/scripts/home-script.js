@@ -2,6 +2,7 @@ let boardDocument = '';
 let leaderDocument = '';
 let homeDocument = '';
 
+
 function openModalHome(modalId) {
   const modal = document.getElementById(modalId);
   modal.style.visibility = "visible";
@@ -23,13 +24,19 @@ document.getElementById('play-now-button').addEventListener('click', () => {
 
   socket.onmessage = (event) => {
     document.documentElement.innerHTML = boardDocument;
+
     $.ajax({
-      url: `/script2`,
+        url: `/board1`,
+        dataType: "script"
+      });
+
+    $.ajax({
+      url: `/board2`,
       dataType: "script"
     });
+
     console.log(event.data);
   }
-
 });
 
 fetch('/board.html').then( resp => {
