@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="./board-styles/top.css">
         <link rel="stylesheet" href="./board-styles/modal.css">
         <link rel="stylesheet" href="./board-styles/cheap-flip.css">
+        <link rel="stylesheet" href="./board-styles/sidebar-help.css">
         <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
         <link rel="stylesheet" href="./board-styles/shine.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- import JQuery -->
@@ -55,7 +56,7 @@
 
         <header>
             <span id="header-buttons">
-                <img id="btn-menu" src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" id="btn-menu-in" title="Abrir o menu">
+                <img id="btn-menu-in" src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" title="Abrir o menu">
                 <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()" title="Desativar o som">
                 <img id="btn-guide" src="./board-assets/subtitles_white_24dp.svg" title="Desativar balões guia">
             </span>
@@ -106,12 +107,13 @@
 
                 <div class="container-cards-from-hand" id="container-card-player2"></div>
             </div>
+            <img id="btn-help" src="./board-assets/help_guide.svg" onclick="openHelp('help')" title="Abrir Ajuda">
         </main>
         
-<!------------------------Modais------------------------>
+    <!------------------------Modais------------------------>
         <div id="container-modais">
-            <div id="modal-logoff" class="modal modal-div">
-                <h3>DESEJA SAIR?</h3>
+            <div id="modal-logoff" class="modal modal-div" style="visibility: visible;">
+                <h3>DESEJA</br>MESMO SAIR?</h3>
                 <div class="row-direction">
                     <a class="btn-back-to-home">
                         <button id="btn-modal-logoff" class="btn-modal">SAIR</button>
@@ -133,7 +135,7 @@
                 <p>Elemental Clash é um jogo de cartas dividido em turnos e composto por dois baralhos de elementos. Cada jogador recebe um baralho de 14 cartas, sendo 4 cartas do elemento água, 4 do fogo, 4 de planta e 2 de éter. Dessas 14 cartas, 3 são sorteadas e colocadas na mão do jogador.</p>
                 <p>Para jogá-lo, um jogador deve jogar uma carta e aguardar o oponente jogar a carta dele, ao jogar, verifica-se qual das cartas venceram e então o jogador que venceu ganha 1 ponto e será o primeiro a jogar na rodada seguinte. O jogador que ganhar 5 pontos primeiro vence o duelo.</p>
                 <p>A ordem de qual elemento ganha de qual outro elemento é mostrado na imagem abaixo, fogo vence planta, planta vence água e água vence fogo e por fim, o éter vence todos os outros elementos (use-o com sabedoria).</p>
-                <img id="img-rules" src="./board-assets/img-rules.png" alt="Imagem para ilustrar a relação entre as cartas">
+                <img id="img-rules" src="./board-assets/diagram.svg" alt="Imagem para ilustrar a relação entre as cartas">
                 <p>Caso os dois jogadores joguem um mesmo elemento, isso causará um empate e ninguém irá pontuar na rodada, então o jogador que foi o primeiro a jogar na rodada anterior será o primeiro a jogar novamente.
                     <br />
                     Divirta-se!!!</p>
@@ -185,11 +187,18 @@
                 </table>
             </div>
         </div>
+
+        <nav id="help" onclick="closeModal('help')">
+            <p>REGRAS</p>
+            <img class="diagram-rules" src="./board-assets/diagram.svg" alt="">
+        </nav>
         
     <!------------------------Scripts------------------------>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-        <script src="./board-scripts/scripts.js"></script>
-        <script src="./board-scripts/manipulate-cards.js"></script>
+        
+        <script src="./scripts/board-script.js"></script>
+        <!--<script src="./board-scripts/manipulate-cards.js"></script>-->
+    
     </body>
 </html>

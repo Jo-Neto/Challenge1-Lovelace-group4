@@ -10,6 +10,11 @@ function openModal(modalId) {
     modal.style.visibility = "visible";
 }
 
+function closeOnClick(className) {
+    $(className).css('visibility', 'hidden');
+    $('#container-modais').css('visibility', 'hidden');
+}
+
 function closeModal(modalId) {
     const container = document.getElementById('container-modais');
     container.style.visibility = "hidden";
@@ -21,6 +26,15 @@ function closeModal(modalId) {
 }
 
 function openMenu(modalId) {
+    $('body').css('overflowY', "hidden");
+
+    $('.modal-div').css('visibility', 'hidden');
+    
+    const modal = document.getElementById(modalId);
+    modal.style.visibility = "visible";
+}
+
+function openHelp(modalId) {
     $('body').css('overflowY', "hidden");
 
     $('.modal-div').css('visibility', 'hidden');

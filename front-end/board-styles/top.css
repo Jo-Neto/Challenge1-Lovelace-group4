@@ -17,12 +17,12 @@ header {
         align-items: center;
 }
 
-#btn-menu-in, #btn-menu-out, #btn-menu, #btn-sound, #btn-guide {
+#btn-menu-in, #btn-menu-out, #btn-sound, #btn-guide, #btn-help {
     cursor: pointer;
 }
 
-#btn-menu, #btn-sound, #btn-guide {
-    background-color: rgb(56, 54, 54);
+#btn-menu, #btn-sound, #btn-guide, #btn-help {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 32.81%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, rgba(219, 28, 28) 0%, rgba(233, 21, 21) 100%);
     border-radius: 25px;
     padding: 6px;
 }
@@ -34,14 +34,21 @@ header {
     justify-content: end;
 }
 
+#btn-help {
+    position: absolute;
+    height: 50px;
+    right: 20px;
+    bottom: 20px;
+}
+
 
 #game-score {
-    width: 60vw;
+    width: 55vw;
     min-width: 250px;
     height: 7vh;
     position: absolute;
     color: #f5f5f5;
-    font-size: 20px;
+    font-size: 22px;
 
     display: flex;
     flex-direction: row;

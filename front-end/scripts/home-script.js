@@ -2,12 +2,12 @@ let boardDocument = '';
 let leaderDocument = '';
 let homeDocument = '';
 
-function openModal(modalId) {
+function openModalHome(modalId) {
   const modal = document.getElementById(modalId);
   modal.style.visibility = "visible";
 }
 
-function closeModal(modalId) {
+function closeModalHome(modalId) {
   let modal = document.getElementById(modalId);
   modal.style.visibility = "hidden";
 }
@@ -21,22 +21,15 @@ document.getElementById('play-now-button').addEventListener('click', () => {
 
   socket = new WebSocket(`ws://${url}:${port}/`);
 
-/*
-  const playerName = 'Clasher';
-
-  socket.onopen = event => { 
-    sendName(playerName);
-  }
-
-  function sendName(playerName) {
-    socket.send(JSON.stringify(playerName));
-  }
-*/
-
   socket.onmessage = (event) => {
-    document.documentElement.innerHTML = boardDocument; //this will be removed
+    document.documentElement.innerHTML = boardDocument;
+    $.ajax({
+      url: `/script2`,
+      dataType: "script"
+    });
     console.log(event.data);
   }
+
 });
 
 fetch('/board.html').then( resp => {
