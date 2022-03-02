@@ -5,7 +5,7 @@
     z-index: 1000;
     position: fixed;
 
-    visibility: hidden;
+    visibility: visible;
 
     background: linear-gradient(270.42deg, rgba(219, 28, 28) -0.07%, rgb(0, 0, 0) 144.33%);
     border-radius: 0px 40px 40px 0px;

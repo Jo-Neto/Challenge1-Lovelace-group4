@@ -29,11 +29,11 @@ body {
 
 main {
     width: 95vw;
-    margin: 5vh 2.5% auto 2.5%;
+    margin: 5vh 2% auto 2%;
     height: 90vh;
     min-height: 235px;
 
-    background: #DB1C1C;
+    background: #db1c1ce1;
     border-radius: 40px;
 
     display: flex;

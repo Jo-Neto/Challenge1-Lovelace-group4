@@ -1,4 +1,4 @@
-//OBjeto recebido do front
+//Objeto recebido do front
 // this.gameState = {
 //     turnNum: 1,  
 //     player1turn: true or false,
@@ -223,8 +223,6 @@ function showEnemyCard(cardString) {
         default:
             break;
     }
-    
-
 }
 
 function verifyIfHaveTwoCardsInTheField() {
@@ -317,74 +315,7 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
-let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
-let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
-let etherSound = new Audio('board-assets/sounds/etherCardSound.mp3');
 
-let winnerSound = new Audio('board-assets/sounds/winnerRound.mp3');
-let loserSound = new Audio('board-assets/sounds/roundLoser.mp3');
-
-let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
-let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
-
-
-function playCardSound(card) {
-    switch (card) {
-        case "w":
-            waterSound.play();
-            break;
-        case "f": 
-            fireSound.play();
-            fireSound.volume = 0.15;
-            break;
-        case "p": 
-            plantSound.play();
-            break;
-        case "e":
-            etherSound.play();
-            break;
-        case "cardDraw":
-            cardDrawSound.play();
-            break;
-        case "roundWinner":
-            winnerSound.play();
-            break;
-        case "roundLoser":
-            loserSound.play();
-        case "backgroundSound":
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.08;
-            backgroundMusic.play();
-            break;
-    }
-}
-
-let count = -1;
-function changeSoundConf() {
-    count++;
-    const button = document.getElementById('btn-sound');
-    if(count%2 == 0) {
-        button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_off_white_24dp.svg');
-        waterSound.src = "";
-        fireSound.src = "";
-        plantSound.src = "";
-        etherSound.src = "";
-        cardDrawSound.src = "";
-        backgroundMusic.src = "";
-    } else {
-        button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_note_white_24dp.svg');
-        waterSound.src = 'board-assets/sounds/waterCardSound.mp3';
-        fireSound.src = 'board-assets/sounds/fireCardSound.mp3';
-        plantSound.src = 'board-assets/sounds/plantCardSound.mp3';
-        etherSound.src = 'board-assets/sounds/etherCardSound.mp3';
-        cardDrawSound.src = 'board-assets/sounds/cardDrawSound.mp3';
-        backgroundMusic.src = 'board-assets/sounds/backgroundSound.mp3';
-        backgroundMusic.play();
-    }
-}
 
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
