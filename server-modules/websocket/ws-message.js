@@ -82,7 +82,7 @@ function message(data, isBinary, ws) {
 
         }
 
-        SessionArr[ws.aID].player1.ws.send(SessionArr[ws.aID].player1.hand);
+        SessionArr[ws.aID].player1.ws.send(JSON.stringify(SessionArr[ws.aID].player1.hand));
 
     }
 
@@ -111,7 +111,7 @@ function message(data, isBinary, ws) {
 
         }
 
-        SessionArr[ws.aID].player2.ws.send(SessionArr[ws.aID].player2.hand);
+        SessionArr[ws.aID].player2.ws.send(JSON.stringify(SessionArr[ws.aID].player2.hand));
     
     }
     else
