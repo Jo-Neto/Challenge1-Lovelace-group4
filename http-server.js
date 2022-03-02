@@ -22,21 +22,23 @@ const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on p
 //|                             ROUTES                               |
 //+------------------------------------------------------------------+
 
-//user registration and deletion files
-const usrDel = require('./objects/user/library/delete.js');
+//user database alteration files
 const usrReg = require('./objects/user/library/register.js');
+const userChange = require('./objects/user/library/change-data.js');
 
-app.delete('/delete', (req, res) => usrDel(req, res));
-app.post('/register', (req, res) => usrReg(req.body, res));
+app.delete('/delete', (req, res) => userChange(req.body, res, true)); //delete account
+app.patch('/patch', (req, res) => userChange(req.body, res, false)); //change account properties
+
+app.post('/register', (req, res) => usrReg(req.body, res)); //register
 
 //+-----------------------------------------------------------------------------------------------+
 //+-----------------------------------------------------------------------------------------------+
 
 //login and logout files
-const usrLogin = require('./server-modules/rest/user-login.js');
 const usrLogout = require('./server-modules/rest/user-logout.js');
+const userLogin = require('./server-modules/rest/user-login.js');
 
-app.post('/login', (req, res) => usrLogin(req.body, res));
+app.post('/login', (req, res) => userLogin(req.body, res, false));
 app.post('/logout', (req, res) => usrLogout(req, res));
 
 //+-----------------------------------------------------------------------------------------------+
