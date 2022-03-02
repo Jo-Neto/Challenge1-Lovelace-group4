@@ -16,28 +16,13 @@ const url = window.location.href.slice(7, -1);
 const port = 80;
 
 let socket;
+
 document.getElementById('play-now-button').addEventListener('click', () => {
 
   socket = new WebSocket(`ws://${url}:${port}/`);
 
-/*
-  const playerName = 'Clasher';
-
-  socket.onopen = event => { 
-    sendName(playerName);
-  }
-
-  function sendName(playerName) {
-    socket.send(JSON.stringify(playerName));
-  }
-*/
-
   socket.onmessage = (event) => {
-    //const oldSrc = document.getElementById("script2");
-    //console.log(oldSrc.innerHTML);
-    document.documentElement.innerHTML = boardDocument; //this will be removed
-    //const newSrc = document.createElement('script');
-    //console.log(newSrc);
+    document.documentElement.innerHTML = boardDocument;
     $.ajax({
       url: `/script2`,
       dataType: "script"
