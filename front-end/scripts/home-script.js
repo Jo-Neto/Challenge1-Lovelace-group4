@@ -17,6 +17,8 @@ const url = window.location.href.slice(7, -1);
 const port = 80;
 
 let socket;
+var youStart = false
+var whichPlayer
 
 document.getElementById('play-now-button').addEventListener('click', () => {
 
@@ -41,13 +43,23 @@ document.getElementById('play-now-button').addEventListener('click', () => {
             url: `/board2`,
             dataType: "script"
             });
-    
+
             console.log(obj)
+
+            if ( whichPlayer === 'p1' && obj.player1turn ) {
+                console.log("vc primeiro")
+                youStart = true
+            } else if ( whichPlayer === 'p2' && !obj.player1turn ) {
+                console.log("vc primeiro")
+                youStart = true
+            }
+
         } else {
             prepareTheGame(obj)
         }
     } catch {
         document.documentElement.innerHTML = boardDocument;
+        whichPlayer = event.data
         console.log(event.data)
     }
 
@@ -56,10 +68,6 @@ document.getElementById('play-now-button').addEventListener('click', () => {
 
 function prepareTheGame(data) {
         let obj = data
-        console.log("console da função")
-        console.log(obj)
-        console.log( $("#container-first-hand-card") )
-        console.log("acabou console da função")
 
         $("#container-first-hand-card").html(`<img id="card1" value=${obj[0]} class="cards-in-hand" src="./board-assets/${getCardImage(obj[0])}.svg" alt="">`);
         $("#container-second-hand-card").html(`<img id="card2" value=${obj[1]} class="cards-in-hand" src="./board-assets/${getCardImage(obj[1])}.svg" alt="">`);
