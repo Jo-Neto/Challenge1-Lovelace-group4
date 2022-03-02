@@ -4,7 +4,7 @@ const storeUsr = require('./db-writer.js');
 
 function usrReg(data, res) {
     //TODO: deny invalid name, mail and pass, and 'Clasher' username
-    storeUsr(new User(data.name, data.email, data.password));
+    storeUsr(new User(data.name, data.email, data.password), true);
 }
 
 module.exports = usrReg;

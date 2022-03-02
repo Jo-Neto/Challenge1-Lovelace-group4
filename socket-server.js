@@ -30,7 +30,6 @@ wss.on('close', () => { //clear timer if socket server closes
 wss.on('headers', (headers, req) => {
     console.log(headers);
     console.log(req);
-
 });*/
 
 
@@ -40,7 +39,7 @@ wss.on('connection', (ws, req) => {
     ws.on('pong', () => { ws.isAlive = true }); //on pong, we are sure socket is alive
     ws.on('close', () => wsCloseModule.close(ws));
     
-    wsStartModule(ws); //run this function before setting socket up to exchange messages
+    wsStartModule(ws, req); //run this function before setting socket up to exchange messages
     
     ws.on('message', (data, isBinary) => wsMsgModule.msg(data, isBinary, ws));
 });
