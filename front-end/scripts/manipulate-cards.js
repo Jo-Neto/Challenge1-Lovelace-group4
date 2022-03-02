@@ -53,6 +53,7 @@ socket.onmessage = (event) => {
     // console.log("SERV MSG ==> "+ event.data);
     // console.log("=======================================");
 
+    console.log(event.data)
     let obj
     //Esse trecho é pra ver se recebeu alguma string, se receber string é pq a partida acabou, as possíveis strings são "voce ganhou" e "voce perdeu"
     try {
@@ -71,6 +72,8 @@ socket.onmessage = (event) => {
 
         return console.log(event.data)
     }
+
+    console.log(obj)
 
     //console.log("RECEIVED OBJ ==> "+ obj);
     //console.log(obj);
