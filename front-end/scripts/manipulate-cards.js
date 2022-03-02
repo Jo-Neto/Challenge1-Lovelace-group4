@@ -1,7 +1,15 @@
+//O objeto enviado
+// this.gameState = {
+//     turnNum: 1,  
+//     player1turn: true or false,
+//     board: ['', ''],
+//     scoreP1: 0,
+//     scoreP2: 0
+//  };
+
 $("#playing-card-field").droppable({ disabled: true });  //impossibilita o jogador de jogar até que....
-const url = window.location.href.slice(7, -6);
-const port = 80;
-const gameSocket = new WebSocket(`ws://${url}:${port}/gamestream`); //o web socket esteja aberto na linha 32, depois linha 36
+//const url = window.location.href.slice(7, -6);
+//const port = 80;
 
 $(document).ready( () => {
     $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
@@ -14,7 +22,6 @@ let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta qu
 let turnForDeck = 11;
 
 let gameState = {
-    sID: null,
     player: null,
     myTurn: null,
     hand: null,
@@ -36,14 +43,14 @@ let gameState = {
         então talvez tirar as 4 cartas fixas, ou distinguir melhor as cartas de "verdade"
 */
 
-gameSocket.onopen = (event) => {
+socket.onopen = (event) => {
     playCardSound("backgroundSound");
-    //console.log("GAME SOCKET OPEN, SOCKET DATA: ");
-    // console.log(event);
-    // console.log("=======================================");
+    console.log("GAME SOCKET OPEN, SOCKET DATA: ");
+    console.log(event);
+    console.log("=======================================");
 }
 
-gameSocket.onmessage = (event) => {
+socket.onmessage = (event) => {
     // console.log("==============================================================================================================================================================================================================================================================================================================================");
     // console.log("SERV MSG ==> "+ event.data);
     // console.log("=======================================");
@@ -73,7 +80,6 @@ gameSocket.onmessage = (event) => {
     //console.log("=======================================");
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         // console.log("waitingFeedback");
-        gameState.sID = obj.sID; //safety
         gameState.board = obj.board;
         gameState.hand = obj.hand;
         gameState.myTurn = obj.myTurn;
@@ -106,7 +112,6 @@ gameSocket.onmessage = (event) => {
         // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
         // console.log("=======================================");//fez
         console.log("reconnection");
-        gameState.sID = obj.sID; 
         gameState.board = obj.board;
         gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
@@ -123,7 +128,6 @@ gameSocket.onmessage = (event) => {
 
     else {
         // console.log("message else");
-        gameState.sID = obj.sID;
         gameState.player = obj.whichPlayer;
         gameState.myTurn = obj.firstToPlay;
         gameState.hand = obj.hand;
@@ -159,7 +163,7 @@ gameSocket.onmessage = (event) => {
     gameStart();
 }
 
-gameSocket.onclose = (event) => {
+socket.onclose = (event) => {
     console.log("SOCKET CLOSE: ");
     console.log(event);
     console.log("CLOSE CODE: " + event.code);
@@ -266,9 +270,7 @@ function gameStart() {
                 $("#playing-card-field").droppable({ disabled: true })
                 showWhosTurn();
 
-                gameSocket.send(JSON.stringify({
-                    sID: gameState.sID,
-                    cardPlayed: ui.draggable.attr('value'),
+                socketGame.send(JSON.stringify({
                     cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
                 }),
                 {},
