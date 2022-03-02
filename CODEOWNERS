@@ -1,7 +1,7 @@
-back-end-libs @Jo-Neto
-back-end-modules @Jo-Neto
-back-end-objects @Jo-Neto
-server.js @Jo-Neto 
+objects/ @Jo-Neto
+server-modules/ @Jo-Neto
+http-server.js @Jo-Neto  
+socket-server.js @Jo-Neto 
 front-end/ @viniciusna @flaaaaaavis @Ferr50 @Jo-Neto 
 CODEOWNERS @Jo-Neto
 package.json @Jo-Neto

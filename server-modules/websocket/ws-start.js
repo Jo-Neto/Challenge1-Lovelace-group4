@@ -38,6 +38,8 @@ function waitLineChecker() {
 
         console.log("sessionIndex = "+sessionIndex);
         
+        Active.sessArr[sessionIndex].aID = sessionIndex;  //save access id, just in case
+        
         Active.sessArr[sessionIndex].player1.ws.aID = sessionIndex; //assign the sockets the access index for faster performance
         Active.sessArr[sessionIndex].player2.ws.aID = sessionIndex;
         

@@ -52,8 +52,8 @@ module.exports = function (Session) {
         //+------------------------------------------------------------------+
         //|                    DRAW ON BLACK MATTER CARD                     |
         //+------------------------------------------------------------------+
-        case 'm':
-            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v' || Session.gameState.board[1] === 'm')  //and enemy draws v or e
+        case 'd':
+            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v' || Session.gameState.board[1] === 'd')  //and enemy draws v or e
                 Session.gameState.player1turn = true; //player is first to play         
             else  //otherwise is last to play
                 Session.gameState.player1turn = false; //enemy plays first
@@ -67,7 +67,7 @@ module.exports = function (Session) {
         //+------------------------------------------------------------------+
         case 'e':
             switch (Session.gameState.board[1]) {
-                case 'm': //draw on dark matter
+                case 'd': //draw on dark matter
                     Session.gameState.player1turn = false; //enemy players first
                     break;
                 case 'e': //draw on eter
@@ -92,7 +92,7 @@ module.exports = function (Session) {
         //+------------------------------------------------------------------+
         case 'v':
             switch (Session.gameState.board[1]) {
-                case 'm': //draw on dark matter
+                case 'd': //draw on dark matter
                     Session.gameState.player1turn = false; //enemy players first
                     break;
                 case 'v': //draw on void
@@ -120,7 +120,7 @@ module.exports = function (Session) {
                 case 'w': //same element draw
                     Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
                     break;
-                case 'm': //draw dark matter
+                case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
                 case 'e':  //players loses for eter
@@ -150,7 +150,7 @@ module.exports = function (Session) {
                 case 'p': //same element draw
                     Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
                     break;
-                case 'm': //draw dark matter
+                case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
                 case 'e':  //players loses for eter
@@ -180,7 +180,7 @@ module.exports = function (Session) {
                 case 'f': //same element draw
                     Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
                     break;
-                case 'm': //draw dark matter
+                case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
                 case 'e':  //players loses for eter
