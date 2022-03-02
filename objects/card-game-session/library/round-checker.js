@@ -34,6 +34,10 @@ module.exports = function (Session) {
     console.log("round check passed 1");
 
 
+    Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state before calculations
+    Session.player2.ws.send(JSON.stringify(Session.gameState));
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //+------------------------------------------------------------------+
     //|                      DRAW IS CHECKED FIRST                       |
@@ -227,11 +231,11 @@ module.exports = function (Session) {
     //|                       PREPARING FOR NEXT TURN                    |
     //+------------------------------------------------------------------+
     Session.gameState.turnNum++;  //turn has ended, next turn
-
+    
     Session.gameState.board[0] = ''; //clean board for next round
     Session.gameState.board[1] = '';
 
-    Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state for both players
+    Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state after calculations
     Session.player2.ws.send(JSON.stringify(Session.gameState));
 
     Session.isLocked = false;  //safety unlock

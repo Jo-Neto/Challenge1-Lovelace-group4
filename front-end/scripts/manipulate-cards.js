@@ -7,15 +7,27 @@
 //     scoreP2: 0
 //  };
 
-$("#playing-card-field").droppable({ disabled: true });  //impossibilita o jogador de jogar até que....
-//const url = window.location.href.slice(7, -6);
-//const port = 80;
+let isMyTurn = false
 
 $(document).ready( () => {
     $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
+
+    $(".cards-in-hand").draggable({
+        revert: "invalid",
+    })
+
+    if ( youStart ) {
+        openModal('modal-initial')
+        $("#description-modal-initial").text('É sua vez de jogar')
+        isMyTurn = true
+        turnControlAndPlayCard()
+    } else {
+        openModal('modal-initial')
+        $("#description-modal-initial").text('É a vez do oponente jogar, aguarde')
+    }
 })
 
-//let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
+let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
 //primeira mensagem do back define qual player voce é, é uma string: "p1" / "p2"
 
@@ -32,51 +44,30 @@ $(document).ready( () => {
 
 socket.onopen = (event) => {
     playCardSound("backgroundSound");
-    console.log("GAME SOCKET OPEN, SOCKET DATA: ");
-    console.log(event);
-    console.log("=======================================");
 }
 
 socket.onmessage = (event) => {
-    console.log("Outro script")
-    console.log(event.data)
-    // let obj
-    // //Esse trecho é pra ver se recebeu alguma string, se receber string é pq a partida acabou, as possíveis strings são "voce ganhou" e "voce perdeu"
-    // try {
-    //     obj = JSON.parse(event.data)
-    // } catch {
+    let data = JSON.parse(event.data)
+    console.log(data)
 
-    //     if ( event.data === "voce ganhou" ) {
-    //         gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-    //         $("#description-modal").text("Vitória!")
-    //         openModal("modal-general")
-    //     } else if (event.data === "voce perdeu") {
-    //         gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-    //         $("#description-modal").text("Derrota!")
-    //         openModal("modal-general")
-    //     }
+    try {
+        if ( whichPlayer === "p2" ) {
+            data.board = data.board.reverse()
+        }
+    } catch {
+        console.log("catch do whichPlayer")
+    }
 
-    //     return console.log(event.data)
-    // }
+    try {
+        showEnemyCard(data.board[1])
+    } catch {
+        console.log("catch do enemyCard")
+    }
 
+    verifyIfIsYourTurn(data)
 
-    // $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-    // $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-    // $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
-
-    // if (gameState.myTurn) {
-    //     $("#playing-card-field").droppable( { disabled: false } );
-    // }
-    // else {
-    //     $("#playing-card-field").droppable( { disabled: true } );
-    // }
-    // // console.log("LOCAL GAME STATE: ");
-    // // console.log(gameState);
-    // // console.log("=======================================");
-
-    // gameStart();
+    turnControlAndPlayCard();
 }
-
 
 socket.onclose = (event) => {
 
@@ -100,37 +91,66 @@ socket.onclose = (event) => {
     }
 }
 
+// setInterval(() => {
+//     $(".cards-in-hand").draggable({
+//         revert: "invalid",
+//     });
+// }, 500);
+
+function turnControlAndPlayCard() {
+
+    $(".cards-in-hand").draggable({
+        revert: "invalid",
+    });
+
+    if (isMyTurn) {
+        $("#playing-card-field").droppable({
+            drop: function (event, ui) {
+                cardImageTagId = ui.draggable.attr("id");
+                $("#playing-card-field").droppable({ disabled: true })
+                isMyTurn = false
+
+                socket.send(Number(ui.draggable.attr("id").slice(-1)))
+            }
+        });
+    }
+}
+
+function verifyIfIsYourTurn(data) {
+    if ( whichPlayer === 'p1' && data.player1turn ) {
+        console.log("seu turno")
+        isMyTurn = true
+    } else if ( whichPlayer === 'p2' && !data.player1turn ) {
+        console.log("seu turno")
+        isMyTurn = true
+    }
+}
+
 function showEnemyCard(cardString) {
 
     switch (cardString) {
         case 'f':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-fire.svg">');
-            gameState.board[1] = "f";
             playCardSound("f");
             break;
         case 'w':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-water.svg">');
-            gameState.board[1] = "w";
             playCardSound("w");
             break;
         case 'p':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-plant.svg">');
-            gameState.board[1] = "p";
             playCardSound("p");
             break;
         case 'e':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-ether.svg">');
-            gameState.board[1] = "e";
             playCardSound("e");
             break;
         case 'v':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-void.svg">');
-            gameState.board[1] = "v";
             //playCardSound("v");
             break;
         case 'd':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-dark-matter.svg">');
-            gameState.board[1] = "d";
             //playCardSound("d");
             break;
         default:
@@ -150,52 +170,6 @@ function verifyIfHaveTwoCardsInTheField() {
             $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
             $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
         }, 2000);
-    }
-}
-
-setInterval(() => {
-    $(".cards-in-hand").draggable({
-        revert: "invalid",
-    });
-}, 500);
-
-function gameStart() {
-
-    // console.log(gameState)
-
-    $(".cards-in-hand").draggable({
-        revert: "invalid",
-    });
-
-    showWhosTurn()
-
-    if ( gameState.board[1] != '' ) {
-        showEnemyCard(gameState.board[1]);
-    }
-
-    verifyIfHaveTwoCardsInTheField()
-
-    if (gameState.myTurn) {
-        $("#show-if-is-your-myTurn").text("Sua vez!");
-
-        $("#playing-card-field").droppable({
-            drop: function (event, ui) {
-                //cardImageTagId = ui.draggable.attr("id");
-                gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
-                playCardSound(gameState.board[0]);
-                $("#playing-card-field").droppable({ disabled: true })
-                showWhosTurn();
-
-
-                socketGame.send(JSON.stringify({
-                    cardPlayedIndex: Number(ui.draggable.attr("id").slice(-1))
-                }),
-                {},
-                );
-                //verifyCardOnTop()
-                verifyIfHaveTwoCardsInTheField()
-            }
-        }); //passa o myTurno para o outro player   
     }
 }
 
@@ -229,7 +203,6 @@ function getCardImage(card) {
 
     return nameOfImageArchive;
 }
-
 
 function playCardSound(card) {
 

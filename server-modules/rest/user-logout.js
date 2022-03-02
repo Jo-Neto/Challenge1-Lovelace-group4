@@ -1,0 +1,1 @@
+//TODO: deleta o cookie do server e do browser

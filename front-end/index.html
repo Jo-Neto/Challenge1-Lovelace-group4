@@ -24,10 +24,20 @@
     <body>
         <main>
             <img id="image-logo" src="./home-assets/logo.svg" alt="Logo do Elemental Clash">
-            <button type="button" id="play-now-button" onclick="openModalHome('modal-loading')">Jogar agora</button>
+            
+            <div id="input-box">
+                <div id="input-user">
+                    <input type="text" id="input-player-name" placeholder="Usuário">
+                    <input type="password" id="input-player-password" placeholder="Senha">
+                </div>
+                <div>
+                    <button type="button" id="play-now-button" onclick="openModalHome('modal-loading')">Jogar agora</button>
+                    <button type="button" id="sign-up-button" onclick="openModalHome('modal-sign-up')">Cadastre-se</button>
+                </div>
+            </div>
             <p>Role para baixo para ver as regras</p>
         </main>
-
+ 
         <section id="info-section"> <!-- ------Informações sobre o jogo e suas regras------ -->
             <h2>Regras e tutorial do jogo</h2>
             <p>
@@ -85,6 +95,17 @@
         <div id="modal-loading" class="modal">
             <h3>Buscando adversário digno</h3>
             <img src="./home-assets/loading.gif">
+        </div>
+
+        <div id="modal-sign-up" class="modal">
+            <h3>Cadastro</h3>
+            <input type="email" id="input-player-email" placeholder="Email">
+            <input type="text" id="input-player-name" placeholder="Usuário">
+            <input type="password" id="input-player-password" placeholder="Senha">
+            <div id="sign-up-box-btn">
+                <button type="button" id="cancel-button" onclick="closeModalHome('modal-sign-up')">Cancelar</button>
+                <button type="button" id="sign-up-btn" onclick="closeModalHome('modal-sign-up')">Cadastrar</button>
+            </div>
         </div>
 
         <div id="modal-timeout" class="modal">
