@@ -3,14 +3,10 @@
 //+------------------------------------------------------------------+
 const fs = require('fs');
 
-let nextID = fs.readFile('./database/game-sessions.json', (err, readData) => {
-    if (err) {
-        console.log("SESSION-ID-INIT: ERROR: reading file:");
-        throw console.log(err);
-    }
-    let dataBase = JSON.parse(readData);
-    nextID = dataBase.length;
-    return nextID;
-});
+function getNextSessionID() {
+    const file = fs.readFileSync('./database/game-sessions.json');
+    let dataBase = JSON.parse(file);
+    return  dataBase.length;
+}
 
-module.exports = nextID;
+module.exports = getNextSessionID;
