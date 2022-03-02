@@ -49,7 +49,6 @@ function waitLineChecker() {
         Active.sessArr[sessionIndex].player2.ws.send(JSON.stringify(Active.sessArr[sessionIndex].player2.hand));
         Active.sessArr[sessionIndex].player2.ws.send(JSON.stringify(Active.sessArr[sessionIndex].gameState)); 
 
-
         console.log(Active.sessArr[sessionIndex]);
         
         waitLineChecker(); //try again in case there's more players
