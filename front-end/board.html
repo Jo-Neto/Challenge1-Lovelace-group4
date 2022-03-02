@@ -19,7 +19,6 @@
         <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
         <link rel="stylesheet" href="./board-styles/shine.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- import JQuery -->
-        <link rel="stylesheet" href="/resources/demos/style.css"> <!-- import JQuery -->
         <style>
             label {
                 display: inline-block;
@@ -31,9 +30,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
-        <!-- Jquery Scripts -->
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
         <script>
             $( function() {
                 $( document ).tooltip();
@@ -48,8 +44,8 @@
             <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out" title="Fechar o menu">
             <ul>
                 <li onclick="openModal('modal-rules')">REGRAS</li>
-                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O  EDTECH</a></li>
-                <li onclick="openModal('modal-devs')">DEVS</li>
+                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O EDTECH</a></li>
+                <li onclick="openModal('modal-devs')">OS DEVS</li>
                 <li onclick="openModal('modal-logoff')">SAIR</li>
             </ul>
         </nav>
@@ -76,11 +72,11 @@
 
         <main>
             <div id="container-opponents-cheap-and-cards">
-                <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg">
+                <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg" title="Deck do oponente">
                 <span id="container-opponents-cards">
-                    <img class="card" id="first-opponents-card" src="./board-assets/verso.svg">
-                    <img class="card" id="second-opponents-card" src="./board-assets/verso.svg">
-                    <img class="card" id="third-opponents-card" src="./board-assets/verso.svg">
+                    <img class="card" id="first-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
+                    <img class="card" id="second-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
+                    <img class="card" id="third-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
                 </span>
             </div>
             <div id="container-mid-screen">
@@ -107,12 +103,12 @@
 
                 <div class="container-cards-from-hand" id="container-card-player2"></div>
             </div>
-            <img id="btn-help" src="./board-assets/help_guide.svg" onclick="openHelp('help')" title="Abrir Ajuda">
+            <img id="btn-help" src="./board-assets/question_mark_white_24dp.svg" onclick="openHelp('help')" title="Abrir Ajuda">
         </main>
         
     <!------------------------Modais------------------------>
         <div id="container-modais">
-            <div id="modal-logoff" class="modal modal-div" style="visibility: visible;">
+            <div id="modal-logoff" class="modal modal-div">
                 <h3>DESEJA</br>MESMO SAIR?</h3>
                 <div class="row-direction">
                     <a class="btn-back-to-home">
@@ -194,11 +190,5 @@
         </nav>
         
     <!------------------------Scripts------------------------>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-        
-        <script src="./scripts/board-script.js"></script>
-        <!--<script src="./board-scripts/manipulate-cards.js"></script>-->
-    
     </body>
 </html>
