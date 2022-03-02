@@ -3,16 +3,14 @@
 //|                    GAME SESSION OBJECT                           | and methods for controlling each game session independently
 //+------------------------------------------------------------------+ and methods for storing the matches in the database
 const shuffler = require('./library/shuffler.js');
-let nextID = require('./library/session-id-inititializer.js');
-console.log("nextID = " + nextID);
-
+let getNextSessionID = require('./library/session-id-inititializer.js');
 
 
 class CardGameSession {
    constructor(wsP1, wsP2) {
-      
+
       this.isLocked = false;
-      this.sID = nextID, //session ID, never repeated and id stored on database
+      this.sID = getNextSessionID(), //session ID, never repeated and id stored on database
       this.aID = null,  //access ID, used for o(1) access to socket game
       
       this.gameState = {
