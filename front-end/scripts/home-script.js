@@ -2,6 +2,7 @@ let boardDocument = '';
 let leaderDocument = '';
 let homeDocument = '';
 
+
 function openModalHome(modalId) {
   const modal = document.getElementById(modalId);
   modal.style.visibility = "visible";
@@ -36,7 +37,6 @@ document.getElementById('play-now-button').addEventListener('click', () => {
 
     console.log(event.data);
   }
-
 });
 
 fetch('/board.html').then( resp => {
