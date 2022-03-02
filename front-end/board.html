@@ -48,8 +48,8 @@
             <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out" title="Fechar o menu">
             <ul>
                 <li onclick="openModal('modal-rules')">REGRAS</li>
-                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O  EDTECH</a></li>
-                <li onclick="openModal('modal-devs')">DEVS</li>
+                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O EDTECH</a></li>
+                <li onclick="openModal('modal-devs')">OS DEVS</li>
                 <li onclick="openModal('modal-logoff')">SAIR</li>
             </ul>
         </nav>
@@ -76,11 +76,11 @@
 
         <main>
             <div id="container-opponents-cheap-and-cards">
-                <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg">
+                <img id="first-cheap" class="cheap" src="./board-assets/cheap.svg" title="Deck do oponente">
                 <span id="container-opponents-cards">
-                    <img class="card" id="first-opponents-card" src="./board-assets/verso.svg">
-                    <img class="card" id="second-opponents-card" src="./board-assets/verso.svg">
-                    <img class="card" id="third-opponents-card" src="./board-assets/verso.svg">
+                    <img class="card" id="first-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
+                    <img class="card" id="second-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
+                    <img class="card" id="third-opponents-card" src="./board-assets/verso.svg" title="Carta do oponente">
                 </span>
             </div>
             <div id="container-mid-screen">
@@ -107,12 +107,12 @@
 
                 <div class="container-cards-from-hand" id="container-card-player2"></div>
             </div>
-            <img id="btn-help" src="./board-assets/help_guide.svg" onclick="openHelp('help')" title="Abrir Ajuda">
+            <img id="btn-help" src="./board-assets/question_mark_white_24dp.svg" onclick="openHelp('help')" title="Abrir Ajuda">
         </main>
         
     <!------------------------Modais------------------------>
         <div id="container-modais">
-            <div id="modal-logoff" class="modal modal-div" style="visibility: visible;">
+            <div id="modal-logoff" class="modal modal-div">
                 <h3>DESEJA</br>MESMO SAIR?</h3>
                 <div class="row-direction">
                     <a class="btn-back-to-home">
@@ -196,9 +196,7 @@
     <!------------------------Scripts------------------------>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- import JQuery -->
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-        
         <script src="./scripts/board-script.js"></script>
-        <!--<script src="./board-scripts/manipulate-cards.js"></script>-->
-    
+        <script src="./scripts/manipulate-cards.js"></script>
     </body>
 </html>

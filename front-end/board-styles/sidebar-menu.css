@@ -16,7 +16,7 @@
 }
 
 #menu ul {
-    height: 70%;
+    height: 75%;
     margin-top: 35%;
 
     display: flex;
@@ -27,20 +27,18 @@
 
 #menu ul li {
     width: 80%;
-    padding-left: 3%;
+    padding-left: 5%;
     cursor: pointer;
 
-    color: aliceblue;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
+    color: white;
+    font-size: 22px;
     line-height: 75px;
     letter-spacing: 0em;
 }
 
 #menu ul li:hover {
     width: 80%;
-    padding-left: 5%;
+    padding-left: 10%;
     border-radius: 50px 0 0 50px;
     background: linear-gradient(90deg, #DB1C1C 0%, rgba(219, 28, 28, 0) 100%);
 }
