@@ -32,7 +32,7 @@ app.use('/leader', express.static('front-end/scripts/leader-script.js'));
 app.delete('/delete', (req, res) => usrDel(req, res));
 app.post('/login', (req, res) => usrLogin(req, res));
 app.post('/logout', (req, res) => usrLogout(req, res));
-app.post('/register', (req, res) => usrReg(req, res));
+app.post('/register', (req, res) => usrReg(req.body, res));
 
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });

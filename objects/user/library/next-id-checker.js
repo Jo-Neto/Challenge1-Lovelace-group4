@@ -2,7 +2,7 @@ const fs = require('fs');
 
 function getNextUserID() {
     
-    const file = fs.readFileSync('./database/game-sessions.json');
+    const file = fs.readFileSync('./database/users.json');
     let dataBase = JSON.parse(file);
     
     let replaceableIndex = dataBase.findIndex( user => { 
