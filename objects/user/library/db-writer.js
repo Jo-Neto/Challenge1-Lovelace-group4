@@ -3,11 +3,14 @@
 //+------------------------------------------------------------------+
 const fs = require('fs');
 
-module.exports = function (User) { //IMPORTANT, ONLY ACCEPTS 'draw', 'p1' OR 'p2' STRING TYPES, LOWERCASE
+
+module.exports = function (User) { 
     
-    fs.readFile('./database/game-sessions.json', (err, readData) => { //save match data on database
+    fs.readFile('./database/users.json', (err, readData) => { 
         if (err) { console.log("ERROR: SessionNum:" + User.id + "on reading database: "); throw console.log(err); }
+        
         let dataBase = JSON.parse(readData);
+        
         dataBase.push({
             id: User.id,
             name: User.name,
@@ -15,11 +18,14 @@ module.exports = function (User) { //IMPORTANT, ONLY ACCEPTS 'draw', 'p1' OR 'p2
             salt: User.salt,
             hash: User.hash
         });
+        
         let toWrite = JSON.stringify(dataBase);
-        fs.writeFile('./database/game-sessions.json', toWrite, (err, out) => {
+        
+        fs.writeFile('./database/users.json', toWrite, (err, out) => {
             if (err) { console.log("ERROR: SessionNum:" + User.id + "on writing database: "); throw console.log(err) };
         });
         console.log("User ID: " + User.id + ' registered on database');
+    
     });
 
 }
