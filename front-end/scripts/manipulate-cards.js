@@ -1,4 +1,4 @@
-//O objeto enviado
+//OBjeto recebido do front
 // this.gameState = {
 //     turnNum: 1,  
 //     player1turn: true or false,
@@ -15,14 +15,11 @@ $(document).ready( () => {
     $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
 })
 
-//código 1000 ou vc tá indo pro socket da partida ou acaba a partida
-//Se não é sua partida, o código é 4004, e o socket fecha
-
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 let turnForDeck = 11;
 
+
 let gameState = {
-    player: null,
     myTurn: null,
     hand: null,
     board: ['', ''],  //me, enemy
@@ -31,16 +28,17 @@ let gameState = {
     turnNum: 0
 }
 
-/*
-    coisas faltando:
-        -- ping/pong pra saber se o server ta vivo
-        -- mensagem de reconexão na pagina HOME
-        -- leaderboard
-        -- layout do chat, precisa ter um array pro player e pro adversario, para não haver limite de mensagens, pode haver anti-spam,
-        -- tela de login e registro na home
+//primeira mensagem do back define qual player voce é, é uma string: "p1" / "p2"
 
-        SUGESTÃO: fica dificil saber a carta inimiga porque o layout do board ja tem 4 cartas, acabo me confundindo
-        então talvez tirar as 4 cartas fixas, ou distinguir melhor as cartas de "verdade"
+//se receber um array com 3 strings, é a sua nova mão
+
+//objeto recebido do back em cada jogada
+/* 
+    turnNum: 1,  
+    player1turn: true/false,
+    board: ['', ''],  [ P1 , P2 ]
+    scoreP1: 0,
+    scoreP2: 0
 */
 
 socket.onopen = (event) => {
@@ -81,8 +79,8 @@ socket.onmessage = (event) => {
     if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
         // console.log("waitingFeedback");
         gameState.board = obj.board;
-        gameState.hand = obj.hand;
-        gameState.myTurn = obj.myTurn;
+        //gameState.hand = obj.hand;
+        //gameState.myTurn = obj.myTurn;
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
         gameState.turnNum = obj.turnNum;
@@ -99,9 +97,9 @@ socket.onmessage = (event) => {
         // console.log("=======================================");//fez
         // console.log("instantFeedback");
         gameState.board = obj.board;
-        gameState.hand = obj.newHand;  //recebe a nova mão com a carta comprada
+        //gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
         playCardSound("cardDraw");//executa o som de comprar carta
-        gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
+        //gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
         gameState.turnNum = obj.turnNum;
@@ -113,12 +111,12 @@ socket.onmessage = (event) => {
         // console.log("=======================================");//fez
         console.log("reconnection");
         gameState.board = obj.board;
-        gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
-        gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
+        //gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
+        //gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
         gameState.scoreP1 = obj.scoreP1;
         gameState.scoreP2 = obj.scoreP2;
         gameState.turnNum = obj.turnNum;
-        gameState.player = obj.whichPlayer;
+        //gameState.player = obj.whichPlayer;
         document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
         document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
         $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
@@ -128,9 +126,9 @@ socket.onmessage = (event) => {
 
     else {
         // console.log("message else");
-        gameState.player = obj.whichPlayer;
-        gameState.myTurn = obj.firstToPlay;
-        gameState.hand = obj.hand;
+        //gameState.player = obj.whichPlayer;
+        //gameState.myTurn = obj.firstToPlay;
+       // gameState.hand = obj.hand;
         gameState.turnNum = 0;
         document.getElementById("score-player1").innerHTML = '0';
         document.getElementById("score-player2").innerHTML = '0';

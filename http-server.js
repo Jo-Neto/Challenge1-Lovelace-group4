@@ -18,7 +18,10 @@ const restPort = null; //currently unused;
 const app = express();
 app.use(express.json());
 app.use('/', express.static('front-end/'));
-app.use('/script2', express.static('front-end/scripts/manipulate-cards.js'))
+app.use('/board1', express.static('front-end/scripts/board-script.js'));
+app.use('/board2', express.static('front-end/scripts/manipulate-cards.js'));
+app.use('/leader', express.static('front-end/scripts/leader-script.js'));
+
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 
