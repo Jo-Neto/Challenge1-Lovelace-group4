@@ -15,18 +15,7 @@ $(document).ready( () => {
     $(".btn-back-to-home").attr("href", `http://${url}:${port}`)
 })
 
-let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
-let turnForDeck = 11;
-
-
-let gameState = {
-    myTurn: null,
-    hand: null,
-    board: ['', ''],  //me, enemy
-    scoreP1: 0,
-    scoreP2: 0,
-    turnNum: 0
-}
+//let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
 //primeira mensagem do back define qual player voce é, é uma string: "p1" / "p2"
 
@@ -49,119 +38,43 @@ socket.onopen = (event) => {
 }
 
 socket.onmessage = (event) => {
-    // console.log("==============================================================================================================================================================================================================================================================================================================================");
-    // console.log("SERV MSG ==> "+ event.data);
-    // console.log("=======================================");
-
+    console.log("Outro script")
     console.log(event.data)
-    let obj
-    //Esse trecho é pra ver se recebeu alguma string, se receber string é pq a partida acabou, as possíveis strings são "voce ganhou" e "voce perdeu"
-    try {
-        obj = JSON.parse(event.data)
-    } catch {
+    // let obj
+    // //Esse trecho é pra ver se recebeu alguma string, se receber string é pq a partida acabou, as possíveis strings são "voce ganhou" e "voce perdeu"
+    // try {
+    //     obj = JSON.parse(event.data)
+    // } catch {
 
-        if ( event.data === "voce ganhou" ) {
-            gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
-            $("#description-modal").text("Vitória!")
-            openModal("modal-general")
-        } else if (event.data === "voce perdeu") {
-            gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
-            $("#description-modal").text("Derrota!")
-            openModal("modal-general")
-        }
+    //     if ( event.data === "voce ganhou" ) {
+    //         gameState.player == 1 ? $("#score-player1").text("5") : $("#score-player2").text("5");
+    //         $("#description-modal").text("Vitória!")
+    //         openModal("modal-general")
+    //     } else if (event.data === "voce perdeu") {
+    //         gameState.player == 1 ? $("#score-player2").text("5") : $("#score-player1").text("5");
+    //         $("#description-modal").text("Derrota!")
+    //         openModal("modal-general")
+    //     }
 
-        return console.log(event.data)
-    }
+    //     return console.log(event.data)
+    // }
 
-    console.log(obj)
 
-    //console.log("RECEIVED OBJ ==> "+ obj);
-    //console.log(obj);
-    //console.log(event.data);
-    //console.log("=======================================");
-    if (obj.msgType === 'waitingFeedback') { //só recebe board quando o outro joga
-        // console.log("waitingFeedback");
-        gameState.board = obj.board;
-        //gameState.hand = obj.hand;
-        //gameState.myTurn = obj.myTurn;
-        gameState.scoreP1 = obj.scoreP1;
-        gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
-        document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
-        document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        // console.log("RECEIVED DATA: ");
-        // console.log(obj);
-        // console.log("=======================================");
-    }
+    // $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
+    // $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
+    // $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
 
-    else if(obj.msgType === 'instantFeedback') { //carta comprada, recebe a nova mão logo depois de jogar...
-        // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
-        // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
-        // console.log("=======================================");//fez
-        // console.log("instantFeedback");
-        gameState.board = obj.board;
-        //gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
-        playCardSound("cardDraw");//executa o som de comprar carta
-        //gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
-        gameState.scoreP1 = obj.scoreP1;
-        gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
-        document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
-        document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-    } else if(obj.msgType === 'reconnection') { //carta comprada, recebe a nova mão logo depois de jogar...
-        // console.log("AFTERPLAY RECEIVED DATA: "); //nesse momento, logo após jogar o player alter a partida e...
-        // console.log(obj);                           //instantaneamente recebe o feedback do server, com as alterações que ele...
-        // console.log("=======================================");//fez
-        console.log("reconnection");
-        gameState.board = obj.board;
-        //gameState.hand = obj.hand;  //recebe a nova mão com a carta comprada
-        //gameState.myTurn = obj.myTurn;  //recebe feedback de acordo com resultado do round
-        gameState.scoreP1 = obj.scoreP1;
-        gameState.scoreP2 = obj.scoreP2;
-        gameState.turnNum = obj.turnNum;
-        //gameState.player = obj.whichPlayer;
-        document.getElementById("score-player1").innerHTML = obj.scoreP1.toString();
-        document.getElementById("score-player2").innerHTML = obj.scoreP2.toString();
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
-    }
+    // if (gameState.myTurn) {
+    //     $("#playing-card-field").droppable( { disabled: false } );
+    // }
+    // else {
+    //     $("#playing-card-field").droppable( { disabled: true } );
+    // }
+    // // console.log("LOCAL GAME STATE: ");
+    // // console.log(gameState);
+    // // console.log("=======================================");
 
-    else {
-        // console.log("message else");
-        //gameState.player = obj.whichPlayer;
-        //gameState.myTurn = obj.firstToPlay;
-       // gameState.hand = obj.hand;
-        gameState.turnNum = 0;
-        document.getElementById("score-player1").innerHTML = '0';
-        document.getElementById("score-player2").innerHTML = '0';
-
-        if( gameState.player == 1) {
-            $(`#span-player1`).text("Você")
-            $(`#span-player2`).text("Oponente")
-        } else {
-            $(`#span-player1`).text("Oponente")
-            $(`#span-player2`).text("Você")
-        }
-        // console.log("SERV HANDSHAKE OBJECT: ");
-        // console.log(obj);
-        // console.log("=======================================");
-        $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-        $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-        $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
-    }
-
-    if (gameState.myTurn) {
-        $("#playing-card-field").droppable( { disabled: false } );
-    }
-    else {
-        $("#playing-card-field").droppable( { disabled: true } );
-    }
-    // console.log("LOCAL GAME STATE: ");
-    // console.log(gameState);
-    // console.log("=======================================");
-
-    gameStart();
+    // gameStart();
 }
 
 
@@ -230,7 +143,7 @@ function showEnemyCard(cardString) {
 function verifyIfHaveTwoCardsInTheField() {
     if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
         setTimeout(() => {
-            cleanTheCardField(cardImageTagId);
+            //cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
             hideCheap();
             $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
@@ -267,7 +180,7 @@ function gameStart() {
 
         $("#playing-card-field").droppable({
             drop: function (event, ui) {
-                cardImageTagId = ui.draggable.attr("id");
+                //cardImageTagId = ui.draggable.attr("id");
                 gameState.board[0] = ui.draggable.attr("value"); //identifica qual é a carta
                 playCardSound(gameState.board[0]);
                 $("#playing-card-field").droppable({ disabled: true })
@@ -317,19 +230,20 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
-let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
-let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
-let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
-let etherSound = new Audio('board-assets/sounds/etherCardSound.mp3');
-
-let winnerSound = new Audio('board-assets/sounds/winnerRound.mp3');
-let loserSound = new Audio('board-assets/sounds/roundLoser.mp3');
-
-let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
-let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
-
 
 function playCardSound(card) {
+
+    let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
+    let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
+    let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
+    let etherSound = new Audio('board-assets/sounds/etherCardSound.mp3');
+
+    let winnerSound = new Audio('board-assets/sounds/winnerRound.mp3');
+    let loserSound = new Audio('board-assets/sounds/roundLoser.mp3');
+
+    let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
+    let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
+
     switch (card) {
         case "w":
             waterSound.play();
@@ -360,7 +274,7 @@ function playCardSound(card) {
     }
 }
 
-let count = -1;
+//let count = -1;
 function changeSoundConf() {
     count++;
     const button = document.getElementById('btn-sound');
