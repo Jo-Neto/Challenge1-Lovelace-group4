@@ -13,6 +13,7 @@ module.exports = function (User) {
         
         dataBase.push({
             id: User.id,
+            active: User.active,
             name: User.name,
             email: User.email,
             salt: User.salt,

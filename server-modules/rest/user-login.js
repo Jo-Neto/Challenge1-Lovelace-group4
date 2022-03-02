@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 
-function userDelete(data, res) {
+function userLogin(data, res) {
     
     let uFile = fs.readFileSync('./database/users.json');
     let pFile = JSON.parse(uFile);
@@ -19,8 +19,8 @@ function userDelete(data, res) {
         let hash = crypto.pbkdf2Sync(data.password, pFile[userIndex].salt, 2048, 128, `sha512`).toString(`hex`);
 
         if (pFile[userIndex].hash === hash) {
-            //TODO: delete usuario
-            res.send("Sua conta foi deletada");
+            //TODO: mete o cookie de user no browser do user
+            res.send("Bem vindo " + pFile[userIndex].name);
         } else { //senha errada
             res.send("Usuário e/ou senha invalida");
         }
@@ -29,4 +29,4 @@ function userDelete(data, res) {
 
 }
 
-module.exports = userDelete;
+module.exports = userLogin;

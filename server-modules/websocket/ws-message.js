@@ -22,41 +22,6 @@ function message(data, isBinary, ws) {
     if (typeof parsedData < 1 || typeof parsedData > 3) //deny invalid card indexes
         return;
 
-    console.log("typeof parsed data = " + typeof parsedData);
-    console.log("parsed data = " + parsedData);
-
-    /*
-        console.log("typeof data = "+ typeof parsedData );
-        console.log("data = "+ parsedData );
-        console.log("ws.aID = "+ ws.aID );
-    
-        console.log("=============================================================================" );
-        console.log(SessionArr[ws.aID].gameState);
-        console.log("=============================================================================" );
-    
-    
-        try {
-            if (!(parsedData >= 1 && parsedData <= 3)) {
-                console.log("WS-MESSAGE: message(fn) --> valid card index");
-                ws.close(1008, 'tried playing an invalid card index');
-                ws.terminate();
-                return;
-            }
-        }
-        catch (e) { console.log("WS-MESSAGE: message(fn) --> invalid card index --> " + e); return; }
-    
-    
-        try {
-            if (typeof parsedData !== 'number') {
-                console.log("WS-MESSAGE: message(fn) -->  non number type");
-                ws.close(1008, 'tried sending a non number type');
-                ws.terminate();
-                return;
-            }
-        }
-        catch (e) { console.log("WS-MESSAGE: message(fn) --> non number type --> " + e); return; }
-    */
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //+------------------------------------------------------------------+

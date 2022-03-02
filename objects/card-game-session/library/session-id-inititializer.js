@@ -4,7 +4,7 @@
 const fs = require('fs');
 
 function getNextSessionID() {
-    const file = fs.readFileSync('./database/game-sessions.json');
+    let file = fs.readFileSync('./database/game-sessions.json');
     let dataBase = JSON.parse(file);
     return  dataBase.length;
 }
