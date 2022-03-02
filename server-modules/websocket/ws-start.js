@@ -42,12 +42,12 @@ function waitLineChecker() {
         Active.sessArr[sessionIndex].player2.ws.aID = sessionIndex;
         
         Active.sessArr[sessionIndex].player1.ws.send("p1"); //tell front-end game is ready, which players it is, player hand, and gameState
-        Active.sessArr[sessionIndex].player1.ws.send(Active.sessArr[sessionIndex].player1.hand);
-        Active.sessArr[sessionIndex].player1.ws.send(Active.sessArr[sessionIndex].gameState); 
+        Active.sessArr[sessionIndex].player1.ws.send(JSON.stringify(Active.sessArr[sessionIndex].player1.hand));
+        Active.sessArr[sessionIndex].player1.ws.send(JSON.stringify(Active.sessArr[sessionIndex].gameState)); 
         
         Active.sessArr[sessionIndex].player2.ws.send("p2");
-        Active.sessArr[sessionIndex].player2.ws.send(Active.sessArr[sessionIndex].player2.hand);
-        Active.sessArr[sessionIndex].player2.ws.send(Active.sessArr[sessionIndex].gameState)
+        Active.sessArr[sessionIndex].player2.ws.send(JSON.stringify(Active.sessArr[sessionIndex].player2.hand));
+        Active.sessArr[sessionIndex].player2.ws.send(JSON.stringify(Active.sessArr[sessionIndex].gameState)); 
 
         console.log(Active.sessArr[sessionIndex]);
         
