@@ -123,6 +123,7 @@ section img {
 #img-rules {
     width: 80%;
     height: 40%;
+    align-self: center;
 }
 
 .imagens {
