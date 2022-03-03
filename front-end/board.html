@@ -9,6 +9,9 @@
         <!-- Favicon -->
         <link rel="shortcut icon" href="./board-assets/favicon.png" type="image/x-icon">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
         <!-- Styles -->
         <link rel="stylesheet" href="./board-styles/reset.css">
         <link rel="stylesheet" href="./board-styles/styles.css">
@@ -18,7 +21,9 @@
         <link rel="stylesheet" href="./board-styles/sidebar-help.css">
         <link rel="stylesheet" href="./board-styles/sidebar-menu.css">
         <link rel="stylesheet" href="./board-styles/shine.css">
+
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- import JQuery -->
+        <link rel="stylesheet" href="/resources/demos/style.css"> <!-- import JQuery -->
         <style>
             label {
                 display: inline-block;
@@ -26,10 +31,9 @@
             }
         </style>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
+        <!-- Jquery Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
         <script>
             $( function() {
                 $( document ).tooltip();
@@ -43,16 +47,16 @@
         <nav id="menu">
             <img src="./board-assets/menu_open_white_24dp.svg" onclick="closeModal('menu')" id="btn-menu-out" title="Fechar o menu">
             <ul>
-                <li onclick="openModal('modal-rules')">REGRAS</li>
-                <li><a href="https://www.alphaedtech.org.br/" target="_blank">O EDTECH</a></li>
-                <li onclick="openModal('modal-devs')">OS DEVS</li>
-                <li onclick="openModal('modal-logoff')">SAIR</li>
+                <li onclick="openModal('modal-rules')"> <img class="menu-img" src="./board-assets/rules-img.png"> REGRAS</li>
+                <li><a href="https://www.alphaedtech.org.br/" target="_blank"><img class="menu-img" src="./board-assets/alpha-img.png"> EDTECH</a></li>
+                <li onclick="openModal('modal-devs')"><img class="menu-img" src="./board-assets/dev-img.png"> OS DEVS</li>
+                <li onclick="openModal('modal-logoff')"><img class="menu-img" src="./board-assets/leave-img.svg"> SAIR</li>
             </ul>
         </nav>
 
         <header>
             <span id="header-buttons">
-                <img id="btn-menu-in" src="./board-assets/menu_white_24dp.svg" onclick="openMenu('menu')" title="Abrir o menu">
+                <img id="btn-menu-in" src="./board-assets/menu_white_24dp.svg" onclick="openMenu()" title="Abrir o menu">
                 <img id="btn-sound" src="./board-assets/music_note_white_24dp.svg" onclick="changeSoundConf()" title="Desativar o som">
                 <img id="btn-guide" src="./board-assets/subtitles_white_24dp.svg" title="Desativar balões guia">
             </span>
@@ -194,10 +198,11 @@
             </div>
         </div>
 
-        <nav id="help" onclick="closeModal('help')">
+        <nav id="help" class="modal-div" onclick="closeModal('help')">
             <p>REGRAS</p>
             <img class="diagram-rules" src="./board-assets/diagram.svg" alt="">
         </nav>
 
+        <script src="./scripts/board-script.js"></script>
     </body>
 </html>

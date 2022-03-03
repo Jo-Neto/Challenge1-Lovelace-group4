@@ -1,4 +1,4 @@
-//OBjeto recebido do front
+//Objeto recebido do front
 // this.gameState = {
 //     turnNum: 1,  
 //     player1turn: true or false,
@@ -46,25 +46,38 @@ socket.onopen = (event) => {
     playCardSound("backgroundSound");
 }
 
+let gameState
+
 socket.onmessage = (event) => {
     let data = JSON.parse(event.data)
-    console.log(data)
 
     try {
         if ( whichPlayer === "p2" ) {
             data.board = data.board.reverse()
         }
     } catch {
-        console.log("catch do whichPlayer")
+
     }
 
     try {
         showEnemyCard(data.board[1])
     } catch {
-        console.log("catch do enemyCard")
+
     }
 
-    verifyIfIsYourTurn(data)
+    if( data instanceof Array ) {
+        hand = data
+    } else {
+        if ( whichPlayer === "p2" ) {
+            data.board = data.board.reverse()
+        }
+        gameState = data
+        verifyIfIsYourTurn(gameState)
+    }
+
+    console.log(data)
+
+    verifyIfHaveTwoCardsInTheField(gameState, hand)
 
     turnControlAndPlayCard();
 }
@@ -91,26 +104,26 @@ socket.onclose = (event) => {
     }
 }
 
-// setInterval(() => {
-//     $(".cards-in-hand").draggable({
-//         revert: "invalid",
-//     });
-// }, 500);
-
-function turnControlAndPlayCard() {
-
+setInterval(() => {
     $(".cards-in-hand").draggable({
         revert: "invalid",
     });
 
+    turnControlAndPlayCard()
+}, 500);
+
+function turnControlAndPlayCard() {
+
     if (isMyTurn) {
         $("#playing-card-field").droppable({
+            disabled: false,
             drop: function (event, ui) {
                 cardImageTagId = ui.draggable.attr("id");
                 $("#playing-card-field").droppable({ disabled: true })
                 isMyTurn = false
+                console.log(cardImageTagId)
 
-                socket.send(Number(ui.draggable.attr("id").slice(-1)))
+                socket.send(Number(cardImageTagId.slice(-1)))
             }
         });
     }
@@ -156,21 +169,22 @@ function showEnemyCard(cardString) {
         default:
             break;
     }
-    
-
 }
 
-function verifyIfHaveTwoCardsInTheField() {
-    if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
+function verifyIfHaveTwoCardsInTheField(data, hand) {
+    if ( data.board[0] != '' && data.board[1] != '' ) {
         setTimeout(() => {
             //cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            hideCheap();
-            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
-        }, 2000);
+            //hideCheap();
+        }, 3000);
     }
+}
+
+function takeCard(hand) {
+    $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
+    $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
+    $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
 }
 
 function getCardImage(card) {
@@ -196,82 +210,14 @@ function getCardImage(card) {
         case "d":
             nameOfImageArchive = 'card-dark-matter';
             break;
-        case null:
-            nameOfImageArchive = 'null';
-            break
     }
 
     return nameOfImageArchive;
 }
 
-function playCardSound(card) {
-
-    let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
-    let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
-    let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
-    let etherSound = new Audio('board-assets/sounds/etherCardSound.mp3');
-
-    let winnerSound = new Audio('board-assets/sounds/winnerRound.mp3');
-    let loserSound = new Audio('board-assets/sounds/roundLoser.mp3');
 
     let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
     let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
-
-    switch (card) {
-        case "w":
-            waterSound.play();
-            break;
-        case "f": 
-            fireSound.play();
-            fireSound.volume = 0.15;
-            break;
-        case "p": 
-            plantSound.play();
-            break;
-        case "e":
-            etherSound.play();
-            break;
-        case "cardDraw":
-            cardDrawSound.play();
-            break;
-        case "roundWinner":
-            winnerSound.play();
-            break;
-        case "roundLoser":
-            loserSound.play();
-        case "backgroundSound":
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.08;
-            backgroundMusic.play();
-            break;
-    }
-}
-
-//let count = -1;
-function changeSoundConf() {
-    count++;
-    const button = document.getElementById('btn-sound');
-    if(count%2 == 0) {
-        button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_off_white_24dp.svg');
-        waterSound.src = "";
-        fireSound.src = "";
-        plantSound.src = "";
-        etherSound.src = "";
-        cardDrawSound.src = "";
-        backgroundMusic.src = "";
-    } else {
-        button.setAttribute('src', '');
-        button.setAttribute('src', './board-assets/music_note_white_24dp.svg');
-        waterSound.src = 'board-assets/sounds/waterCardSound.mp3';
-        fireSound.src = 'board-assets/sounds/fireCardSound.mp3';
-        plantSound.src = 'board-assets/sounds/plantCardSound.mp3';
-        etherSound.src = 'board-assets/sounds/etherCardSound.mp3';
-        cardDrawSound.src = 'board-assets/sounds/cardDrawSound.mp3';
-        backgroundMusic.src = 'board-assets/sounds/backgroundSound.mp3';
-        backgroundMusic.play();
-    }
-}
 
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
@@ -299,6 +245,8 @@ function cleanTheCardField(tagCardId) {
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
     }
+
+    takeCard(hand)
 }
 
 function showWhosTurn() {
@@ -326,7 +274,7 @@ function noCardsOnHand(){
 }
 
 function hideCheap() {
-    if(gameState.turnNum == 11){
+    if(gameState.turnNum == 15){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){
