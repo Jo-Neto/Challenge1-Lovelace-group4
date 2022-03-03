@@ -46,25 +46,38 @@ socket.onopen = (event) => {
     playCardSound("backgroundSound");
 }
 
+let gameState
+
 socket.onmessage = (event) => {
     let data = JSON.parse(event.data)
-    console.log(data)
 
     try {
         if ( whichPlayer === "p2" ) {
             data.board = data.board.reverse()
         }
     } catch {
-        console.log("catch do whichPlayer")
+
     }
 
     try {
         showEnemyCard(data.board[1])
     } catch {
-        console.log("catch do enemyCard")
+
     }
 
-    verifyIfIsYourTurn(data)
+    if( data instanceof Array ) {
+        hand = data
+    } else {
+        if ( whichPlayer === "p2" ) {
+            data.board = data.board.reverse()
+        }
+        gameState = data
+        verifyIfIsYourTurn(gameState)
+    }
+
+    console.log(data)
+
+    verifyIfHaveTwoCardsInTheField(gameState, hand)
 
     turnControlAndPlayCard();
 }
@@ -91,26 +104,26 @@ socket.onclose = (event) => {
     }
 }
 
-// setInterval(() => {
-//     $(".cards-in-hand").draggable({
-//         revert: "invalid",
-//     });
-// }, 500);
-
-function turnControlAndPlayCard() {
-
+setInterval(() => {
     $(".cards-in-hand").draggable({
         revert: "invalid",
     });
 
+    turnControlAndPlayCard()
+}, 500);
+
+function turnControlAndPlayCard() {
+
     if (isMyTurn) {
         $("#playing-card-field").droppable({
+            disabled: false,
             drop: function (event, ui) {
                 cardImageTagId = ui.draggable.attr("id");
                 $("#playing-card-field").droppable({ disabled: true })
                 isMyTurn = false
+                console.log(cardImageTagId)
 
-                socket.send(Number(ui.draggable.attr("id").slice(-1)))
+                socket.send(Number(cardImageTagId.slice(-1)))
             }
         });
     }
@@ -158,17 +171,20 @@ function showEnemyCard(cardString) {
     }
 }
 
-function verifyIfHaveTwoCardsInTheField() {
-    if ( gameState.board[0] != '' && gameState.board[1] != '' ) {
+function verifyIfHaveTwoCardsInTheField(data, hand) {
+    if ( data.board[0] != '' && data.board[1] != '' ) {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            hideCheap();
-            $("#container-first-hand-card").html(`<img id="card1" value=${gameState.hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[0])}.svg" alt="">`);
-            $("#container-second-hand-card").html(`<img id="card2" value=${gameState.hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[1])}.svg" alt="">`);
-            $("#container-third-hand-card").html(`<img id="card3" value=${gameState.hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(gameState.hand[2])}.svg" alt="">`);
-        }, 2000);
+            //hideCheap();
+        }, 3000);
     }
+}
+
+function takeCard(hand) {
+    $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
+    $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
+    $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
 }
 
 function getCardImage(card) {
@@ -194,9 +210,6 @@ function getCardImage(card) {
         case "d":
             nameOfImageArchive = 'card-dark-matter';
             break;
-        case null:
-            nameOfImageArchive = 'null';
-            break
     }
 
     return nameOfImageArchive;
@@ -232,6 +245,8 @@ function cleanTheCardField(tagCardId) {
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
     }
+
+    takeCard(hand)
 }
 
 function showWhosTurn() {
@@ -259,7 +274,7 @@ function noCardsOnHand(){
 }
 
 function hideCheap() {
-    if(gameState.turnNum == 11){
+    if(gameState.turnNum == 15){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){

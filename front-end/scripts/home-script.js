@@ -19,6 +19,7 @@ const port = 80;
 let socket;
 var youStart = false
 var whichPlayer
+var hand
 
 document.getElementById('play-now-button').addEventListener('click', () => {
 
@@ -55,6 +56,7 @@ document.getElementById('play-now-button').addEventListener('click', () => {
             }
 
         } else {
+            hand = obj
             prepareTheGame(obj)
         }
     } catch {
