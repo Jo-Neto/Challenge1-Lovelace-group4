@@ -312,6 +312,8 @@ function cleanTheCardField(tagCardId) {
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
     }
+
+    takeCard(hand)
 }
 
 function showWhosTurn() {
