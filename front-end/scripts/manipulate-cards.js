@@ -49,37 +49,47 @@ socket.onopen = (event) => {
 let gameState
 
 socket.onmessage = (event) => {
-    let data = JSON.parse(event.data)
 
-    try {
-        if ( whichPlayer === "p2" ) {
-            data.board = data.board.reverse()
+    setTimeout( () => {
+
+        let data = JSON.parse(event.data)
+
+        try {
+            if ( whichPlayer === "p2" ) {
+                data.board = data.board.reverse()
+            }
+        } catch {
+
         }
-    } catch {
 
-    }
+        try {
+            showEnemyCard(data.board[1])
+        } catch {
 
-    try {
-        showEnemyCard(data.board[1])
-    } catch {
-
-    }
-
-    if( data instanceof Array ) {
-        hand = data
-    } else {
-        if ( whichPlayer === "p2" ) {
-            data.board = data.board.reverse()
         }
-        gameState = data
-        verifyIfIsYourTurn(gameState)
-    }
 
-    console.log(data)
+        if( data instanceof Array ) {
+            hand = data
+        } else {
+            if ( whichPlayer === "p2" ) {
+                data.board = data.board.reverse()
+            }
 
-    verifyIfHaveTwoCardsInTheField(gameState, hand)
+            gameState = data
 
-    turnControlAndPlayCard();
+            $("#score-player1").text(gameState.scoreP1)
+            $("#score-player2").text(gameState.scoreP2)
+
+            verifyIfIsYourTurn(gameState)
+        }
+
+        console.log(data)
+
+        verifyIfHaveTwoCardsInTheField(gameState, hand)
+
+        turnControlAndPlayCard();
+    }, 1000)
+
 }
 
 socket.onclose = (event) => {
@@ -108,24 +118,22 @@ setInterval(() => {
     $(".cards-in-hand").draggable({
         revert: "invalid",
     });
-
-    turnControlAndPlayCard()
 }, 500);
 
 function turnControlAndPlayCard() {
 
     if (isMyTurn) {
-        $("#playing-card-field").droppable({
-            disabled: false,
-            drop: function (event, ui) {
-                cardImageTagId = ui.draggable.attr("id");
-                $("#playing-card-field").droppable({ disabled: true })
-                isMyTurn = false
-                console.log(cardImageTagId)
+            $("#playing-card-field").droppable({
+                disabled: false,
+                drop: function (event, ui) {
+                    cardImageTagId = ui.draggable.attr("id");
+                    $("#playing-card-field").droppable({ disabled: true })
+                    isMyTurn = false
+                    console.log(cardImageTagId)
 
-                socket.send(Number(cardImageTagId.slice(-1)))
-            }
-        });
+                    socket.send(Number(cardImageTagId.slice(-1)))
+                }
+            });
     }
 }
 
@@ -214,10 +222,6 @@ function getCardImage(card) {
 
     return nameOfImageArchive;
 }
-
-
-    let cardDrawSound = new Audio('board-assets/sounds/cardDrawSound.mp3');
-    let backgroundMusic = new Audio('board-assets/sounds/backgroundSound.mp3');
 
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
