@@ -16,9 +16,9 @@
 }
 
 #menu ul {
-    height: 75%;
+    height: 55%;
     margin-top: 35%;
-
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -29,7 +29,9 @@
     width: 80%;
     padding-left: 5%;
     cursor: pointer;
-
+    
+    border-top: solid 2px white;
+    padding-top: 5px;
     color: white;
     font-size: 22px;
     line-height: 75px;
@@ -41,4 +43,9 @@
     padding-left: 10%;
     border-radius: 50px 0 0 50px;
     background: linear-gradient(90deg, #DB1C1C 0%, rgba(219, 28, 28, 0) 100%);
+}
+
+.menu-img {
+    height: 30px;
+    margin-right: 5px;
 }
