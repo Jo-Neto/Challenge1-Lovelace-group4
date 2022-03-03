@@ -1,16 +1,12 @@
 #help {
     right: 20px;
     bottom: 20px;
-    width: 35vw;
-    height: 45vh;
     padding: 1vh 2vw 5vh 3vw;
     z-index: 1000;
     position: fixed;
 
     visibility: hidden;
 
-    background: #C31B1B;
-    /* background: linear-gradient(270.42deg, rgb(238, 234, 234) -0.07%, rgb(0, 0, 0) 144.33%); */
     border-radius: 20px;
 }
 
