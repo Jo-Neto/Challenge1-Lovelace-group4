@@ -9,8 +9,8 @@ const fs = require('fs');
 
 module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 'p1' OR 'p2' STRING TYPES, LOWERCASE
     console.log("CardGameSession object --> storeOnDatabase(fn) --> SessionNum:" + Session.sID);
-    Session.player1.key = null; //clear reconnection keys
-    Session.player2.key = null;
+    Session.player1.ws.send(Session.gameState);
+    Session.player2.ws.send(Session.gameState);
     if (winner === 'p1') { 
         Session.player1.ws.send("Voce ganhou!");
         Session.player2.ws.send("Voce perdeu");
@@ -26,6 +26,8 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
     Session.player2.ws.close(1000, 'match has finished');
     Session.player1.ws.terminate(); //safety 
     Session.player2.ws.terminate(); //safety
+    Session.player1.key = null; //clear reconnection keys
+    Session.player2.key = null;
     fs.readFile('./database/game-sessions.json', (err, readData) => { //save match data on database
         if (err) { console.log("ERROR: SessionNum:" + Session.sID + "on reading database: "); throw console.log(err); }
         let dataBase = JSON.parse(readData);
