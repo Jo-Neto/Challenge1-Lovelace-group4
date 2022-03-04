@@ -2,6 +2,7 @@
 //|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
 const express = require('express');
+const session = require('express-session');
 const url = require('url');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,11 +36,15 @@ app.post('/register', (req, res) => usrReg(req.body, res)); //register
 //+-----------------------------------------------------------------------------------------------+
 
 //login and logout files
-const usrLogout = require('./server-modules/rest/user-logout.js');
+const userLogout = require('./server-modules/rest/user-logout.js');
 const userLogin = require('./server-modules/rest/user-login.js');
 
-app.post('/login', (req, res) => userLogin(req.body, res, false));
-app.post('/logout', (req, res) => usrLogout(req, res));
+//middlewares
+const loginMW = require('./server-modules/middlewares/login.js');
+const logoutMW = require('./server-modules/middlewares/logout.js');
+
+app.post('/login', loginMW, (req, res) => userLogin(req.body, res, false));
+app.post('/logout', logoutMW, (req, res) => userLogout(req.session, res));
 
 //+-----------------------------------------------------------------------------------------------+
 //+-----------------------------------------------------------------------------------------------+

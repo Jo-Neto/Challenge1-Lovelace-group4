@@ -214,13 +214,13 @@ module.exports = function (Session) {
     //|                    CHECKING IF GAME IS OVER                      |
     //+------------------------------------------------------------------+
     if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
-        dbStore('p1', Session);
+        dbStore(Session, 'p1');
         return true;
     } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
-        dbStore('p2', Session);
+        dbStore(Session, 'p2');
         return true;
     } else if (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
-        dbStore('draw', Session);
+        dbStore(Session, 'draw');
         return true;
     }
     console.log("round check passed 4");
