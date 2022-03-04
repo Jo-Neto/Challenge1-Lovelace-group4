@@ -2,7 +2,6 @@
 //|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
 const express = require('express');
-const session = require('express-session');
 const url = require('url');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,8 +42,8 @@ const userLogin = require('./server-modules/rest/user-login.js');
 const loginMW = require('./server-modules/middlewares/login.js');
 const logoutMW = require('./server-modules/middlewares/logout.js');
 
-app.post('/login', loginMW, (req, res) => userLogin(req.body, res, false));
-app.post('/logout', logoutMW, (req, res) => userLogout(req.session, res));
+app.post('/login', /*loginMW,*/ (req, res) => userLogin(req.body, res, false));
+app.post('/logout', /*logoutMW,*/ (req, res) => userLogout(req.session, res));
 
 //+-----------------------------------------------------------------------------------------------+
 //+-----------------------------------------------------------------------------------------------+

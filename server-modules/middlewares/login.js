@@ -1,3 +1,4 @@
+/*
 module.exports = {
     secret: "wouldn'tyouliketoknow", 
     cookie: {
@@ -16,3 +17,4 @@ module.exports = {
     resave: false, 
     saveUninitialized: false
 };
+*/
