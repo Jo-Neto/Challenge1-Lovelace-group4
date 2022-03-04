@@ -50,45 +50,51 @@ let gameState
 
 socket.onmessage = (event) => {
 
-    setTimeout( () => {
+    clearTimeout(timeout)
 
-        let data = JSON.parse(event.data)
+    let data = JSON.parse(event.data)
 
-        try {
-            if ( whichPlayer === "p2" ) {
-                data.board = data.board.reverse()
-            }
-        } catch {
-
+    if( data instanceof Array ) {
+        hand = data
+    } else {
+        if ( whichPlayer === "p2" ) {
+            data.board = data.board.reverse()
         }
 
         try {
             showEnemyCard(data.board[1])
         } catch {
-
         }
 
-        if( data instanceof Array ) {
-            hand = data
-        } else {
-            if ( whichPlayer === "p2" ) {
-                data.board = data.board.reverse()
-            }
+        gameState = data
 
-            gameState = data
+        $("#score-player1").text(data.scoreP1)
+        $("#score-player2").text(data.scoreP2)
 
-            $("#score-player1").text(gameState.scoreP1)
-            $("#score-player2").text(gameState.scoreP2)
-
-            verifyIfIsYourTurn(gameState)
-        }
-
+        verifyIfIsYourTurn(data)
         console.log(data)
+        console.log(isMyTurn)
+        console.log("==============================")
+        verifyIfHaveTwoCardsInTheField(data)
+    }
 
-        verifyIfHaveTwoCardsInTheField(gameState, hand)
+    if(isMyTurn) {
+        timeout = setInterval(() => {
+            $(".cards-in-hand").draggable({
+                revert: "invalid",
+            });
+        }, 500);
 
-        turnControlAndPlayCard();
-    }, 1000)
+        $("#container-first-hand-card").attr("class", "container-cards-from-hand card green-shine")
+        $("#container-second-hand-card").attr("class", "container-cards-from-hand card green-shine")
+        $("#container-third-hand-card").attr("class", "container-cards-from-hand card green-shine")
+    } else {
+        $("#container-first-hand-card").attr("class", "container-cards-from-hand card red-shine")
+        $("#container-second-hand-card").attr("class", "container-cards-from-hand card red-shine")
+        $("#container-third-hand-card").attr("class", "container-cards-from-hand card red-shine")
+    }
+
+    turnControlAndPlayCard();
 
 }
 
@@ -114,7 +120,7 @@ socket.onclose = (event) => {
     }
 }
 
-setInterval(() => {
+let timeout = setInterval(() => {
     $(".cards-in-hand").draggable({
         revert: "invalid",
     });
@@ -129,7 +135,6 @@ function turnControlAndPlayCard() {
                     cardImageTagId = ui.draggable.attr("id");
                     $("#playing-card-field").droppable({ disabled: true })
                     isMyTurn = false
-                    console.log(cardImageTagId)
 
                     socket.send(Number(cardImageTagId.slice(-1)))
                 }
@@ -139,11 +144,11 @@ function turnControlAndPlayCard() {
 
 function verifyIfIsYourTurn(data) {
     if ( whichPlayer === 'p1' && data.player1turn ) {
-        console.log("seu turno")
         isMyTurn = true
     } else if ( whichPlayer === 'p2' && !data.player1turn ) {
-        console.log("seu turno")
         isMyTurn = true
+    } else {
+        isMyTurn = false
     }
 }
 
@@ -179,13 +184,15 @@ function showEnemyCard(cardString) {
     }
 }
 
-function verifyIfHaveTwoCardsInTheField(data, hand) {
+function verifyIfHaveTwoCardsInTheField(data) {
     if ( data.board[0] != '' && data.board[1] != '' ) {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
             //hideCheap();
         }, 3000);
+
+        clearTimeout(timeout)
     }
 }
 
