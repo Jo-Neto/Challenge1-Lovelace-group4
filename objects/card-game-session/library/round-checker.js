@@ -213,14 +213,15 @@ module.exports = function (Session) {
     //+------------------------------------------------------------------+
     //|                    CHECKING IF GAME IS OVER                      |
     //+------------------------------------------------------------------+
-    if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 13 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
-        dbStore.writer('p1', Session);
+  
+    if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
+        dbStore('p1', Session);
         return true;
-    } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 13 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
-        dbStore.writer('p2', Session);
+    } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
+        dbStore('p2', Session);
         return true;
-    } else if (Session.gameState.turnNum === 13 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
-        dbStore.writer('draw', Session);
+    } else if (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
+        dbStore('draw', Session);
         return true;
     }
     console.log("round check passed 4");
