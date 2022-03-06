@@ -194,7 +194,7 @@ function showEnemyCard(cardString) {
 function verifyIfHaveTwoCardsInTheField(data) {
     if ( data.board[0] != '' && data.board[1] != '' ) {
         setTimeout(() => {
-            //cleanTheCardField(cardImageTagId);
+            cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
             //hideCheap();
         }, 3000);
