@@ -42,10 +42,10 @@ module.exports = function (Session) {
     //+------------------------------------------------------------------+
     //|                      DRAW IS CHECKED FIRST                       |
     //+------------------------------------------------------------------+
-    if (Session.gameState.board[0] === Session.gameState.board[1]) {
-        if (Session.gameState.board[0] !== 'm') //if its not dark matter draw
+    if (Session.gameState.board[0] === Session.gameState.board[1])
+        if (Session.gameState.board[0] !== 'd') //if its not dark matter draw
             Session.gameState.player1turn = !Session.gameState.player1turn; //keep order 
-    }
+    
     console.log("round check passed 2");
 
 
@@ -57,7 +57,7 @@ module.exports = function (Session) {
         //|                    DRAW ON BLACK MATTER CARD                     |
         //+------------------------------------------------------------------+
         case 'd':
-            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v' || Session.gameState.board[1] === 'd')  //and enemy draws v or e
+            if (Session.gameState.board[1] === 'e' || Session.gameState.board[1] === 'v')  //and enemy draws v or e
                 Session.gameState.player1turn = true; //player is first to play         
             else  //otherwise is last to play
                 Session.gameState.player1turn = false; //enemy plays first
@@ -73,9 +73,6 @@ module.exports = function (Session) {
             switch (Session.gameState.board[1]) {
                 case 'd': //draw on dark matter
                     Session.gameState.player1turn = false; //enemy players first
-                    break;
-                case 'e': //draw on eter
-                    Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
                     break;
                 case 'v': //enemy wins
                     Session.gameState.player1turn = false;
@@ -99,9 +96,6 @@ module.exports = function (Session) {
                 case 'd': //draw on dark matter
                     Session.gameState.player1turn = false; //enemy players first
                     break;
-                case 'v': //draw on void
-                    Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
-                    break;
                 case 'e': //players wins
                     Session.gameState.player1turn = true;
                     Session.gameState.scoreP1++;
@@ -121,9 +115,6 @@ module.exports = function (Session) {
         //+------------------------------------------------------------------+
         case 'w':
             switch (Session.gameState.board[1]) {
-                case 'w': //same element draw
-                    Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
-                    break;
                 case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
@@ -151,9 +142,6 @@ module.exports = function (Session) {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         case 'p':
             switch (Session.gameState.board[1]) {
-                case 'p': //same element draw
-                    Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
-                    break;
                 case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
@@ -181,9 +169,6 @@ module.exports = function (Session) {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         case 'f':
             switch (Session.gameState.board[1]) {
-                case 'f': //same element draw
-                    Session.gameState.player1turn = !Session.gameState.player1turn; //keep order
-                    break;
                 case 'd': //draw dark matter
                     Session.gameState.player1turn = true;
                     break;
@@ -232,7 +217,7 @@ module.exports = function (Session) {
     //|                       PREPARING FOR NEXT TURN                    |
     //+------------------------------------------------------------------+
     Session.gameState.turnNum++;  //turn has ended, next turn
-    
+
     Session.gameState.board[0] = ''; //clean board for next round
     Session.gameState.board[1] = '';
 
