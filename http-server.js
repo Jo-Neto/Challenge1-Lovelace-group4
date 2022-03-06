@@ -2,6 +2,7 @@
 //|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
 const express = require('express');
+const sessions = require('express-session');
 const url = require('url');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,17 +40,18 @@ const userLogout = require('./server-modules/rest/user-logout.js');
 const userLogin = require('./server-modules/rest/user-login.js');
 
 //middlewares
-const loginMW = require('./server-modules/middlewares/login.js');
-const logoutMW = require('./server-modules/middlewares/logout.js');
+const loginMW = require('./server-modules/cookie/login.js');
+const logoutMW = require('./server-modules/cookie/logout.js');
 
-app.post('/login', /*loginMW,*/ (req, res) => userLogin(req.body, res, false));
-app.post('/logout', /*logoutMW,*/ (req, res) => userLogout(req.session, res));
+app.post('/login', sessions(loginMW), (req, res) => userLogin(req.body, res, false));
+app.post('/logout', sessions(logoutMW), (req, res) => userLogout(req.session, res));
 
 //+-----------------------------------------------------------------------------------------------+
 //+-----------------------------------------------------------------------------------------------+
 
 //first served file and its assets
-app.use('/', express.static('front-end/'));
+const sessionMW = require('./server-modules/cookie/anon.js');
+app.use('/', sessions(sessionMW), express.static('front-end/'));
 
 //dynamically served scripts on SPA display change, assets are already loaded dynamically
 app.use('/board1', express.static('front-end/scripts/board-script.js'));
