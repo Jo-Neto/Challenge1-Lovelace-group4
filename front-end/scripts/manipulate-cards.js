@@ -21,11 +21,25 @@ $(document).ready( () => {
         $("#description-modal-initial").text('É sua vez de jogar')
         isMyTurn = true
         turnControlAndPlayCard()
+        greenShine()
     } else {
         openModal('modal-initial')
         $("#description-modal-initial").text('É a vez do oponente jogar, aguarde')
+        redShine()
     }
 })
+
+function greenShine() {
+    $("#container-first-hand-card").attr("class", "container-cards-from-hand card green-shine")
+    $("#container-second-hand-card").attr("class", "container-cards-from-hand card green-shine")
+    $("#container-third-hand-card").attr("class", "container-cards-from-hand card green-shine")
+}
+
+function redShine() {
+    $("#container-first-hand-card").attr("class", "container-cards-from-hand card red-shine")
+    $("#container-second-hand-card").attr("class", "container-cards-from-hand card red-shine")
+    $("#container-third-hand-card").attr("class", "container-cards-from-hand card red-shine")
+}
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
 
@@ -68,9 +82,6 @@ socket.onmessage = (event) => {
 
         gameState = data
 
-        $("#score-player1").text(data.scoreP1)
-        $("#score-player2").text(data.scoreP2)
-
         verifyIfIsYourTurn(data)
         console.log(data)
         console.log(isMyTurn)
@@ -85,13 +96,9 @@ socket.onmessage = (event) => {
             });
         }, 500);
 
-        $("#container-first-hand-card").attr("class", "container-cards-from-hand card green-shine")
-        $("#container-second-hand-card").attr("class", "container-cards-from-hand card green-shine")
-        $("#container-third-hand-card").attr("class", "container-cards-from-hand card green-shine")
+        greenShine()
     } else {
-        $("#container-first-hand-card").attr("class", "container-cards-from-hand card red-shine")
-        $("#container-second-hand-card").attr("class", "container-cards-from-hand card red-shine")
-        $("#container-third-hand-card").attr("class", "container-cards-from-hand card red-shine")
+        redShine()
     }
 
     turnControlAndPlayCard();
@@ -193,7 +200,13 @@ function verifyIfHaveTwoCardsInTheField(data) {
         }, 3000);
 
         clearTimeout(timeout)
+    } else if ( data.board[0] == '' && data.board[1] == '' ) {
+        setTimeout(() => {
+            $("#score-player1").text(data.scoreP1)
+            $("#score-player2").text(data.scoreP2)
+        }, 3000)
     }
+
 }
 
 function takeCard(hand) {
