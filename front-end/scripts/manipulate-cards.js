@@ -6,7 +6,6 @@
 //     scoreP1: 0,
 //     scoreP2: 0
 //  };
-
 let isMyTurn = false
 
 $(document).ready( () => {
@@ -65,7 +64,6 @@ let gameState
 socket.onmessage = (event) => {
 
     clearTimeout(timeout)
-
     let data = JSON.parse(event.data)
 
     if( data instanceof Array ) {
@@ -269,8 +267,8 @@ function cleanTheCardField(tagCardId) {
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
     }
-
     takeCard(hand)
+    cardsOnDeck();    
 }
 
 function showWhosTurn() {
@@ -284,6 +282,11 @@ function verifyCardOnTop() {
     }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
         $("#container-card-player2").css('zIndex',5);
     }
+}
+
+function cardsOnDeck() {
+    let cardsOnDeck = 16 - gameState.turnNum;
+    document.getElementById("cards-left").innerHTML = cardsOnDeck;
 }
 
 function noCardsOnHand(){
