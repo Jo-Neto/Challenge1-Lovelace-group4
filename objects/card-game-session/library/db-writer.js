@@ -9,15 +9,15 @@ const fs = require('fs');
 
 module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 'p1' OR 'p2' STRING TYPES, LOWERCASE
     console.log("CardGameSession object --> storeOnDatabase(fn) --> SessionNum:" + Session.sID);
-    Session.player1.ws.send(Session.gameState);
-    Session.player2.ws.send(Session.gameState);
+    Session.player1.ws.send(JSON.stringify(Session.gameState));
+    Session.player2.ws.send(JSON.stringify(Session.gameState));
     if (winner === 'p1') { 
         Session.player1.ws.send("Voce ganhou!");
         Session.player2.ws.send("Voce perdeu");
         //TODO: check account and give points
     } else if (winner === 'p2') {
-        Session.player1.ws.send("Voce ganhou!");
-        Session.player2.ws.send("Voce perdeu");
+        Session.player1.ws.send("Voce perdeu");
+        Session.player2.ws.send("Voce ganhou!");
         //TODO: check account and give points
     } else if (winner === 'draw') {
         Session.player1.ws.send("Empate!");
@@ -34,7 +34,7 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
         if (err) { console.log("ERROR: SessionNum:" + Session.sID + "on reading database: "); throw console.log(err); }
         let dataBase = JSON.parse(readData);
         dataBase.push({
-            sessiomID: Session.sID,
+            sessionID: Session.sID,
             winner: winner,
             player1: {
                 score: Session.gameState.scoreP1,
@@ -56,6 +56,6 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
             if (err) { console.log("ERROR: SessionNum:" + Session.sID + "on writing database: "); throw console.log(err) };
         });
         console.log("CardGameSession object --> storeOnDatabase(fn) --> session num: " + Session.sID + ' registered on database');
+        Session = null; //nullify session for it to be replaced on the active game sessions array
     });
-    Session = null; //nullify session for it to be replaced on the active game sessions array
 }

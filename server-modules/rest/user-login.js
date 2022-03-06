@@ -24,7 +24,6 @@ function userLogin(data, res) {  //safety
                 res.send("Esta conta foi deletada");
             else {
                 //TODO: mete o cookie de user no browser do user, e sobrescreve
-                res.cookie('netoCookie', 'netoCookieVal');
                 res.send("Bem vindo " + pFile[userIndex].name);
             }
         }

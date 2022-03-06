@@ -6,7 +6,6 @@
 //     scoreP1: 0,
 //     scoreP2: 0
 //  };
-
 let isMyTurn = false
 
 $(document).ready( () => {
@@ -64,44 +63,47 @@ let gameState
 
 socket.onmessage = (event) => {
 
-    clearTimeout(timeout)
+    try {
+        clearTimeout(timeout)
 
-    let data = JSON.parse(event.data)
+        let data = JSON.parse(event.data)
 
-    if( data instanceof Array ) {
-        hand = data
-    } else {
-        if ( whichPlayer === "p2" ) {
-            data.board = data.board.reverse()
+        if( data instanceof Array ) {
+            hand = data
+        } else {
+            if ( whichPlayer === "p2" ) {
+                data.board = data.board.reverse()
+            }
+
+            try {
+                showEnemyCard(data.board[1])
+            } catch {
+            }
+
+            gameState = data
+
+            verifyIfIsYourTurn(data)
+            console.log(data)
+            console.log("==============================")
+            verifyIfHaveTwoCardsInTheField(data)
         }
 
-        try {
-            showEnemyCard(data.board[1])
-        } catch {
+        if(isMyTurn) {
+            timeout = setInterval(() => {
+                $(".cards-in-hand").draggable({
+                    revert: "invalid",
+                });
+            }, 500);
+
+            greenShine()
+        } else {
+            redShine()
         }
 
-        gameState = data
-
-        verifyIfIsYourTurn(data)
-        console.log(data)
-        console.log(isMyTurn)
-        console.log("==============================")
-        verifyIfHaveTwoCardsInTheField(data)
+        turnControlAndPlayCard();
+    } catch {
+        console.log(event.data)
     }
-
-    if(isMyTurn) {
-        timeout = setInterval(() => {
-            $(".cards-in-hand").draggable({
-                revert: "invalid",
-            });
-        }, 500);
-
-        greenShine()
-    } else {
-        redShine()
-    }
-
-    turnControlAndPlayCard();
 
 }
 
@@ -200,13 +202,14 @@ function verifyIfHaveTwoCardsInTheField(data) {
         }, 3000);
 
         clearTimeout(timeout)
-    } else if ( data.board[0] == '' && data.board[1] == '' ) {
+    } else if ( data.board[0] == '' && data.board[1] == '') {
         setTimeout(() => {
             $("#score-player1").text(data.scoreP1)
             $("#score-player2").text(data.scoreP2)
         }, 3000)
     }
 
+    finishTheMatch(data.scoreP1, data.scoreP2)
 }
 
 function takeCard(hand) {
@@ -243,6 +246,32 @@ function getCardImage(card) {
     return nameOfImageArchive;
 }
 
+function finishTheMatch(scoreP1, scoreP2) {
+    setTimeout( () => {
+        if ( scoreP1 === 5 && whichPlayer === "p2" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( scoreP2 === 5 && whichPlayer === "p1" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( scoreP1 === 5 && whichPlayer === "p1" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( scoreP2 === 5 && whichPlayer === "p2" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        }
+    }, 3500)
+}
+
 function backgroundSound(){
     myAudio = new Audio('someSound.ogg');
     if (typeof myAudio.loop == 'boolean') {
@@ -269,8 +298,8 @@ function cleanTheCardField(tagCardId) {
     else if (tagCardId === "card3") {
         $("#container-third-hand-card").html("");
     }
-
     takeCard(hand)
+    cardsOnDeck();    
 }
 
 function showWhosTurn() {
@@ -284,6 +313,11 @@ function verifyCardOnTop() {
     }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
         $("#container-card-player2").css('zIndex',5);
     }
+}
+
+function cardsOnDeck() {
+    let cardsOnDeck = 16 - gameState.turnNum;
+    document.getElementById("cards-left").innerHTML = cardsOnDeck;
 }
 
 function noCardsOnHand(){

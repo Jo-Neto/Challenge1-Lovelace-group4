@@ -52,6 +52,7 @@ function flipCard() {
     card.style.transform = "rotateY(180deg)";
 }
 
+
 let waterSound = new Audio('board-assets/sounds/waterCardSound.mp3');
 let fireSound = new Audio('board-assets/sounds/fireCardSound.mp3');
 let plantSound = new Audio('board-assets/sounds/plantCardSound.mp3');
