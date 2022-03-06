@@ -63,43 +63,47 @@ let gameState
 
 socket.onmessage = (event) => {
 
-    clearTimeout(timeout)
-    let data = JSON.parse(event.data)
+    try {
+        clearTimeout(timeout)
 
-    if( data instanceof Array ) {
-        hand = data
-    } else {
-        if ( whichPlayer === "p2" ) {
-            data.board = data.board.reverse()
+        let data = JSON.parse(event.data)
+
+        if( data instanceof Array ) {
+            hand = data
+        } else {
+            if ( whichPlayer === "p2" ) {
+                data.board = data.board.reverse()
+            }
+
+            try {
+                showEnemyCard(data.board[1])
+            } catch {
+            }
+
+            gameState = data
+
+            verifyIfIsYourTurn(data)
+            console.log(data)
+            console.log("==============================")
+            verifyIfHaveTwoCardsInTheField(data)
         }
 
-        try {
-            showEnemyCard(data.board[1])
-        } catch {
+        if(isMyTurn) {
+            timeout = setInterval(() => {
+                $(".cards-in-hand").draggable({
+                    revert: "invalid",
+                });
+            }, 500);
+
+            greenShine()
+        } else {
+            redShine()
         }
 
-        gameState = data
-
-        verifyIfIsYourTurn(data)
-        console.log(data)
-        console.log(isMyTurn)
-        console.log("==============================")
-        verifyIfHaveTwoCardsInTheField(data)
+        turnControlAndPlayCard();
+    } catch {
+        console.log(event.data)
     }
-
-    if(isMyTurn) {
-        timeout = setInterval(() => {
-            $(".cards-in-hand").draggable({
-                revert: "invalid",
-            });
-        }, 500);
-
-        greenShine()
-    } else {
-        redShine()
-    }
-
-    turnControlAndPlayCard();
 
 }
 
@@ -198,13 +202,14 @@ function verifyIfHaveTwoCardsInTheField(data) {
         }, 3000);
 
         clearTimeout(timeout)
-    } else if ( data.board[0] == '' && data.board[1] == '' ) {
+    } else if ( data.board[0] == '' && data.board[1] == '') {
         setTimeout(() => {
             $("#score-player1").text(data.scoreP1)
             $("#score-player2").text(data.scoreP2)
         }, 3000)
     }
 
+    finishTheMatch(data.scoreP1, data.scoreP2)
 }
 
 function takeCard(hand) {
@@ -239,6 +244,32 @@ function getCardImage(card) {
     }
 
     return nameOfImageArchive;
+}
+
+function finishTheMatch(scoreP1, scoreP2) {
+    setTimeout( () => {
+        if ( scoreP1 === 5 && whichPlayer === "p2" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( scoreP2 === 5 && whichPlayer === "p1" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( scoreP1 === 5 && whichPlayer === "p1" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( scoreP2 === 5 && whichPlayer === "p2" ) {
+            $("#score-player1").text(scoreP1)
+            $("#score-player2").text(scoreP2)
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        }
+    }, 3500)
 }
 
 function backgroundSound(){
