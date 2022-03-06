@@ -9,8 +9,8 @@ const fs = require('fs');
 
 module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 'p1' OR 'p2' STRING TYPES, LOWERCASE
     console.log("CardGameSession object --> storeOnDatabase(fn) --> SessionNum:" + Session.sID);
-    Session.player1.ws.send(Session.gameState);
-    Session.player2.ws.send(Session.gameState);
+    Session.player1.ws.send(JSON.stringify(Session.gameState));
+    Session.player2.ws.send(JSON.stringify(Session.gameState));
     if (winner === 'p1') { 
         Session.player1.ws.send("Voce ganhou!");
         Session.player2.ws.send("Voce perdeu");
