@@ -16,8 +16,8 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
         Session.player2.ws.send("Voce perdeu");
         //TODO: check account and give points
     } else if (winner === 'p2') {
-        Session.player1.ws.send("Voce ganhou!");
-        Session.player2.ws.send("Voce perdeu");
+        Session.player1.ws.send("Voce perdeu");
+        Session.player2.ws.send("Voce ganhou!");
         //TODO: check account and give points
     } else if (winner === 'draw') {
         Session.player1.ws.send("Empate!");

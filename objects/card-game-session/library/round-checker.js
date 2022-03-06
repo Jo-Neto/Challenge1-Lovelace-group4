@@ -231,7 +231,7 @@ module.exports = function (Session) {
     //|                       PREPARING FOR NEXT TURN                    |
     //+------------------------------------------------------------------+
     Session.gameState.turnNum++;  //turn has ended, next turn
-    
+
     Session.gameState.board[0] = ''; //clean board for next round
     Session.gameState.board[1] = '';
 
