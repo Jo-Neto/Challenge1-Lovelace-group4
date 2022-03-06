@@ -34,7 +34,7 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
         if (err) { console.log("ERROR: SessionNum:" + Session.sID + "on reading database: "); throw console.log(err); }
         let dataBase = JSON.parse(readData);
         dataBase.push({
-            sessiomID: Session.sID,
+            sessionID: Session.sID,
             winner: winner,
             player1: {
                 score: Session.gameState.scoreP1,
@@ -56,6 +56,6 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
             if (err) { console.log("ERROR: SessionNum:" + Session.sID + "on writing database: "); throw console.log(err) };
         });
         console.log("CardGameSession object --> storeOnDatabase(fn) --> session num: " + Session.sID + ' registered on database');
+        Session = null; //nullify session for it to be replaced on the active game sessions array
     });
-    Session = null; //nullify session for it to be replaced on the active game sessions array
 }
