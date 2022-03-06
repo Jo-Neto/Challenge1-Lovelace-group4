@@ -14,9 +14,11 @@ module.exports = function (Session, winner) { //IMPORTANT, ONLY ACCEPTS 'draw', 
     if (winner === 'p1') { 
         Session.player1.ws.send("Voce ganhou!");
         Session.player2.ws.send("Voce perdeu");
+        //TODO: check account and give points
     } else if (winner === 'p2') {
         Session.player1.ws.send("Voce ganhou!");
         Session.player2.ws.send("Voce perdeu");
+        //TODO: check account and give points
     } else if (winner === 'draw') {
         Session.player1.ws.send("Empate!");
         Session.player2.ws.send("Empate!");
