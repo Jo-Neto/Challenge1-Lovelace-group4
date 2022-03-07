@@ -20,29 +20,27 @@ class CardGameSession {
          scoreP1: 0,
          scoreP2: 0
       };
-      
+      /*
       this.serverSide = { //for database statistics
          hasGivenUp: false,
          disconnec: false,
          hasCheated: false
-      };
+      };*/
       
       this.player1 = {  //server side only, data about player 1
-         name: 'Clasher',
-         account: null,
+         regID: null,
+         reconKey: null,
          hand: [],
          deck: null,
-         ws: wsP1,  //CAREFULL WITH RECONNECTIONS!!!
-         key: null
+         ws: wsP1  //CAREFULL WITH RECONNECTIONS!!!
       };
       
       this.player2 = {  //server side only, data about player 2
-         name: 'Clasher',
-         account: null,
+         regID: null,
+         reconKey: null,
          hand: [],
          deck: null,
-         ws: wsP2,  //CAREFULL WITH RECONNECTIONS!!!
-         key: null
+         ws: wsP2 //CAREFULL WITH RECONNECTIONS!!!
       };
       
       this.player1.deck = shuffler();  //calls for the shuffler function to randomize the deck
