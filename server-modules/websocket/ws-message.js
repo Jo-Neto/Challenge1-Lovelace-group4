@@ -5,6 +5,8 @@ const SessionArr = [];  //store ACTIVE game sessions, inactive game sessions go 
 
 function message(data, isBinary, ws) {
 
+    ws.timeout = 10; //reset afk timer
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //+------------------------------------------------------------------+
     //|                      READING IF MSG IS VALID                     | 
@@ -33,20 +35,12 @@ function message(data, isBinary, ws) {
             return;
 
         else {
-
-            console.log("p1 hand before = " + SessionArr[ws.aID].player1.hand);
-            console.log("p1 deck before = " + SessionArr[ws.aID].player1.deck);
-
-            console.log("p1 played = " + SessionArr[ws.aID].player1.hand[parsedData - 1]);
             SessionArr[ws.aID].gameState.board[0] = SessionArr[ws.aID].player1.hand[parsedData - 1];
             SessionArr[ws.aID].player1.hand[parsedData - 1] = SessionArr[ws.aID].player1.deck.shift();
-            roundChecker(SessionArr[ws.aID]);
-
-            console.log("p1 hand after = " + SessionArr[ws.aID].player1.hand);
-            console.log("p1 deck after = " + SessionArr[ws.aID].player1.deck);
-
+            roundChecker(SessionArr[ws.aID])
         }
 
+    if (SessionArr[ws.aID].player1.ws.readyState === 1)  
         SessionArr[ws.aID].player1.ws.send(JSON.stringify(SessionArr[ws.aID].player1.hand));
 
     }
@@ -62,20 +56,12 @@ function message(data, isBinary, ws) {
             return;
 
         else {
-
-            console.log("p2 hand before = " + SessionArr[ws.aID].player2.hand);
-            console.log("p2 deck before = " + SessionArr[ws.aID].player2.deck);
-
-            console.log("p2 played = " + SessionArr[ws.aID].player2.hand[parsedData - 1]);
             SessionArr[ws.aID].gameState.board[1] = SessionArr[ws.aID].player2.hand[parsedData - 1];
             SessionArr[ws.aID].player2.hand[parsedData - 1] = SessionArr[ws.aID].player2.deck.shift();
             roundChecker(SessionArr[ws.aID]);
-
-            console.log("p2 hand after = " + SessionArr[ws.aID].player2.hand);
-            console.log("p2 deck after = " + SessionArr[ws.aID].player2.deck);
-
         }
 
+    if (SessionArr[ws.aID].player2.ws.readyState === 1)    
         SessionArr[ws.aID].player2.ws.send(JSON.stringify(SessionArr[ws.aID].player2.hand));
 
     }
