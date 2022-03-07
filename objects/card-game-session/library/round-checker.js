@@ -26,16 +26,22 @@ module.exports = function (Session) {
             Session.gameState.player1turn = false;
         } else
             console.log("CardGameSession object --> roundcheck(fn), logical error, on passing turn(first check), Session Num: " + Session.gameState.sID);
-        Session.player1.ws.send(JSON.stringify(Session.gameState)); //update board for both players
-        Session.player2.ws.send(JSON.stringify(Session.gameState));
-        Session.isLocked = false;  //safety unlock
+        if (Session.player1.ws.readyState === 1)
+            Session.player1.ws.send(JSON.stringify(Session.gameState)); //update board for both players
+        
+        if (Session.player2.ws.readyState === 1)
+            Session.player2.ws.send(JSON.stringify(Session.gameState));
+        
+            Session.isLocked = false;  //safety unlock
         return;
     }
     console.log("round check passed 1");
 
 
-    Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state before calculations
-    Session.player2.ws.send(JSON.stringify(Session.gameState));
+    if (Session.player1.ws.readyState === 1)
+        Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state before calculations
+    if (Session.player2.ws.readyState === 1)
+        Session.player2.ws.send(JSON.stringify(Session.gameState));
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,8 +227,10 @@ module.exports = function (Session) {
     Session.gameState.board[0] = ''; //clean board for next round
     Session.gameState.board[1] = '';
 
-    Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state after calculations
-    Session.player2.ws.send(JSON.stringify(Session.gameState));
+    if (Session.player1.ws.readyState === 1)
+        Session.player1.ws.send(JSON.stringify(Session.gameState)); //send game state after calculations
+    if (Session.player2.ws.readyState === 1)
+        Session.player2.ws.send(JSON.stringify(Session.gameState));
 
     Session.isLocked = false;  //safety unlock
     console.log("round check passed 5");

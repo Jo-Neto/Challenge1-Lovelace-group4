@@ -2,8 +2,8 @@
 //|                        DEDEPENDENCIES                            |
 //+------------------------------------------------------------------+
 const express = require('express');
-const sessions = require('express-session');
-const url = require('url');
+const crypto = require("crypto");
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
@@ -14,6 +14,9 @@ const restPort = null; //currently unused;
 
 const app = express();
 app.use(express.json());
+
+const sessionMW = require('./server-modules/cookie/all-users-session.js');
+app.use(sessionMW);
 
 const HTTPserver = app.listen(frontPort, () => { console.log(`App listening on port: ${frontPort}`); });
 
@@ -39,12 +42,8 @@ app.post('/register', (req, res) => usrReg(req.body, res)); //register
 const userLogout = require('./server-modules/rest/user-logout.js');
 const userLogin = require('./server-modules/rest/user-login.js');
 
-//middlewares
-const loginMW = require('./server-modules/cookie/login.js');
-const logoutMW = require('./server-modules/cookie/logout.js');
-
-app.post('/login', sessions(loginMW), (req, res) => userLogin(req.body, res, false));
-app.post('/logout', sessions(logoutMW), (req, res) => userLogout(req.session, res));
+app.post('/login', (req, res) => userLogin(req, res));
+app.delete('/logout', (req, res) => userLogout(req, res));
 
 //+-----------------------------------------------------------------------------------------------+
 //+-----------------------------------------------------------------------------------------------+
@@ -66,12 +65,14 @@ app.use('/leader', express.static('front-end/scripts/leader-script.js'));
 //+------------------------------------------------------------------+
 const wss = require('./socket-server.js');
 
-HTTPserver.on('upgrade', (request, socket, head) => {
-   const { pathname } = url.parse(request.url);
-   if (pathname === '/') {
-      //TODO: check cookies, tie user to socket if registered
-      wss.handleUpgrade(request, socket, head, (ws) => {
+HTTPserver.on('upgrade', (request, socket, head) => {  
+   sessionMW( request, {}, () => {  
+      
+      request.session.reconKey = crypto.randomUUID();
+
+      wss.handleUpgrade(request, socket, head, (ws, request) => {
          wss.emit('connection', ws, request);
       });
-   }
+
+   });   
 });
