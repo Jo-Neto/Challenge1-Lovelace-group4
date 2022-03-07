@@ -182,11 +182,11 @@ function showEnemyCard(cardString) {
             break;
         case 'v':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-void.svg">');
-            //playCardSound("v");
+            playCardSound("v");
             break;
         case 'd':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-dark-matter.svg">');
-            //playCardSound("d");
+            playCardSound("d");
             break;
         default:
             break;
@@ -299,7 +299,7 @@ function cleanTheCardField(tagCardId) {
         $("#container-third-hand-card").html("");
     }
     takeCard(hand)
-    cardsOnDeck();    
+    cardsOnDeck();
 }
 
 function showWhosTurn() {
