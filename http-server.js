@@ -13,7 +13,7 @@ const frontPort = 80;
 const restPort = null; //currently unused;
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); 
 
 const sessionMW = require('./server-modules/cookie/all-users-session.js');
 app.use(sessionMW);
