@@ -4,6 +4,7 @@
 const express = require('express');
 const crypto = require("crypto");
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //+------------------------------------------------------------------+
 //|       ARBITRATY PORTS, MIDDLEWARES, SERVER INITIALIZATION        |
@@ -41,7 +42,6 @@ app.post('/register', (req, res) => usrReg(req.body, res)); //register
 const userLogout = require('./server-modules/rest/user-logout.js');
 const userLogin = require('./server-modules/rest/user-login.js');
 
-
 app.post('/login', (req, res) => userLogin(req, res));
 app.delete('/logout', (req, res) => userLogout(req, res));
 
@@ -49,7 +49,8 @@ app.delete('/logout', (req, res) => userLogout(req, res));
 //+-----------------------------------------------------------------------------------------------+
 
 //first served file and its assets
-app.use('/', express.static('front-end/'));
+const sessionMW = require('./server-modules/cookie/anon.js');
+app.use('/', sessions(sessionMW), express.static('front-end/'));
 
 //dynamically served scripts on SPA display change, assets are already loaded dynamically
 app.use('/board1', express.static('front-end/scripts/board-script.js'));

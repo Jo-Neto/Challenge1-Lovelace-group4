@@ -204,6 +204,7 @@ module.exports = function (Session) {
     //+------------------------------------------------------------------+
     //|                    CHECKING IF GAME IS OVER                      |
     //+------------------------------------------------------------------+
+  
     if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
         dbStore(Session, 'p1');
         return true;

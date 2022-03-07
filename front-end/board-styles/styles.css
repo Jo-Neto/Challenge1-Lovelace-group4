@@ -114,3 +114,12 @@ body {
 #img-second-cheap {
     z-index: -1;
 }
+
+#cards-left {
+    height: 40px;
+    font-size: 25px;
+    width: 40px;
+    color: green;
+    position: absolute;
+    bottom: 10px;
+}
