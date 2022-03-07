@@ -2,13 +2,13 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 
-function userLogin(data, res) {  //safety
+function userLogin(req, res) {  //safety
 
     let uFile = fs.readFileSync('./database/users.json');
     let pFile = JSON.parse(uFile);
 
     let userIndex = pFile.findIndex(user => {
-        return (data.id === user.name || data.id === user.email);
+        return (req.body.id === user.name || req.body.id === user.email);
     });
 
     if (userIndex === -1) {  //usuario nao encontrado
@@ -17,13 +17,15 @@ function userLogin(data, res) {  //safety
     }
 
     else {
-        let hash = crypto.pbkdf2Sync(data.password, pFile[userIndex].salt, 2048, 128, `sha512`).toString(`hex`);
+      
+        let hash = crypto.pbkdf2Sync(req.body.password, pFile[userIndex].salt, 2048, 128, `sha512`).toString(`hex`);
 
         if (pFile[userIndex].hash === hash) {
             if (pFile[userIndex].active = false)
                 res.send("Esta conta foi deletada");
             else {
-                //TODO: mete o cookie de user no browser do user, e sobrescreve
+                req.session.regID = pFile[userIndex].id;
+                req.session.cookie.expires = 86400000; //log-in lasts 24 hours
                 res.send("Bem vindo " + pFile[userIndex].name);
             }
         }

@@ -25,16 +25,7 @@ wss.on('close', () => { //clear timer if socket server closes
     clearInterval(wssTimer);
 });
 
-/*
-//TODO: use here to check cookies
-wss.on('headers', (headers, req) => {
-    console.log(headers);
-    console.log(req);
-});*/
-
-
 wss.on('connection', (ws, req) => {
-    console.log("connection server event triggered");
     ws.on('error', (error) => { console.log('wss: WS error: '); console.log(error); });  //if error, caught first hand  
     ws.on('pong', () => { ws.isAlive = true }); //on pong, we are sure socket is alive
     ws.on('close', () => wsCloseModule.close(ws));
@@ -43,6 +34,8 @@ wss.on('connection', (ws, req) => {
     
     ws.on('message', (data, isBinary) => wsMsgModule.msg(data, isBinary, ws));
 });
+
+//TODO: ping broadcast and afk timer
 
 //exporting the server
 module.exports = wss;
