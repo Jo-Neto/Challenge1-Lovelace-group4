@@ -114,7 +114,7 @@ socket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
-    if ( gameState.turnNum == 19 ) {
+    if ( gameState.turnNum == 18 ) {
         if ( gameState.scoreP1 === gameState.scoreP2 ) {
             $("#description-modal").text("Empate!")
             openModal("modal-general")
