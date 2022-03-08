@@ -35,7 +35,7 @@ wss.on('connection', (ws, req) => {
     ws.on('message', (data, isBinary) => wsMsgModule.msg(data, isBinary, ws));
 });
 
-//TODO: ping broadcast and afk timer
+//TODO: ping broadcast and afk timer for current player turn
 
 //exporting the server
 module.exports = wss;
