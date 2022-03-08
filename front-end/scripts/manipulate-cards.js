@@ -114,18 +114,23 @@ socket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
-    if ( event.code === 4000 || event.code === 4200 ) {
-        $("#description-modal").text("O oponente desconectou")
-        openModal("modal-general")
-    } else if ( event.code === 4008 ) {
-        $("#description-modal").text("O oponente trapaceou")
-        openModal("modal-general")
-    } else if ( event.code === 4004 ) {
-        $("#description-modal").text("Você não esta em nenhuma partida")
-        openModal("modal-general")
-    } else if ( event.code === 1008 ) {
-        $("#description-modal").text("Você trapaceou")
-        openModal("modal-general")
+    if ( gameState.turnNum == 17 ) {
+        if ( gameState.scoreP1 === gameState.scoreP2 ) {
+            $("#description-modal").text("Empate!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p1" && gameState.scoreP1 > gameState.scoreP2 ) {
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p1" && gameState.scoreP1 < gameState.scoreP2 ) {
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p2" && gameState.scoreP1 < gameState.scoreP2 ) {
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p2" && gameState.scoreP1 > gameState.scoreP2 ) {
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        }
     }
 }
 
@@ -198,7 +203,7 @@ function verifyIfHaveTwoCardsInTheField(data) {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            //hideCheap();
+            hideCheap();
         }, 3000);
 
         clearTimeout(timeout)
@@ -213,9 +218,16 @@ function verifyIfHaveTwoCardsInTheField(data) {
 }
 
 function takeCard(hand) {
-    $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
-    $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
-    $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
+
+    if ( hand[0] != null ) {
+        $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
+    }
+    if ( hand[1] != null ) {
+        $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
+    }
+    if ( hand[2] != null ) {
+        $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
+    }
 }
 
 function getCardImage(card) {
@@ -332,7 +344,7 @@ function noCardsOnHand(){
 }
 
 function hideCheap() {
-    if(gameState.turnNum == 15){
+    if(gameState.turnNum == 16){
         $("#second-cheap").hide();
     }
     // if(turnForDeck == 0){
