@@ -1,11 +1,3 @@
-//Objeto recebido do front
-// this.gameState = {
-//     turnNum: 1,  
-//     player1turn: true or false,
-//     board: ['', ''],
-//     scoreP1: 0,
-//     scoreP2: 0
-//  };
 let isMyTurn = false
 
 $(document).ready( () => {
@@ -41,19 +33,6 @@ function redShine() {
 }
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
-
-//primeira mensagem do back define qual player voce é, é uma string: "p1" / "p2"
-
-//se receber um array com 3 strings, é a sua nova mão
-
-//objeto recebido do back em cada jogada
-/* 
-    turnNum: 1,  
-    player1turn: true/false,
-    board: ['', ''],  [ P1 , P2 ]
-    scoreP1: 0,
-    scoreP2: 0
-*/
 
 socket.onopen = (event) => {
     playCardSound("backgroundSound");
@@ -332,7 +311,4 @@ function hideCheap() {
     if(gameState.turnNum == 16){
         $("#second-cheap").hide();
     }
-    // if(turnForDeck == 0){
-    //     $("#first-cheap").attr('src','./board-assets/null.png');
-    // }
 }
