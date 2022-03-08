@@ -67,7 +67,8 @@ const wss = require('./socket-server.js');
 HTTPserver.on('upgrade', (request, socket, head) => {  
    sessionMW( request, {}, () => {  
       
-      request.session.reconKey = crypto.randomUUID();
+      if (!request.session.reconKey)
+         request.session.reconKey = crypto.randomUUID();
 
       wss.handleUpgrade(request, socket, head, (ws, request) => {
          wss.emit('connection', ws, request);
