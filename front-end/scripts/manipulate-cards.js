@@ -167,26 +167,32 @@ function showEnemyCard(cardString) {
         case 'f':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-fire.svg">');
             playCardSound("f");
+            verifyCardOnTop();
             break;
         case 'w':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-water.svg">');
             playCardSound("w");
+            verifyCardOnTop();
             break;
         case 'p':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-plant.svg">');
             playCardSound("p");
+            verifyCardOnTop();
             break;
         case 'e':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-ether.svg">');
             playCardSound("e");
+            verifyCardOnTop();
             break;
         case 'v':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-void.svg">');
             playCardSound("v");
+            verifyCardOnTop();
             break;
         case 'd':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-dark-matter.svg">');
             playCardSound("d");
+            verifyCardOnTop();
             break;
         default:
             break;
@@ -302,15 +308,11 @@ function cleanTheCardField(tagCardId) {
     cardsOnDeck();
 }
 
-function showWhosTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
-}
-
 function verifyCardOnTop() {
     console.log("board "+ gameState.board)
-    if((gameState.board[0] =='') && (gameState.board[1] != '')){
+    if((gameState.board[0] == '') && (gameState.board[1] != '')){
         $("#container-card-player2").css('zIndex',3);
-    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+    }else if ((gameState.board[0] != '') && (gameState.board[1] == '')) {
         $("#container-card-player2").css('zIndex',5);
     }
 }
