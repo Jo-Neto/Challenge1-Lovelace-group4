@@ -205,10 +205,10 @@ module.exports = function (Session) {
     //|                    CHECKING IF GAME IS OVER                      |
     //+------------------------------------------------------------------+
   
-    if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
+    if (Session.gameState.scoreP1 === 5 || (Session.gameState.turnNum === 18 && (Session.gameState.scoreP1 > Session.gameState.scoreP2))) {
         dbStore(Session, 'p1');
         return true;
-    } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
+    } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 18 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
         dbStore(Session, 'p2');
         return true;
     } else if (Session.gameState.turnNum === 18 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
