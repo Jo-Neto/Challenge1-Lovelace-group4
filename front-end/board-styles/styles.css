@@ -84,9 +84,8 @@ body {
     width: fit-content;
     height: fit-content;
 
-    position: fixed;
+    position: absolute;
     left: 46%;
-    top: 41%;
 }
 
 #container-card-player2 img {
