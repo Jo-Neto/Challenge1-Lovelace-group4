@@ -114,7 +114,7 @@ socket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
-    if ( gameState.turnNum == 17 ) {
+    if ( gameState.turnNum == 19 ) {
         if ( gameState.scoreP1 === gameState.scoreP2 ) {
             $("#description-modal").text("Empate!")
             openModal("modal-general")
@@ -314,10 +314,6 @@ function cleanTheCardField(tagCardId) {
     cardsOnDeck();
 }
 
-function showWhosTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
-}
-
 function verifyCardOnTop() {
     console.log("board "+ gameState.board)
     if((gameState.board[0] =='') && (gameState.board[1] != '')){
@@ -330,17 +326,6 @@ function verifyCardOnTop() {
 function cardsOnDeck() {
     let cardsOnDeck = 16 - gameState.turnNum;
     document.getElementById("cards-left").innerHTML = cardsOnDeck;
-}
-
-function noCardsOnHand(){
-    console.log("entrou: "+ gameState.turnNum)
-    if(gameState.turnNum == 18){
-        if(gameState.scoreP1 > gameState.scoreP2){
-            openModal("modal-victory");
-        }else if(gameState.scoreP2 > gameState.scoreP1){
-            openModal("modal-defeat");
-        }
-    }
 }
 
 function hideCheap() {
