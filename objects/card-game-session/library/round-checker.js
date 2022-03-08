@@ -211,7 +211,7 @@ module.exports = function (Session) {
     } else if (Session.gameState.scoreP2 === 5 || (Session.gameState.turnNum === 17 && (Session.gameState.scoreP2 > Session.gameState.scoreP1))) {
         dbStore(Session, 'p2');
         return true;
-    } else if (Session.gameState.turnNum === 17 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
+    } else if (Session.gameState.turnNum === 18 && (Session.gameState.scoreP1 === Session.gameState.scoreP2)) {
         dbStore(Session, 'draw');
         return true;
     }
