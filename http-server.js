@@ -13,7 +13,7 @@ const frontPort = 80;
 const restPort = null; //currently unused;
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); 
 
 const sessionMW = require('./server-modules/cookie/all-users-session.js');
 app.use(sessionMW);
@@ -49,8 +49,7 @@ app.delete('/logout', (req, res) => userLogout(req, res));
 //+-----------------------------------------------------------------------------------------------+
 
 //first served file and its assets
-const sessionMW = require('./server-modules/cookie/anon.js');
-app.use('/', sessions(sessionMW), express.static('front-end/'));
+app.use('/', express.static('front-end/'));
 
 //dynamically served scripts on SPA display change, assets are already loaded dynamically
 app.use('/board1', express.static('front-end/scripts/board-script.js'));
