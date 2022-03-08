@@ -250,21 +250,25 @@ function finishTheMatch(scoreP1, scoreP2) {
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você perdeu!")
             openModal("modal-general")
+            loserSound.play();
         } else if ( scoreP2 === 5 && whichPlayer === "p1" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você perdeu!")
             openModal("modal-general")
+            loserSound.play();
         } else if ( scoreP1 === 5 && whichPlayer === "p1" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você venceu!")
             openModal("modal-general")
+            winnerSound.play();
         } else if ( scoreP2 === 5 && whichPlayer === "p2" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você venceu!")
             openModal("modal-general")
+            winnerSound.play();
         }
     }, 3500)
 }
