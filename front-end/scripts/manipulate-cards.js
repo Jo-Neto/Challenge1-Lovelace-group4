@@ -1,11 +1,3 @@
-//Objeto recebido do front
-// this.gameState = {
-//     turnNum: 1,  
-//     player1turn: true or false,
-//     board: ['', ''],
-//     scoreP1: 0,
-//     scoreP2: 0
-//  };
 let isMyTurn = false
 
 $(document).ready( () => {
@@ -41,19 +33,6 @@ function redShine() {
 }
 
 let cardImageTagId; //Essa variável serve para pegar a id da imagem da carta que foi jogada, pois isso será usado em diferentes funções
-
-//primeira mensagem do back define qual player voce é, é uma string: "p1" / "p2"
-
-//se receber um array com 3 strings, é a sua nova mão
-
-//objeto recebido do back em cada jogada
-/* 
-    turnNum: 1,  
-    player1turn: true/false,
-    board: ['', ''],  [ P1 , P2 ]
-    scoreP1: 0,
-    scoreP2: 0
-*/
 
 socket.onopen = (event) => {
     playCardSound("backgroundSound");
@@ -114,18 +93,23 @@ socket.onclose = (event) => {
     console.log("CLOSE CODE: " + event.code);
     console.log("CLOSE REASON: " + event.reason);
 
-    if ( event.code === 4000 || event.code === 4200 ) {
-        $("#description-modal").text("O oponente desconectou")
-        openModal("modal-general")
-    } else if ( event.code === 4008 ) {
-        $("#description-modal").text("O oponente trapaceou")
-        openModal("modal-general")
-    } else if ( event.code === 4004 ) {
-        $("#description-modal").text("Você não esta em nenhuma partida")
-        openModal("modal-general")
-    } else if ( event.code === 1008 ) {
-        $("#description-modal").text("Você trapaceou")
-        openModal("modal-general")
+    if ( gameState.turnNum == 18 ) {
+        if ( gameState.scoreP1 === gameState.scoreP2 ) {
+            $("#description-modal").text("Empate!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p1" && gameState.scoreP1 > gameState.scoreP2 ) {
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p1" && gameState.scoreP1 < gameState.scoreP2 ) {
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p2" && gameState.scoreP1 < gameState.scoreP2 ) {
+            $("#description-modal").text("Você venceu!")
+            openModal("modal-general")
+        } else if ( whichPlayer === "p2" && gameState.scoreP1 > gameState.scoreP2 ) {
+            $("#description-modal").text("Você perdeu!")
+            openModal("modal-general")
+        }
     }
 }
 
@@ -167,26 +151,32 @@ function showEnemyCard(cardString) {
         case 'f':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-fire.svg">');
             playCardSound("f");
+            verifyCardOnTop();
             break;
         case 'w':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-water.svg">');
             playCardSound("w");
+            verifyCardOnTop();
             break;
         case 'p':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-plant.svg">');
             playCardSound("p");
+            verifyCardOnTop();
             break;
         case 'e':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-ether.svg">');
             playCardSound("e");
+            verifyCardOnTop();
             break;
         case 'v':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-void.svg">');
             playCardSound("v");
+            verifyCardOnTop();
             break;
         case 'd':
             $("#container-card-player2").html('<img class="cards-in-hand" src="./board-assets/card-dark-matter.svg">');
             playCardSound("d");
+            verifyCardOnTop();
             break;
         default:
             break;
@@ -198,7 +188,7 @@ function verifyIfHaveTwoCardsInTheField(data) {
         setTimeout(() => {
             cleanTheCardField(cardImageTagId);
             $("#container-card-player2").html('');
-            //hideCheap();
+            hideCheap();
         }, 3000);
 
         clearTimeout(timeout)
@@ -213,9 +203,16 @@ function verifyIfHaveTwoCardsInTheField(data) {
 }
 
 function takeCard(hand) {
-    $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
-    $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
-    $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
+
+    if ( hand[0] != null ) {
+        $("#container-first-hand-card").html(`<img id="card1" value=${hand[0]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[0])}.svg" alt="">`);
+    }
+    if ( hand[1] != null ) {
+        $("#container-second-hand-card").html(`<img id="card2" value=${hand[1]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[1])}.svg" alt="">`);
+    }
+    if ( hand[2] != null ) {
+        $("#container-third-hand-card").html(`<img id="card3" value=${hand[2]} class="cards-in-hand" src="./board-assets/${getCardImage(hand[2])}.svg" alt="">`);
+    }
 }
 
 function getCardImage(card) {
@@ -253,21 +250,25 @@ function finishTheMatch(scoreP1, scoreP2) {
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você perdeu!")
             openModal("modal-general")
+            loserSound.play();
         } else if ( scoreP2 === 5 && whichPlayer === "p1" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você perdeu!")
             openModal("modal-general")
+            loserSound.play();
         } else if ( scoreP1 === 5 && whichPlayer === "p1" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você venceu!")
             openModal("modal-general")
+            winnerSound.play();
         } else if ( scoreP2 === 5 && whichPlayer === "p2" ) {
             $("#score-player1").text(scoreP1)
             $("#score-player2").text(scoreP2)
             $("#description-modal").text("Você venceu!")
             openModal("modal-general")
+            winnerSound.play();
         }
     }, 3500)
 }
@@ -302,15 +303,11 @@ function cleanTheCardField(tagCardId) {
     cardsOnDeck();
 }
 
-function showWhosTurn() {
-    gameState.myTurn === true ? $("#show-if-is-your-turn").text("Sua vez!") : $("#show-if-is-your-turn").text("Vez do oponente");
-}
-
 function verifyCardOnTop() {
     console.log("board "+ gameState.board)
-    if((gameState.board[0] =='') && (gameState.board[1] != '')){
+    if((gameState.board[0] == '') && (gameState.board[1] != '')){
         $("#container-card-player2").css('zIndex',3);
-    }else if ((gameState.board[0] !='') && (gameState.board[1] == '')) {
+    }else if ((gameState.board[0] != '') && (gameState.board[1] == '')) {
         $("#container-card-player2").css('zIndex',5);
     }
 }
@@ -320,22 +317,8 @@ function cardsOnDeck() {
     document.getElementById("cards-left").innerHTML = cardsOnDeck;
 }
 
-function noCardsOnHand(){
-    console.log("entrou: "+ gameState.turnNum)
-    if(gameState.turnNum == 18){
-        if(gameState.scoreP1 > gameState.scoreP2){
-            openModal("modal-victory");
-        }else if(gameState.scoreP2 > gameState.scoreP1){
-            openModal("modal-defeat");
-        }
-    }
-}
-
 function hideCheap() {
-    if(gameState.turnNum == 15){
+    if(gameState.turnNum == 16){
         $("#second-cheap").hide();
     }
-    // if(turnForDeck == 0){
-    //     $("#first-cheap").attr('src','./board-assets/null.png');
-    // }
 }
