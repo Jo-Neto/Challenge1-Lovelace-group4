@@ -37,13 +37,16 @@ document.getElementById('play-now-button').addEventListener('click', () => {
 
             $.ajax({
                 url: `/board1`,
-                dataType: "script"
+                dataType: "script",
+                complete: callBoard2()
             });
     
-            $.ajax({
-            url: `/board2`,
-            dataType: "script"
-            });
+            function callBoard2() {
+              $.ajax({
+                url: `/board2`,
+                dataType: "script"
+              });
+            }
 
             console.log(obj)
 
