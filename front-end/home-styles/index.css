@@ -170,7 +170,7 @@ section img {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 50vh;
+    height: 70vh;
     visibility: hidden;
 }
 
@@ -254,3 +254,7 @@ input[type=text], input[type=password], input[type=email] {
     border: 2px solid rgb(204, 204, 204);
     box-sizing: border-box;
   }
+
+#response-register {
+    font-size: 12px;
+}

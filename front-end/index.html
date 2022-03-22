@@ -27,10 +27,12 @@
             
             <div id="input-box">
                 <div id="input-user">
-                    <input type="text" id="input-player-name" placeholder="Usuário">
-                    <input type="password" id="input-player-password" placeholder="Senha">
+                    <input type="text" id="input-player-name-login" placeholder="Usuário">
+                    <input type="password" id="input-player-password-login" placeholder="Senha">
                 </div>
+                <div id="response-msg-server"></div>
                 <br />
+                <button type="button" id="login-button" onclick="login()">Login</button>
                 <div>
                     <button type="button" id="play-now-button" onclick="openModalHome('modal-loading')">Jogar agora</button>
                     <button type="button" id="sign-up-button" onclick="openModalHome('modal-sign-up')">Cadastre-se</button>
@@ -94,12 +96,13 @@
 
         <div id="modal-sign-up" class="modal">
             <h3>Cadastro</h3>
-            <input type="email" id="input-player-email" placeholder="Email">
+            <input type="text" id="input-player-email" placeholder="Email">
             <input type="text" id="input-player-name" placeholder="Usuário">
             <input type="password" id="input-player-password" placeholder="Senha">
+            <div id="response-register"></div>
             <div id="sign-up-box-btn">
                 <button type="button" id="cancel-button" onclick="closeModalHome('modal-sign-up')">Cancelar</button>
-                <button type="button" id="sign-up-btn" onclick="closeModalHome('modal-sign-up')">Cadastrar</button>
+                <button type="button" id="sign-up-btn" onclick="register()">Cadastrar</button>
             </div>
         </div>
 
