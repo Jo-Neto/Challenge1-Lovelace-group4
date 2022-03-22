@@ -27,7 +27,6 @@ function userChange(data, res, isDelete = false) {
             dbChanger({
                 id: pFile[userIndex].id,
                 active: !isDelete, //if isDelete variable is true, set user to disabled status
-                name: data.newName,
                 email: data.newEmail,
                 salt: newSalt, //use new SALT
                 hash: crypto.pbkdf2Sync(data.newPassword, newSalt, 2048, 128, `sha512`).toString(`hex`)
