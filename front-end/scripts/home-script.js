@@ -130,3 +130,62 @@ fetch('/index.html').then( resp => {
 }).catch( err => {
   console.log(err);
 });
+
+function register() {
+    if ( $("#input-player-email").val().length >= 3 & $("#input-player-name").val().length >= 3 & $("#input-player-password").val().length >= 3 ) {
+        console.log("rodou o if")
+
+        const username = $("#input-player-name").val()
+        const userEmail = $("#input-player-email").val()
+        const userpw = $("#input-player-password").val()
+
+        console.log("email: " + userEmail)
+        console.log("user: " + username)
+        console.log("pw: " + userpw)
+
+        fetch('http://localhost/register/', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: username,
+                email: userEmail,
+                password: userpw
+            }),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then( resp => {
+            $("#modal-sign-up").html(resp)
+            $("#modal-sign-up").append(`<button type="button" id="cancel-button" onclick="closeModalHome('modal-sign-up')">Ok</button>`)
+        })
+    } else {
+        $("#response-register").text("Preencha todos os campos")
+        console.log("rodou o else")
+    }
+}
+
+function login() {
+    if ( $("#input-player-email").val().length >= 3 & $("#input-player-name").val().length >= 3 & $("#input-player-password").val().length >= 3 ) {
+        const username = $("#input-player-name-login").val()
+        const userpw = $("#input-player-password-login").val()
+
+        console.log("user: " + username)
+        console.log("pw: " + userpw)
+
+        fetch('http://localhost/login/', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: username,
+                password: userpw
+            }),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then( response => {
+            return response.text()
+        }).then( res =>
+            $("#response-msg-server").text(res)
+        )
+    } else {
+        $("#response-register").text("Preencha todos os campos")
+    }
+}
