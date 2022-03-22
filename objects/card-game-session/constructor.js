@@ -20,6 +20,7 @@ class CardGameSession {
          scoreP1: 0,
          scoreP2: 0
       };
+      
       /*
       this.serverSide = { //for database statistics
          hasGivenUp: false,
