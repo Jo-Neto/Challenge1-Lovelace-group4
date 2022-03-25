@@ -1,13 +1,13 @@
 package.json will be manually controlled
 **/package.json/**
-#package.json
+package.json
 **/package-lock.json
 **/node_modules
 **/node_modules/**
 node_modules/**
 node_modules/
-#database/
-#database/*
+database/
+database/*
 ###############################################################################################################
 
 
