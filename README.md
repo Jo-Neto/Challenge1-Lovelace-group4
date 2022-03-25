@@ -15,7 +15,7 @@ Jogo infantil desenvolvido como resposta ao primeiro desafio proposto para à tu
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Flávia Souza  
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [LinkedIn](https://www.linkedin.com/in/flaaaaaavis/) | [GitHub](https://github.com/flaaaaaavis)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; José Neto  
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [LinkedIn]() | [GitHub](https://github.com/Jo-Neto)  
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GitHub](https://github.com/Jo-Neto)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Vinícius Noronha  
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [LinkedIn](https://www.linkedin.com/in/vinicius-noronha-1540b2184/) | [GitHub](https://github.com/viniciusna)  
   
